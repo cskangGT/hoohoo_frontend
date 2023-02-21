@@ -1,8 +1,8 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import IntroScreen from '../screens/IntroScreen';
-import TagRecording from '../screens/TagRecording';
+import IntroScreen from '../../screens/IntroScreen/IntroScreen';
+import TagRecording from '../../screens/TagRecording/TagRecording';
 
 
 const RootStack = createNativeStackNavigator();

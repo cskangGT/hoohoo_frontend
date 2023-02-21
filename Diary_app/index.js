@@ -3,7 +3,7 @@ import {AppRegistry} from 'react-native';
 import { name as appName } from './app.json';
 import {ThemeProvider} from 'styled-components';
 import theme from "./src/styles/theme"
-import Navigator from "./src/navigation/Navigator";
+import Navigator from "./src/navigation/Navigator/Navigator";
 
 const ProvidedNavigator = () => {
   return (
