@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { View, Text, Button, StyleSheet, TextInput, TouchableOpacity, Pressable, Keyboard } from "react-native";
 import styled from 'styled-components';
 // import styles from '.././styles'
-import msg from '..//data/msg.json'
+import msg from '../../data/msg.json'
 
 const StyledButtonContainer = styled(View)`
     flex-direction: row;
