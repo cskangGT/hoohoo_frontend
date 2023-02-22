@@ -19,7 +19,7 @@ const Navigator = () => {
                 <RootStack.Screen
                     name="IntroScreen"
                     component={IntroScreen}
-                    // options={{ headerShown: false }}
+                    options={{ headerShown: false }}
                 />
                 <RootStack.Screen
                     name="TagRecording"

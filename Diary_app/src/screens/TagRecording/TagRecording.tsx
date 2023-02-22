@@ -10,7 +10,7 @@ const StyledButtonContainer = styled(View)`
     flex-wrap: wrap;
     `
 // justify-content: center;
-// align-items: center; ¹Ø¿¡ ÇÊ¿ä¿¡µû¶ó ÁÂ¿ì Á¤ÇÏ¼Ò 
+// align-items: center; ï¿½Ø¿ï¿½ ï¿½Ê¿ä¿¡ï¿½ï¿½ï¿½ï¿½ ï¿½Â¿ï¿½ ï¿½ï¿½ï¿½Ï¼ï¿½ 
 const StyledModifyContainer = styled(View)`
    
     border-width: 1;
@@ -69,7 +69,7 @@ function UserTextInput(props: any): JSX.Element {
             ref={props.focusOnInput}
             onChangeText={(text: string) => props.onChangeText(text)}
             value={props.textInput}
-            fontSize={44}
+            fontSize={44}px
             autoFocus={focus}
             blurOnSubmit={false} //disable dismissing keyboard panel automatically!
             onSubmitEditing={() => {
@@ -254,15 +254,28 @@ function TagRecording(): JSX.Element {
             {currTypeButton === "Type Mode" &&
                 <View style={{ width: '100%' }}>
 
-                    {/* STT ÀÛµ¿ÇÏ°ÔÇÒ°Í */}
+                    {/* operate STT  */}
                     <Button
                         title="Record"
-                        onPress={generateUserInputs} />
+                        onPress={() => {
+                            recorder
+                                .record({
+                                    sampleRateHertz: sampleRateHertz,
+                                    threshold: 0.07,
+                                    // Other options, see https://www.npmjs.com/package/node-record-lpcm16#options
+                                    verbose: false,
+                                    recordProgram: 'rec', // Try also "arecord" or "sox"
+                                    silence: '10.0',
+                                })
+                                .stream()
+                                .on('error', console.error)
+                                .pipe(recognizeStream);
+                        }} /> 
                 </View>
             }
 
             {/* swtich mode button. 
-            Todo: À§ÀÇ ³ôÀÌ¸¦ 100%·Î ÇØ¼­ È­¸éÀ» ²Ë Ã¤¿ì°í, ÀÌ ¹öÆ°À» ÄÄÆ÷³ÍÆ®È­ÇØ¼­ µÎ ¸ðµå¾È¿¡ ³ÖÀÚ.
+            Todo: ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¸ï¿½ 100%ï¿½ï¿½ ï¿½Ø¼ï¿½ È­ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ Ã¤ï¿½ï¿½ï¿½, ï¿½ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®È­ï¿½Ø¼ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½È¿ï¿½ ï¿½ï¿½ï¿½ï¿½.
             */}
 
             <WordContainer content={InputContentHolder as JSX.Element[]}></WordContainer>
