@@ -3,7 +3,9 @@ import { View, Text, Button, StyleSheet, TextInput, TouchableOpacity, Pressable,
 import styled from 'styled-components';
 // import styles from '.././styles'
 import msg from '../../data/msg.json'
-
+// import * as speech from './speechUtils';
+import Voice from '@react-native-voice/voice';
+import CustomButton from '../../components/common/Button';
 const StyledButtonContainer = styled(View)`
     flex-direction: row;
     align-items: center;
@@ -30,6 +32,9 @@ const StyledModifyButton = styled(TouchableOpacity)`
 const StyledModifyText = styled(Text)`
     color: white;
     `
+
+let stop : boolean = false;
+let pr : any = null;
 
 function ModifyContainer(props: any & string): JSX.Element {
     return (
@@ -115,9 +120,124 @@ function ModeContentContainer(props: any): JSX.Element {
             {props.content}
         </View>)
 }
+
+
+
+
 function TagRecording(): JSX.Element {
 
+    const [pitch, setPitch] = useState('');
+    const [error, setError] = useState('');
+    const [end, setEnd] = useState('');
+    const [started, setStarted] = useState('');
+    const [results, setResults] = useState([]);
+    const [partialResults, setPartialResults] = useState([]);
+    const onSpeechStart = (e) => {
+        //Invoked when .start() is called without error
+        console.log('onSpeechStart: ', e);
+        setStarted('on');
+    };
 
+    const onSpeechEnd = (e) => {
+        //Invoked when SpeechRecognizer stops recognition
+        console.log('onSpeechEnd: ', e);
+        setEnd('ended');
+        setStarted('');
+    };
+
+    const onSpeechError = (e) => {
+        //Invoked when an error occurs.
+        console.log('onSpeechError: ', e);
+        setError(JSON.stringify(e.error));
+    };
+
+    const onSpeechResults = (e) => {
+        //Invoked when SpeechRecognizer is finished recognizing
+        console.log('onSpeechResults: ', e);
+        setResults(e.value);
+    };
+
+    const onSpeechPartialResults = (e) => {
+        //Invoked when any results are computed
+        console.log('onSpeechPartialResults: ', e);
+        setPartialResults(e.value);
+    };
+
+    const onSpeechVolumeChanged = (e) => {
+        //Invoked when pitch that is recognized changed
+        console.log('onSpeechVolumeChanged: ', e);
+        setPitch(e.value);
+    };
+    useEffect(() => {
+        //Setting callbacks for the process status
+        Voice.onSpeechStart = onSpeechStart;
+        Voice.onSpeechEnd = onSpeechEnd;
+        Voice.onSpeechError = onSpeechError;
+        Voice.onSpeechResults = onSpeechResults;
+        Voice.onSpeechPartialResults = onSpeechPartialResults;
+        Voice.onSpeechVolumeChanged = onSpeechVolumeChanged;
+
+        return () => {
+        //destroy the process after switching the screen
+        Voice.destroy().then(Voice.removeAllListeners);
+        };
+    }, []);
+    
+
+    const startRecognizing = async () => {
+        //Starts listening for speech for a specific locale
+        if (started != 'on') {
+            try {
+            await Voice.start('en-US');
+            setPitch('');
+            setError('');
+            setStarted('');
+            setResults([]);
+            setPartialResults([]);
+            setEnd('');
+            } catch (e) {
+            //eslint-disable-next-line
+            console.error(e);
+            }
+        }
+    };
+
+    const stopRecognizing = async () => {
+        //Stops listening for speech
+        try {
+        await Voice.stop();
+        } catch (e) {
+        //eslint-disable-next-line
+        console.error(e);
+        }
+    };
+
+    const cancelRecognizing = async () => {
+        // Cancels the speech recognition
+        try {
+        await Voice.cancel();
+        } catch (e) {
+            // eslint-disable-next-line
+            console.error(e);
+        }
+    };
+
+    const destroyRecognizer = async () => {
+        //Destroys the current SpeechRecognizer instance
+        try {
+        await Voice.destroy();
+        setPitch('');
+        setError('');
+        setStarted('');
+        setResults([]);
+        setPartialResults([]);
+        setEnd('');
+        } catch (e) {
+        //eslint-disable-next-line
+        console.error(e);
+        }
+    };
+    
     const [inputs, setInputs] = useState<string[]>([])
     const [InputContentHolder, setInputContentHolder] = useState<JSX.Element[]>()
     const [recordedInputs, setRecordedInputs] = useState<string[]>([])
@@ -134,7 +254,7 @@ function TagRecording(): JSX.Element {
             words.map((word: string, index: number) => (
                 // <View style={{ backgroundColor: 'transparent' }}>
                 <TouchableOpacity
-                    style={{
+                    style= {{
                         borderWidth: 1,
                         borderColor: 'orange',
                         borderRadius: 50,
@@ -257,20 +377,20 @@ function TagRecording(): JSX.Element {
                     {/* operate STT  */}
                     <Button
                         title="Record"
-                        onPress={() => {
-                            recorder
-                                .record({
-                                    sampleRateHertz: sampleRateHertz,
-                                    threshold: 0.07,
-                                    // Other options, see https://www.npmjs.com/package/node-record-lpcm16#options
-                                    verbose: false,
-                                    recordProgram: 'rec', // Try also "arecord" or "sox"
-                                    silence: '10.0',
-                                })
-                                .stream()
-                                .on('error', console.error)
-                                .pipe(recognizeStream);
-                        }} /> 
+                        onPress={startRecognizing}
+                         /> 
+                         {results.map((result, index) => {
+                            console.log(result);
+                            return (
+                            <Text
+                                key={`result-${index}`}>
+                                {result}
+                            </Text>
+                            );})}
+                    <CustomButton
+                        title="Destroy rec"
+                        onPress={destroyRecognizer}
+                        backgroundColor='rgb(255, 227, 180)'/>
                 </View>
             }
 
