@@ -1,84 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { View, Text, Button, StyleSheet, TextInput, TouchableOpacity, Pressable, Keyboard } from "react-native";
+import { View, Text, Button, StyleSheet, TextInput, TouchableOpacity, Pressable, Keyboard, Switch } from "react-native";
 import styled from 'styled-components';
 // import styles from '.././styles'
 import msg from '../../data/msg.json'
+import ModifyContainer from './Containers/ModifyContainer'
+import WordContainer from './Containers/WordContainer'
+import UserTextInput from './Containers/UserTextInput';
 
-const StyledButtonContainer = styled(View)`
-    flex-direction: row;
-    align-items: center;
-    flex-wrap: wrap;
-    `
-// justify-content: center;
-// align-items: center; �ؿ� �ʿ信���� �¿� ���ϼ� 
-const StyledModifyContainer = styled(View)`
-   
-    border-width: 1;
-    width: 100%;
-    border-color: grey;
-    `
-const StyledModifyButton = styled(TouchableOpacity)`
-    border-width: 1;
-    border-color: white;
-    border-radius: 50;    
-    background-color: pink;
-    padding: 10px;
-    width:80px;
-    justify-content: center;
-    align-items: center;
-    `
-const StyledModifyText = styled(Text)`
-    color: white;
-    `
-
-function ModifyContainer(props: any & string): JSX.Element {
-    return (
-        <StyledModifyContainer >
-            <StyledModifyButton>
-                <StyledModifyText>
-                    {props.text}
-                </StyledModifyText>
-            </StyledModifyButton>
-        </StyledModifyContainer>
-    )
-}
-function WordContainer(content: any & JSX.Element): JSX.Element {
-    return (
-        <StyledButtonContainer>
-            {
-                content.content
-            }
-        </StyledButtonContainer>
-    )
-}
-
-function UserTextInput(props: any): JSX.Element {
-    //focus if current mode is type mode which contains Speech Mode button
-    let focus = (props.currTypeButton === "Speech Mode")
-    return (
-
-        <TextInput
-            style={{ height: 100, width: '100%', borderWidth: 1, padding: 10 }}
-            onFocus={() => {
-                if (props.currTypeButton === "Type Mode") {
-                    props.switchMode()
-                }
-            }
-            }
-            pointerEvents="none"
-            ref={props.focusOnInput}
-            onChangeText={(text: string) => props.onChangeText(text)}
-            value={props.textInput}
-            fontSize={44}px
-            autoFocus={focus}
-            blurOnSubmit={false} //disable dismissing keyboard panel automatically!
-            onSubmitEditing={() => {
-                props.recordTags(props.textInput as string); //reuse previosuly made function for STT input!
-                props.setTextInput("");
-            }} />
-
-    );
-}
 function ModeContentComponents(props: any): JSX.Element {
     return (
         <View style={{ width: '100%' }}>
@@ -92,19 +20,15 @@ function ModeContentComponents(props: any): JSX.Element {
                 alignItems: 'flex-start',
                 width: '100%',
             }}>
-                <Button
-                    style={{
-                        textAlign: 'left',
-                        borderWidth: 1,
-                        borderColor: 'orange',
-                        borderRadius: 50,
-                        padding: 10,
-                        backgroundColor: 'transparent',
-                        margin: 5
-                    }}
-                    color='orange'
-                    title={props.currTypeButton}
-                    onPress={props.switchMode} />
+                <Text>
+                    Record mode
+                </Text>
+                <Switch
+                    // trackColor={{ false: '#767577', true: '#81b0ff' }}
+                    // thumbColor={props.currTypeButton ? '#f5dd4b' : '#f4f3f4'}
+                    onValueChange={props.switchMode}
+                    value={props.currTypeButton === "Type Mode" ? true : false}
+                />
             </View>
         </View>
     )
@@ -128,27 +52,50 @@ function TagRecording(): JSX.Element {
         setWords(words)
         createContent(words, setWords, setWordContent)
     }
-
+    const [isEditable, setIsEditable] = useState<boolean>(false);
     const createContent = (words: string[], setWords: React.Dispatch<React.SetStateAction<string[]>>, setWordContent: React.Dispatch<React.SetStateAction<JSX.Element[] | undefined>>) => {
         let contentHolder = (
             words.map((word: string, index: number) => (
-                // <View style={{ backgroundColor: 'transparent' }}>
-                <TouchableOpacity
-                    style={{
-                        borderWidth: 1,
-                        borderColor: 'orange',
-                        borderRadius: 50,
-                        padding: 10,
-                        backgroundColor: 'transparent',
-                        margin: 5
-                    }}
-                    key={index}
-                    onPress={() => DeleteContent(index, words, setWords, setWordContent)}
-                >
-                    <Text style={{ color: 'black' }}>{word}</Text>
+                <View style={{ backgroundColor: 'transparent' }}>
+                    <TouchableOpacity
+                        style={{
+                            borderWidth: 1,
+                            borderColor: 'orange',
+                            borderRadius: 50,
+                            padding: 10,
+                            backgroundColor: 'transparent',
+                            margin: 5
+                        }}
+                        key={index}
+                    >
+                        <Text key={index + "th_user_input_text"}
+                            style={{ color: 'black' }}>{word}</Text>
+                    </TouchableOpacity>
+                    {isEditable &&
+                        <TouchableOpacity
+                            key={index + "delete_bt"}
+                            style={{
+                                position: 'absolute',
+                                top: 0,
+                                right: 0,
+                                borderRadius: 25, // half of width and height
+                                backgroundColor: 'black',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                width: 25,
+                                height: 25,
+                            }}
+                            onPress={() => DeleteContent(index, words, setWords, setWordContent)}
+                        >
 
-                </TouchableOpacity>
-                // </View>
+                            <Text key={index + "del_bt_x"}
+                                style={{
+                                    color: 'white',
+                                }}>X</Text>
+
+                        </TouchableOpacity>
+                    }
+                </View>
 
             ))
         )
@@ -204,12 +151,22 @@ function TagRecording(): JSX.Element {
             setCurrTypeButton("Type Mode")
             Keyboard.dismiss()
         }
-        // updateModeConent()
     }
+
+    //when type button is toggled, (actually for now on, it is 'switch', not a button)
+    //update the mode content appropriately either from speech to type or from type to speech.
     useEffect(() => {
         updateModeConent()
+        
     }, [currTypeButton])
+    //when editable is changed, display/hide (x) button(s) on each tags
+    useEffect(() => {
+        createContent(recordedInputs, setRecordedInputs, setRecordedContentHolder)
+        createContent(inputs, setInputs, setInputContentHolder)
+        
+    }, [isEditable])
 
+    
     const [modeContent, setModeContent] = useState<JSX.Element>(
         <ModeContentComponents
             textInput={textInput}
@@ -221,6 +178,7 @@ function TagRecording(): JSX.Element {
             focusOnInput={focusOnInput}
         />
     )
+    //update mode content with updated state values.
     const updateModeConent = () => {
         let ModeContentHolder = (
             <ModeContentComponents
@@ -237,16 +195,14 @@ function TagRecording(): JSX.Element {
     }
     return (
         <View style={{ alignItems: 'center', backgroundColor: 'yellow' }}>
-            <ModifyContainer text="Save" />
-            <ModifyContainer text="Edit" />
+            <ModifyContainer func={() => {
+             }} text="Save" />
+            <ModifyContainer func={() => { 
+                setIsEditable(!isEditable)
+                }} text={isEditable ? "Cancel":"Edit"} />
 
             <WordContainer content={recordedContentHolder as JSX.Element[]}></WordContainer>
 
-            {/* if currTypeButton === speech mode, it is currenlty Type mode so that by clicking that button it switches to speech mode */}
-            {/* The Type mode has Speech mode button and text input for user keyboard input. */}
-            {/* {currTypeButton === "Speech Mode" &&
-                
-            } */}
             <ModeContentContainer content={modeContent as JSX.Element} />
 
             {/* The speech mode has Type mode button, text input for cursor blinking only, and record button at the bottom. */}
@@ -258,25 +214,23 @@ function TagRecording(): JSX.Element {
                     <Button
                         title="Record"
                         onPress={() => {
-                            recorder
-                                .record({
-                                    sampleRateHertz: sampleRateHertz,
-                                    threshold: 0.07,
-                                    // Other options, see https://www.npmjs.com/package/node-record-lpcm16#options
-                                    verbose: false,
-                                    recordProgram: 'rec', // Try also "arecord" or "sox"
-                                    silence: '10.0',
-                                })
-                                .stream()
-                                .on('error', console.error)
-                                .pipe(recognizeStream);
-                        }} /> 
+                            generateUserInputs()
+                            //below code doesn't work!
+                            // recorder
+                            //     .record({
+                            //         sampleRateHertz: sampleRateHertz,
+                            //         threshold: 0.07,
+                            //         // Other options, see https://www.npmjs.com/package/node-record-lpcm16#options
+                            //         verbose: false,
+                            //         recordProgram: 'rec', // Try also "arecord" or "sox"
+                            //         silence: '10.0',
+                            //     })
+                            //     .stream()
+                            //     .on('error', console.error)
+                            //     .pipe(recognizeStream);
+                        }} />
                 </View>
             }
-
-            {/* swtich mode button. 
-            Todo: ���� ���̸� 100%�� �ؼ� ȭ���� �� ä���, �� ��ư�� ������Ʈȭ�ؼ� �� ���ȿ� ����.
-            */}
 
             <WordContainer content={InputContentHolder as JSX.Element[]}></WordContainer>
         </View>
