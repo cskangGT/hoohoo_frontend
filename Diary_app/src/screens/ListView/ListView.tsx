@@ -1,4 +1,4 @@
-import React, {  useState } from 'react'
+import React, {  useEffect, useState } from 'react'
 import { View,  FlatList, TextInput } from 'react-native';
 import styled from 'styled-components';
 import ViewItem from '../../components/common/ViewItem';
@@ -62,29 +62,51 @@ const DATA : ItemData[] = [
     }
 ];
 
+
 const ListView = () => {
     // This is rendering callback function. It shows every item view.
-    
-    const [searchQuery, setSearchQuery] = useState<string>("");
-    const [filteredData, setFilteredData] = useState<ItemData[]>(DATA);
-    const handleSearch = (text: string) => {
-        setSearchQuery(text);
-        const filtered = DATA.filter(item =>
-        item.tags.some(tag => tag.toLowerCase().includes(text.toLowerCase())),
-        );
-        console.log('filteredData', filteredData);
-        setFilteredData(filtered);
-    };
     const renderItem = ( {item}:{item: ItemData} ) => 
-        (
-            <ViewItem item= {item} />
-        );
+        {
+            console.log('Viewitem', item);       
+            return <ViewItem item= {item} />;
+        };
+    const [searchQuery, setSearchQuery] = useState<string>("");
+    const [masterData, setMasterData] = useState<ItemData[]>(DATA);
+    const [filteredData, setFilteredData] = useState<ItemData[]>(DATA);
+    const [list, setList] = useState<JSX.Element>(<FlatList data={DATA} renderItem={renderItem} 
+                keyExtractor={(item)=>item.id} />);
+    const handleSearch = (text: string) => {
+        // if (text !== "")    
+        // {   
+            setSearchQuery(text);
+            console.log('query',text);
+            const filtered = DATA.filter((item) =>
+            item.tags.some(tag => tag.toLowerCase().includes(text.toLowerCase())),
+            );
+            console.log('filtered', filtered);
+            setFilteredData(filtered);
+            console.log('filteredData', filteredData);
+            setList(<FlatList data={filtered} renderItem={renderItem} 
+                keyExtractor={(item)=>item.id} />);
+            // console.log('filteredData', filteredData);
+            
+        // } else {
+        //     setSearchQuery("");
+        //     setFilteredData(masterData);
+            
+        // }
+    };
+    
     // const filteredData = DATA.filter(item => {
     //     const query = searchQuery.toLowerCase();
     //     const tags = item.tags.join(' ').toLowerCase();
     //     return tags.includes(query);
     //     });
     // console.log('filteredData', filteredData)
+    // useEffect(()=> {
+    //     console.log('filteredData', filteredData)
+    //     console.log('query',searchQuery);
+    // }, [list]);
     return (
         <SafeAreaView>
             <SearchArea>
@@ -94,11 +116,11 @@ const ListView = () => {
                     placeholder="Search by tags"
                     />
             </SearchArea>
-            <Container>
-                <FlatList data={filteredData} renderItem={renderItem} 
-                keyExtractor={(item)=>item.id}
-                />
-            </Container>
+            
+                <Container>
+                    {list}
+                </Container>
+                
         </SafeAreaView>
     )
 };
