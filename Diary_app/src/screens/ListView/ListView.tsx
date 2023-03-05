@@ -75,26 +75,17 @@ const ListView = () => {
     const [filteredData, setFilteredData] = useState<ItemData[]>(DATA);
     const [list, setList] = useState<JSX.Element>(<FlatList data={DATA} renderItem={renderItem} 
                 keyExtractor={(item)=>item.id} />);
-    const handleSearch = (text: string) => {
-        // if (text !== "")    
-        // {   
-            setSearchQuery(text);
-            console.log('query',text);
-            const filtered = DATA.filter((item) =>
-            item.tags.some(tag => tag.toLowerCase().includes(text.toLowerCase())),
-            );
-            console.log('filtered', filtered);
-            setFilteredData(filtered);
-            console.log('filteredData', filteredData);
-            setList(<FlatList data={filtered} renderItem={renderItem} 
-                keyExtractor={(item)=>item.id} />);
-            // console.log('filteredData', filteredData);
-            
-        // } else {
-        //     setSearchQuery("");
-        //     setFilteredData(masterData);
-            
-        // }
+    const handleSearch = (text: string) => {  
+        setSearchQuery(text);
+        console.log('query',text);
+        const filtered = masterData.filter((item) =>
+        item.tags.some(tag => tag.toLowerCase().includes(text.toLowerCase())),
+        );
+        console.log('filtered', filtered);
+        setFilteredData(filtered);
+        console.log('filteredData', filteredData);
+        setList(<FlatList data={filtered} renderItem={renderItem} 
+            keyExtractor={(item)=>item.id} />);
     };
     
     // const filteredData = DATA.filter(item => {

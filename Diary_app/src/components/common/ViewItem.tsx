@@ -48,10 +48,22 @@ interface Props {
 
 const ViewItem = (prop : Props) => {
     const item = prop.item;
-    
+    let color;
+    if (item.isPhoto && item.isDiary) {
+        color = "#000000e8";
+    } else if (item.isPhoto && !item.isDiary) {
+        color = "#1d0f5ce8";
+    } else if (!item.isPhoto) {
+        color = "#fa6956e8"
+    } else {
+        color = "#95bac9e8"
+    }
+
     console.log('item', item);
     return (
-        <ItemContainer>
+        
+        
+        <ItemContainer style={{borderColor:color}}>
                 <FlexRow>
                     <Date>{item.date}</Date>
                     <Icons>{item.id}</Icons>
@@ -64,7 +76,7 @@ const ViewItem = (prop : Props) => {
                     {
                         item.tags.map((tag: string, index:number)=> {
                             if (index < 3) 
-                            return <Tag text={tag}/>
+                                return <Tag text={tag}/>
                         })
                     }
                 </TagArea>
