@@ -39,24 +39,29 @@ const tags = {key: 'tag', color: 'blue', selectedDotColor: 'blue'};
 const diary = {key: 'diary', color: 'green'};
 const MonthlyView = () => {
 
-    let date: string[] = ["2023-03-10", '2023-03-20', '2023-03-23',"2023-03-25"];
+    let dates: string[] = ["2023-03-10", '2023-03-20', '2023-03-23',"2023-03-25"];
     let customStyle : any = { dots: [] };
-    let marked : any = {}
+    let marked : any = {};
     DATA.forEach((item, index)=> {
-        marked[date[index]] = [false, false, false];
-        if (item.tags.length != 0) marked[date[index]][0] = true;
-        if (item.isPhoto) marked[date[index]][1] = true;
-        if (item.isDiary) marked[date[index]][2] = true;
+        marked[dates[index]] = [false, false, false];
+        if (item.tags.length != 0) marked[dates[index]][0] = true;
+        if (item.isPhoto) marked[dates[index]][1] = true;
+        if (item.isDiary) marked[dates[index]][2] = true;
     });
-    const markedDates = date.reduce((acc : any, date : string) => {
+    const markedDates = dates.reduce((acc : any, date : string) => {
+
         acc[date] = customStyle;
+        console.log('marked', marked);
+        console.log('date', date);
         console.log('acc', acc);
         if (!acc[date].dots.includes(tags) && marked[date][0]) acc[date].dots.push(tags);
+        console.log('acc[date].dots', acc[date].dots);
         if (!acc[date].dots.includes(photo) && marked[date][1]) acc[date].dots.push(photo);
         if (!acc[date].dots.includes(diary) && marked[date][2]) acc[date].dots.push(diary);
         return acc;
     }, {});
-    console.log('date', date)
+    console.log('dates', dates)
+    console.log('markedDates', markedDates)
  // design 적용 방식 수정, date를 어떻게 넣어줄건지 고민
  // 실질적인 디자인 고민, 추가적인 기능 생각
 
