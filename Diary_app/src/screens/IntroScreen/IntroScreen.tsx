@@ -35,7 +35,6 @@ const IntroImage = styled(View)`
 `;
 // const GoToTagRecording = (nav: any) => {
 
-    
 // };
 
 
