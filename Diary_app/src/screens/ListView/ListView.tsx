@@ -1,3 +1,4 @@
+
 import React, {  useEffect, useState } from 'react'
 import { View,  FlatList, TextInput } from 'react-native';
 import styled from 'styled-components';
@@ -117,3 +118,4 @@ const ListView = () => {
 };
 
 export default ListView;
+>>>>>>> main
