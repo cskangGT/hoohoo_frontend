@@ -1,5 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
+
 import { View, Text, Button, StyleSheet, TextInput, TouchableOpacity, Pressable, Keyboard, Switch, TouchableHighlight } from "react-native";
+import styled from 'styled-components';
+
 import msg from '../../data/msg.json'
 import ModifyContainer from './Containers/ModifyContainer'
 import WordContainer from './Containers/WordContainer'
@@ -225,8 +228,18 @@ function TagRecording(): JSX.Element {
 
             {currTypeButton === "Type Mode" &&
                 <View style={{ width: '100%' }}>
+
                     <WordContainer content={InputContentHolder as JSX.Element[]}></WordContainer>
                     <RecordingButton addInputs={addInputs}></RecordingButton>
+
+
+                    {/* operate STT  */}
+                    <Button
+                        title="Record"
+                        onPress={() => {
+                            
+                        }} /> 
+
                 </View>
             }
             {currTypeButton === "Speech Mode" &&
