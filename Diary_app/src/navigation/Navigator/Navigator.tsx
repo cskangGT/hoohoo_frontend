@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import IntroScreen from '../../screens/IntroScreen/IntroScreen';
 import TagRecording from '../../screens/TagRecording/TagRecording';
-
+import ListView from '../../screens/ListView/ListView';
 
 const RootStack = createNativeStackNavigator();
 // 각 화면 전환 될 수 있는 기본 틀 제공
@@ -26,12 +26,12 @@ const Navigator = () => {
                     component={TagRecording}
                     // options={{ headerShown: false }}
                 />
-                {/* <RootStack.Screen
-                    name="Login"
-                    component={Login}
+                <RootStack.Screen
+                    name="ListView"
+                    component={ListView}
                     options={{ headerShown: false }}
                 />
-                <RootStack.Screen
+                {/* <RootStack.Screen
                     name="Main"
                     component={Main}
                     options={{ headerShown: false }}
