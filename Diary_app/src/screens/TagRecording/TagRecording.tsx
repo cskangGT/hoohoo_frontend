@@ -6,6 +6,15 @@ import WordContainer from './Containers/WordContainer'
 import UserTextInput from './Containers/UserTextInput';
 // import * as speech from './speechUtils';
 import RecordingButton from './RecordingButton'
+import styled from 'styled-components';
+const StyledTagWord = styled(TouchableOpacity)`
+    border-width: 1px,
+    border-color: orange,
+    border-radius: 50px,
+    padding: 10px,
+    background-color: transparent,
+    margin: 5px
+`;
 function TagRecording(): JSX.Element {
     function ModeContentContainer(props: any): JSX.Element {
         return (
@@ -40,7 +49,7 @@ function TagRecording(): JSX.Element {
         let contentHolder = (
             words.map((word: string, index: number) => (
                 <View style={{ backgroundColor: 'transparent' }}>
-                    <TouchableOpacity
+                    <StyledTagWord
                         style={{
                             borderWidth: 1,
                             borderColor: 'orange',
@@ -53,7 +62,7 @@ function TagRecording(): JSX.Element {
                     >
                         <Text key={index + "th_user_input_text"}
                             style={{ color: 'black' }}>{word}</Text>
-                    </TouchableOpacity>
+                    </StyledTagWord>
 
                     {(editable) && //add X button on the top right, when recording or edit button is pressed
                         <TouchableOpacity
@@ -153,7 +162,7 @@ function TagRecording(): JSX.Element {
         createContent(recordedInputs, setRecordedInputs, setRecordedContentHolder, isEditable, size)
         createContent(inputs, setInputs, setInputContentHolder)
     }, [isEditable])
-    
+
     function ModeContentComponents(props: any): JSX.Element {
 
         return (
