@@ -8,6 +8,8 @@
       "DOM"
     ],
     
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
   },
   
 }

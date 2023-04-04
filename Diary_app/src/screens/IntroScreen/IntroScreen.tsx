@@ -108,11 +108,15 @@ const IntroScreen = ({ navigation, route }: any) => {
                 {/*  it will be start button */}
                 
             </IntroImage>
-
+            <CustomButton
+                title="Go to Diary"
+                onPress={() => navigation.navigate('Diary')}
+                backgroundColor='rgb(255, 227, 180)'/>
             <CustomButton
                 title="Go to TagRecording"
                 onPress={() => navigation.navigate('TagRecording')}
                 backgroundColor='rgb(255, 227, 180)'/>
+            
             {/* {showButton} */}
             {/* rgb(202, 177, 157) */}
         </Background>);
