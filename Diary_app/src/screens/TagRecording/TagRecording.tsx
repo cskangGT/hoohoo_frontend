@@ -77,7 +77,7 @@ function TagRecording(): JSX.Element {
                             <Text key={index + "del_bt_x"}
                                 style={{
                                     color: 'white',
-                                }}>X</Text>
+                                }}> X </Text>
                         </TouchableOpacity>
                     }
                 </View>
@@ -156,7 +156,7 @@ function TagRecording(): JSX.Element {
         createContent(recordedInputs, setRecordedInputs, setRecordedContentHolder, isEditable, size)
         createContent(inputs, setInputs, setInputContentHolder)
     }, [isEditable])
-    
+
     function ModeContentComponents(props: any): JSX.Element {
 
         return (
@@ -237,8 +237,8 @@ function TagRecording(): JSX.Element {
                     <Button
                         title="Record"
                         onPress={() => {
-                            
-                        }} /> 
+
+                        }} />
 
                 </View>
             }

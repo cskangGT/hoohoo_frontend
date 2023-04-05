@@ -8,14 +8,14 @@ const star1 = require('../../assets/star1.png');
 const star2 = require('../../assets/star2.png');
 const star3 = require('../../assets/star3.png');
 const star4 = require('../../assets/star4.png');
+const moment = require('moment');
 const SearchContainer = styled(View)`
-    
-    
     /* justify-content: center; */
     background-color: transparent;
     width : 100%;
     display: flex;
     flex-direction: row;
+    padding-bottom: 7%;
 `;
 const MonthInput = styled(TextInput)`
     flex: 1 10%;
@@ -42,7 +42,9 @@ const Row = styled(View)`
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
-    padding: 15px;
+    padding-left: 13px;
+    padding-right: 13px;
+    padding-bottom: 13px;
 `;
 
 const Element = styled(TouchableOpacity)`
@@ -51,13 +53,21 @@ const Element = styled(TouchableOpacity)`
     font-weight: bold;
     background-color: transparent;
     color : white;
-    padding-top: 10px;
+    /* padding-top: 10px; */
+    /* border-width: 1px;
+    border-color : skyblue; */
 `;
 const Day = styled(Text)`
-    font-size: 15px;
+    font-size: 13px;
     text-align: center;
     color : white;
 `;
+const Today = styled(View)`
+    border-width: 1px;
+    border-color : skyblue;
+    border-radius: 5px;
+    height: 100%;
+`
 const Star = styled(Image)`
     width: 20px;
     margin-left : 15px;
@@ -71,24 +81,23 @@ const DateText = styled(Text)`
 `;
 const DATA = [
     {
-        id: "0", date: "2023-03-10", tags: ["Jisan", "Lunch", "react", "computer"],
+        id: "0", date: "2023-04-10", tags: ["Jisan", "Lunch", "react", "computer"],
         isPhoto: false, isDiary: false
     },
     {
-        id: "1", date: "2023-03-20", tags: ["homework", "Dinner", "Graphic Card", "Longterm"],
+        id: "1", date: "2023-04-14", tags: ["homework", "Dinner", "Graphic Card", "Longterm"],
         isPhoto: true, isDiary: true
     },
     {
-        id: "2", date: "2023-03-23", tags: ["Taehoon", "Lunch", "expo", "computer"],
+        id: "2", date: "2023-04-03", tags: ["Taehoon", "Lunch", "expo", "computer"],
         isPhoto: true, isDiary: false
     },
     {
-        id: "3", date: "2023-03-25", tags: ["Jisan", "Dinner", "Graphic Card", "samsung"],
+        id: "3", date: "2023-04-25", tags: ["Jisan", "Dinner", "Graphic Card", "samsung"],
         isPhoto: false, isDiary: true
     }
 ];
-
-
+// global state management required.
 
 const FadeStar = ({ starImage, frequency }: { starImage: any, frequency: number }) => {
     const [opacity] = useState(new Animated.Value(0));
@@ -109,6 +118,7 @@ const FadeStar = ({ starImage, frequency }: { starImage: any, frequency: number 
     );
 };
 const MyCalendar = () => {
+
 
     const months = ["Jan", "Feb", "Mar", "Apr",
         "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -211,61 +221,89 @@ const MyCalendar = () => {
 
     let y_data: string;
     let m_data: string;
-    // Extract date data
+    // Extract date data 
+    // select which month and year user wants to see.
     const data_date: number[] = [];
     for (let i = 0; i < DATA.length; i++) {
         let str: string = DATA[i].date;
         let date_split: string[] = str.split('-');
         y_data = date_split[0]; // yyyy
-        m_data = date_split[1]; // 03
+        m_data = date_split[1]; // mm
         data_date.push(parseInt(date_split[2]));
     }
+    const curr_date = moment().format('YYYY-MM-DD');
+    let curr_split: string[] = curr_date.split("-");
+    let curr_yyyy: string = curr_split[0];
+    let curr_mm: number = parseInt(curr_split[1]);
+    let curr_dd: number = parseInt(curr_split[2]);
 
-
-    const handlerElement = (item: number, rowIndex: number) => {
+    const handlerElement = (item: number) => {
         let index: number = Math.floor(Math.random() * 4);
-        if (rowIndex == 0) {
-            return (<DateText style={{
-                fontWeight: item == date.getDate() ? 'bold' : '300'
-            }}>
-                {item != -1 ? item : ''}
-            </DateText>);
-        }
-
-
-        else { // item is day number. year and month is already stored
-            if (y_data == year_text && months[parseInt(m_data) - 1] == month_text) {
-                if (data_date.includes(item)) { // if the diary is in database
-                    return ( // if not in database
-                        <View>
-                            <Day> {item != -1 ? item : ''} </Day>
-                            <FadeStar starImage={arr_star[index]} frequency={index + 1} />
-                        </View>);
-                } else {
-                    return ( // if not in database
-                        <View>
-                            <Day> {item != -1 ? item : ''} </Day>
-                        </View>);
-                }
+        // item is day number. year and month is already stored
+        console.log("curr_dd", curr_dd);
+        console.log("date.getMonth()", date.getMonth());
+        console.log("curr_yyyy", year_text);
+        if (item == curr_dd && year_text == curr_yyyy && curr_mm == (date.getMonth() + 1)) {
+            if (data_date.includes(item)) { // if the diary is in database
+                console.log("curr_dd", curr_dd);
+                console.log("curr_mm", curr_mm);
+                console.log("curr_yyyy", curr_yyyy);
+                return ( // if in database
+                    <Today>
+                        <Day> {item != -1 ? item : ''} </Day>
+                        <FadeStar starImage={arr_star[index]} frequency={index + 1} />
+                    </Today>);
             } else {
+
+                return ( // if not in database
+                    <Today>
+                        <Day> {item != -1 ? item : ''} </Day>
+                    </Today>);
+            }
+
+        }
+        else if (y_data == year_text && months[parseInt(m_data) - 1] == month_text) {
+            if (data_date.includes(item)) { // if the diary is in database
+                console.log("dd", item);
+                console.log("mm", month_text);
+                console.log("yyyy", y_data);
+                return ( // if in database
+                    <View>
+                        <Day> {item != -1 ? item : ''} </Day>
+                        <FadeStar starImage={arr_star[index]} frequency={index + 1} />
+                    </View>);
+            } else {
+
                 return ( // if not in database
                     <View>
                         <Day> {item != -1 ? item : ''} </Day>
                     </View>);
             }
-
+        } else {
+            return ( // if not in database
+                <View>
+                    <Day> {item != -1 ? item : ''} </Day>
+                </View>);
         }
+
+
     }
 
     const matrix = generateMatrix();
     rows = matrix.map((row, rowIndex) => {
         let rowItems = row.map((item: any, colIndex: number) => {
-            return (
-                <Element
-                    onPress={() => console.log('item', item)}>
-                    {handlerElement(item, rowIndex)}
-                </Element>
-            );
+            if (rowIndex == 0) {
+                return (<DateText>
+                    {item != -1 ? item : ''}
+                </DateText>);
+            } else {
+                return (
+                    <Element
+                        onPress={() => console.log('item', item)}>
+                        {handlerElement(item)}
+                    </Element>
+                );
+            }
         });
         return (
             <Row>

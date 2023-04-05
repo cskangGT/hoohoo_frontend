@@ -35,15 +35,11 @@ const Navigator = () => {
                     component={Diary}
                 // options={{ headerShown: false }}
                 />
-                {/* <RootStack.Screen
-                    name="Login"
-                    component={Login}
-
+                <RootStack.Screen
                     name="ListView"
                     component={ListView}
-
                     options={{ headerShown: false }}
-                /> */}
+                />
                 <RootStack.Screen
                     name="MonthlyView"
                     component={MonthlyView}
