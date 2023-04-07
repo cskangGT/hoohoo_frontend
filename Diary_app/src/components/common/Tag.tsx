@@ -17,13 +17,19 @@ const TagText = styled(Text)`
     font-size: 15px;
 `;
 
+interface Props {
+    text: string;
+    textStyle?: {};
+    style?: {};
+}
 
-const Tag = ({text} : {text : string}) => {
+const Tag = (props: Props) => {
     // console.log('text', text)
+    const { text, textStyle, style } = props;
     return (
-        <TagContainer>
-            <TagText>{text}</TagText>
-        </TagContainer>    
+        <TagContainer style={style}>
+            <TagText style={textStyle}>{text}</TagText>
+        </TagContainer>
     )
 }
 export default Tag;
