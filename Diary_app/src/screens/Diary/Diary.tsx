@@ -59,7 +59,7 @@ function Diary(): JSX.Element {
         } else {
             const newAnimation = Animated.timing(positionList[currIndex], {
                 toValue: 500,
-                duration: 500,
+                duration: 1 ,//500 is good
                 useNativeDriver: true,
             }).start(() => {
                 setCurrIndex(currIndex + 1)
@@ -98,7 +98,7 @@ function Diary(): JSX.Element {
                         alignItems: 'center'
                     }}>
                         <TouchableOpacity onPress={() => {
-                            navigation.navigate('DiaryEdit',{index:index})
+                            navigation.navigate('DiaryDetail',{index:index})
                         }
                         } style={{
                             borderColor: 'white',

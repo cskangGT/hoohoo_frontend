@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import IntroScreen from '../../screens/IntroScreen/IntroScreen';
 import TagRecording from '../../screens/TagRecording/TagRecording';
 import Diary from '../../screens/Diary/Diary';
-import DiaryEdit from '../../screens/DiaryEdit/DiaryEdit';
+import DiaryDetail from '../../screens/DiaryEdit/DiaryDetail';
 
 const RootStack = createNativeStackNavigator();
 // 각 화면 전환 될 수 있는 기본 틀 제공
@@ -33,8 +33,8 @@ const Navigator = () => {
                     options={{ headerShown: false }}
                 />
                  <RootStack.Screen
-                    name="DiaryEdit"
-                    component={DiaryEdit}
+                    name="DiaryDetail"
+                    component={DiaryDetail}
                     options={{ headerShown: false }}
                 />
                 {/* <RootStack.Screen
