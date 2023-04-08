@@ -47,7 +47,6 @@ function NoteZone(): JSX.Element {
         onChangeText={(text) => { setText(text); }}
         onFocus={()=>{
             setWriteDiary(true)
-            console.log("wr",writeDiary,"ex", writeDiaryEx)
 
             showPlusButtonEx(false)
         }}
