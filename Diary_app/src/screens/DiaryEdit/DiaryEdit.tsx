@@ -1,128 +1,199 @@
-import { View, Text, Dimensions, TouchableOpacity, FlatList, ScrollView } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import { View, Text, Dimensions, TouchableOpacity, FlatList, ScrollView, TextInput } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
 import { SafeAreaView } from 'react-native';
-import LimitedText from '../Diary/Tags/LimitedText';
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker'
-import { CameraOptions } from 'react-native-image-picker/lib/typescript/types'
-import { TouchableHighlight, Image, TextInput, PermissionsAndroid } from 'react-native';
-import UserTextInput from '../TagRecording/Containers/UserTextInput';
-import PhotoUpload from './CameraRelated/PhotoUpload';
 import styled from 'styled-components';
+import FunctionComponents, { editEnable, setEditEnable } from './FunctionComponents/FunctionComponents';
+import { RouteProp } from '@react-navigation/native';
+import { data } from '../../data/diaryData.json'
+import { TouchableHighlight } from 'react-native';
+import diaryData from '../../data/diaryData.json'
+
+//lighter gray
 const StyledTagWord = styled(TouchableOpacity)`
-    border-width: 1px,
-    border-color: orange,
-    border-radius: 50px,
-    padding: 10px,
-    background-color: transparent,
-    margin: 5px
+    border-width: 1px;
+    border-color: gray;
+    border-radius: 50px;
+    padding: 10px;
+    background-color: #666666;
+    margin: 5px;
 `;
-type DataItem = {
-    id: string;
-    title: string;
-};
-const DATA: DataItem[] = [
-    {
-        id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-        title: 'abcdefghijklmn',
-    },
-    {
-        id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-        title: 'Second Item',
-    },
-    {
-        id: 'sdffsd23r-3da1-471f-bd96-145571e29d72',
-        title: 'Long tag Long tag  Long tag  Long tag  Long tag Long tag Long tagItem',
-    },
-    {
-        id: '623463tfdfs-3da1-471f-bd96-145571e29d72',
-        title: 'Third Item',
-    },
-    {
-        id: '4twasdv-3da1-471f-bd96-145571e29d72',
-        title: 'Fourth Item~!@#$!',
-    },
-    {
-        id: '34gre-3da1-471f-bd96-145571e29d72',
-        title: 'TOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOLONG',
-    },
-];
+const StyledHorizontallyAlignedItems = styled(View)`
+flex-direction: row;
+ justify-content: center
+`
+//gray
+const StyledBackgroundView = styled(SafeAreaView)`
+background-color: #222222; 
+height:100%;
+`
+const StyledCircleButton = styled(TouchableOpacity)`
+border-width: 1;
+border-radius: 5;
+background-color: #FF2511;
+width: auto;
+`
+const StyledButtonText = styled(Text)`
+font-size: 25;
+text-align: center;
+color: white;
+width: auto;
+font-color:white;
+`
 
 type ItemProps = { title: string, index: number };
+export let setCountEx: any;
+export let countEx: number;
+export let updateTagZoneEx: any;
 
-const Item = ({ title, index }: ItemProps & { index: number }) => {
-    return (
+function TagZone(props: any): JSX.Element {
+
+    return (props.content)
+}
+
+function DiaryEdit(route: any): JSX.Element {
+    const renderItem = ({ item, index }: { item: string, index: number }) => {
+        return <Item key={index} title={item} index={index} />;
+    };
+    // const jsonId = route.route.params.id
+    const index = route.route.params.index
+    //temporary data 
+    const data = diaryData.data
+    // const jsonContent = ["Moungsung Im", "Sunghoon Kang", "Jisan Park", "HooHoo", "Georgia Tech", "Creative X"]
+    const [content, setContent] = useState<string[]>(data[index].content)
+
+    const [count, setCount] = useState<number>(content.length)
+    countEx = count
+    setCountEx = setCount
+    const jsonDate = data[index].date
+    const [tagZoneContent, setTagZoneContent] = useState<JSX.Element>(<FlatList
+        data={content}
+        renderItem={renderItem}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+    />)
+
+
+    const deleteTag = (index: number) => {
+        // if (enableDelete)
+        delete content[index]
+        setContent(content)
+        setCount(count - 1)
+        // decreaseCount()
+        updateTagContent()
+
+    }
+    const Item = ({ title, index }: ItemProps & { index: number }) => {
+        if(title==undefined){
+            return(
+                <></>
+            )
+        }
+        return (
             
-            <StyledTagWord key={title} >
-                <Text key={index + title}>{title}</Text>
-            </StyledTagWord>
-    );
-};
-const renderItem = ({ item, index }: { item: DataItem, index: number }) => {
-    return <Item key={item.id} title={item.title} index={index} />;
-};
+                    <View style={{ position: 'relative' }}>
+                        <StyledTagWord onLongPress={() => { setEditEnable(true); }} >
+                            <Text style={{
+                                color: 'white'
+                            }} key={index + title}>{title}</Text>
+                        </StyledTagWord>
+                        <View style={{ position: 'absolute', right: 0 }}>
+                            {
+                                editEnable &&
+                                <TouchableHighlight
+                                    onPress={() => {
+                                        deleteTag(index)
+                                        // setCountEx(countEx - 1)
+                                    }}
+                                    style={{
+                                        borderRadius: 50,
+                                        borderColor: 'white',
+                                        backgroundColor: 'black',
+                                        width: 25,
+                                        height: 25,
+                                    }}>
+                                    <Text style={{
+                                        color: 'white',
+                                        textAlign: 'center'
+                                    }}>
+                                        X
+                                    </Text>
+                                </TouchableHighlight>
+                            }
 
+                        </View>
+                    </View>
+        );
+    };
 
-function DiaryEdit(): JSX.Element {
+    const updateTagContent = () => {
+        let contentHolder = (<FlatList
+            data={content}
+            renderItem={renderItem}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+        />)
+        setTagZoneContent(contentHolder)
+    }
+    updateTagZoneEx = updateTagContent
+    useEffect(() => {
+        // updateTagContent()
+        setTagZoneContent(tagZoneContent)
+        updateTagContent()
 
+    }, [editEnable, count, content])
     //turn on the textinput
     const [writeDiary, setWriteDiary] = useState<boolean>(false)
     const [text, setText] = useState<string>('')
+    const FunctionButtonResult = FunctionComponents()
+    const FunctionButtonComponent = FunctionButtonResult[0]
+    const Photos = FunctionButtonResult[1]
+    const Textinput = FunctionButtonResult[2]
+    const savedText = FunctionButtonResult[3]
     return (
-        <SafeAreaView >
+        <StyledBackgroundView  >
             <ScrollView>
-                <FlatList
-                    data={DATA}
-                    renderItem={renderItem}
-                    keyExtractor={item => item.id}
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                />
-                <PhotoUpload />
-                <View>
-                    {writeDiary ?
-                        <View>
-                            <TextInput
-                                placeholder='Tell me your story'
-                                value={writeDiary}
-                                multiline={true}
-                                onChangeText={(text) => { setText(text) }}
-                            />
-                            <TouchableOpacity onPress={() => { console.log("save the file") }}
-                                style={{
-                                    borderColor: '#8FDF70',
-                                    borderWidth: 1,
-                                    borderRadius: 50,
-                                    backgroundColor: '#8FDF70'
-                                }}>
+                {/* display the date of current diary */}
+                <Text
+                    style={{
+                        margin: 15,
+                        fontSize: 30,
+                        fontWeight: 'bold',
+                        color: 'white'
+                    }}>
+                    {jsonDate}
+                </Text>
 
-                                <Text style={{ fontSize: 25, textAlign: 'center', color: 'white' }}>
-                                    SAVE
-                                </Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() => { setWriteDiary(false) }}
-                                style={{
-                                    borderColor: 'red',
-                                    borderWidth: 1,
-                                    borderRadius: 50,
-                                    backgroundColor: 'red'
-                                }}>
+                <TagZone content={tagZoneContent} />
+                {Photos}
+                {/* <PhotoUpload /> */}
+                <Text style={{
+                    margin: 15,
+                    fontSize: 25,
+                    borderBottomWidth: 2,
+                    borderStyle: 'dotted',
+                    borderColor: 'white',
+                    color: 'white'
 
-                                <Text style={{ fontSize: 25, textAlign: 'center' }}>
-                                    X
-                                </Text>
-                            </TouchableOpacity>
-                        </View>
-                        :
-                        <TouchableOpacity onPress={() => { setWriteDiary(true) }}>
-                            <Text style={{ fontSize: 25, borderWidth: 1, textAlign: 'center' }}>
-                                WRITE YOUR DAY
-                            </Text>
-                        </TouchableOpacity>
-                    }
+                }}>
+                    {savedText}
+                </Text>
+                {Textinput}
 
-                </View>
+
             </ScrollView>
-        </SafeAreaView>
+
+            <View style={{
+                position: 'absolute', // Set position to absolute
+                width: 50,
+                height: 50,
+                alignSelf: 'center',
+                bottom: 60, // Position the component 10 units from the bottom
+                // right: 10, // Position the component 10 units from the right
+            }}>
+                {/* <FunctionComponents /> */}
+                {FunctionButtonComponent}
+            </View>
+        </StyledBackgroundView>
 
     );
 };

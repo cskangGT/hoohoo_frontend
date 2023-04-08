@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Text, TouchableHighlight,TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { DefaultTheme } from 'styled-components';
-import data from '../../../data/diaryData.json'
 const theme: DefaultTheme={
     fontMedium: 35,
     mainBlue: '',
@@ -23,14 +22,11 @@ type Props = {
     isEven?: boolean;
     leftMargin?: number;
     rightMargin?: number;
-    id:number;
 };
 
-function LimitedText({ text, isEven, leftMargin, rightMargin,id }: Props): JSX.Element {
+function LimitedText({ text, isEven, leftMargin, rightMargin }: Props): JSX.Element {
     let maxLength = 5
     let revealDelay = 500
-    // let target=findById(data, id).content;  
-    // text = target[0]
     const [visibleText, setVisibleText] = useState<string>(text.substring(0, maxLength));
     const revealIndex = useRef(maxLength);
     const navigation = useNavigation();
@@ -55,18 +51,8 @@ function LimitedText({ text, isEven, leftMargin, rightMargin,id }: Props): JSX.E
         return () => clearInterval(intervalId);
     }, [text, visibleText, revealDelay, maxLength]);
     const handlePress = () => {
-        let passId = 0
-        for(let i = 0 ; i < data.data.length;i++){
-            let curr = data.data[i]
-            if(id == curr.id){
-                passId = curr.id
-            }
-        }
         if (navigation) {
-            navigation.navigate('DiaryEdit',{
-                id:passId,
-                contents: data.data[passId].content
-            })
+            navigation.navigate('DiaryEdit')
         }
     };
     return (

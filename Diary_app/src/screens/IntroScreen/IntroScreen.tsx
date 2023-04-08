@@ -31,7 +31,7 @@ const Background = styled(View)`
 const IntroImage = styled(View)`
   width: ${windowWidth - 20}px;
   margin-left: 10px;
-  height: ${windowHeight - 100}px; // 150은 시작버튼을 위해서 남겨준다.
+  height: ${windowHeight - 200}px; // 200은 시작버튼을 위해서 남겨준다.
 `;
 // const GoToTagRecording = (nav: any) => {
 

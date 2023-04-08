@@ -4,9 +4,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { SafeAreaView } from 'react-native';
 import LimitedText from './LimitedText';
 
-type ItemProps = { title: string, index: number, id:number };
+type ItemProps = { title: string, index: number };
 
-const Item = ({ title, index, id }: ItemProps & { index: number, id:number }) => {
+const Item = ({ title, index }: ItemProps & { index: number }) => {
     const isEven = index % 2 === 0;
     let leftMargin = (isEven) ? 20 : 0
     let rightMargin = (isEven) ? 0 : leftMargin
@@ -27,8 +27,6 @@ const Item = ({ title, index, id }: ItemProps & { index: number, id:number }) =>
                 isEven={isEven}
                 leftMargin={leftMargin}
                 rightMargin={rightMargin}
-                id= {id}
-
             />
 
         </View>
@@ -128,7 +126,7 @@ function MovingRect(props: any): JSX.Element {
                 }}
             ></View>
             <Item
-                title={props.title} index={props.index} id={props.id}/>
+                title={props.title} index={props.index} />
         </View>
     );
 };

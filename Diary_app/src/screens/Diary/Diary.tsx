@@ -1,127 +1,132 @@
-import { View, Text, Dimensions, TouchableOpacity, FlatList, LayoutChangeEvent } from 'react-native';
-import React, { useState, useEffect, useRef } from 'react';
 
-import { SafeAreaView,ScrollView } from 'react-native';
-import LimitedText from './Tags/LimitedText';
-import MovingRect from './Tags/MovingRect';
-
-
-type DataItem = {
-    id: string;
-    title: string;
-};
-const DATA: DataItem[] = [
-    {
-        id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-        title: 'Georgia Tech',
-    },
-    {
-        id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-        title: 'Monsun',
-    },
-    {
-        id: 'sdffsd23r-3da1-471f-bd96-145571e29d72',
-        title: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-    },
-    {
-        id: '623463tfdfs-3da1-471f-bd96-145571e29d72',
-        title: 'Shin Ramen',
-    },
-    {
-        id: '4twasdv-3da1-471f-bd96-145571e29d72',
-        title: 'The United States of America',
-    },
-    {
-        id: '34gre-3da1-471f-bd96-145571e29d72',
-        title: 'Gasi',
-    },
-    {
-        id: '31515-3da1-471f-bd96-145571e29d72',
-        title: 'Samsung',
-    },
-    {
-        id: '1411-3da1-471f-bd96-145571e29d72',
-        title: 'Korea',
-    },
-    {
-        id: '141511-3da1-471f-bd96-145571e29d72',
-        title: 'Japan',
-    },
-    {
-        id: '1411-fsffds-471f-bd96-145571e29d72',
-        title: 'OSCAR',
-    },
-    {
-        id: 'SFSFS-3da1-471f-bd96-145571e29d72',
-        title: 'Atlanta is the capital',
-    },
-    {
-        id: '1411-3da1-471f-bd96-145571e29d72',
-        title: 'Georgia State',
-    },
-    {
-        id: '141511-3da1-471f-bd96-145571e29d72',
-        title: 'Japan',
-    },
-];
-
-function RectContentContainer(content: JSX.Element[] & any): JSX.Element {
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, Animated, Text, TouchableOpacity } from 'react-native';
+import diaryData from '../../data/diaryData.json'
+import { useNavigation } from '@react-navigation/native';
+const blackCircleSize = 450;
+function HiddenTag(props: any): JSX.Element {
 
     return (
-        <View>
-            {content.content}
+        <View style={{
+            position: 'relative',
+            width: 400,
+            height: 150,
+            flex: 1
+        }}>
+            <Text
+                numberOfLines={1}
+                adjustsFontSizeToFit={true}
+                minimumFontScale={0.1}
+                style={{
+                    color: 'white',
+                    borderRadius: 50,
+                    position: 'absolute',
+                    top: 25,
+                    fontSize: 50,
+                }}>
+                {props.text}
+            </Text>
+            <Animated.View style={{
+                transform: [{ translateX: props.position }],
+                position: 'absolute',
+                // borderColor:1,
+                // borderRadius: blackCircleSize,
+                backgroundColor: 'black',
+                width: blackCircleSize,
+                height: blackCircleSize,
+                top: -20,
+                left: -50
+            }} />
         </View>
     )
 }
 
 function Diary(): JSX.Element {
-    // const renderItem = ({ item, index }: { item: DataItem, index: number }) => {
 
-    //     return <MovingRect title={item.title} index={index} />
-    // };
-    const [rect, setRect] = useState<JSX.Element[]>([<MovingRect title={DATA[0].title} index={0} />]);
-    const [index, setIndex] = useState<number>(1);
-
+    const [position1, setPosition1] = useState<Animated.Value>(new Animated.Value(0));
+    const [position2, setPosition2] = useState<Animated.Value>(new Animated.Value(0));
+    const [position3, setPosition3] = useState<Animated.Value>(new Animated.Value(0));
+    const [position4, setPosition4] = useState<Animated.Value>(new Animated.Value(0));
+    const [position5, setPosition5] = useState<Animated.Value>(new Animated.Value(0));
+    const positionList: Animated.Value[] = [position1, position2, position3, position4, position5]
+    const [currIndex, setCurrIndex] = useState<number>(0)
+    const [viewButtons, setViewButtons] = useState<boolean>(false)
+    const navigation = useNavigation();
     useEffect(() => {
-        if (index < DATA.length) {
-            rect.push(<MovingRect title={DATA[index].title} index={index} key = {DATA[index].title+index} />);
-
-            setRect(rect)
-            // console.log("index", index)
+        if (currIndex == positionList.length) {
+            setViewButtons(true)
+            return
+        } else {
+            const newAnimation = Animated.timing(positionList[currIndex], {
+                toValue: 500,
+                duration: 500,
+                useNativeDriver: true,
+            }).start(() => {
+                setCurrIndex(currIndex + 1)
+            });
         }
-        setTimeout(() => {
-            setIndex(index + 1);
-        }, 3000);
-    }, [index]);
-
-    const [tagContentHeight, setTagContentHeight] = useState<number>(0)
-    const windowHeight = Dimensions.get('window').height
-    const getHeight = (event: LayoutChangeEvent) => {
-        const tagHeight = event.nativeEvent.layout.height
-        setTagContentHeight(tagHeight)
-    }
+    }, [positionList, currIndex]);
+    
+    const data = diaryData.data
+    const index = 0
+    const text1: string = data[index].content[0]
+    const text2: string =  data[index].content[1]
+    const text3: string =  data[index].content[2]
+    const text4: string =  data[index].content[3]
+    const text5: string =  data[index].content[4]
     return (
-        <SafeAreaView >
-            <ScrollView>
-                <RectContentContainer
-                    onLayout={getHeight}
-                    content={rect as JSX.Element[]} />
-                <View
-                    style={{
-                        backgroundColor: 'black',
-                        width: '100%',
-                        height: windowHeight - tagContentHeight,
-                        borderColor: 'black',
-                        borderWidth: 1,
+        <View style={{
+            backgroundColor: 'black',
+            width: '100%',
+            height: '100%'
+        }}>
 
+            <HiddenTag  text={text1} position={positionList[0]} />
+            <HiddenTag text={text2} position={positionList[1]} />
+            <HiddenTag text={text3} position={positionList[2]} />
+            <HiddenTag text={text4} position={positionList[3]} />
+            <HiddenTag text={text5} position={positionList[4]} />
+            <View style={{
+                position:'absolute',
+                bottom:0,
+                height:50,
+                alignSelf:'center'
+            }}>
+                {viewButtons &&
+                    <View style={{
+
+                        alignItems: 'center'
                     }}>
+                        <TouchableOpacity onPress={() => {
+                            navigation.navigate('DiaryEdit',{index:index})
+                        }
+                        } style={{
+                            borderColor: 'white',
+                            borderWidth: 1,
+                            borderRadius: 25,
+                            width: 50,
+                            alignItems: 'center',
+                            padding: 5
 
-
-                </View>
-            </ScrollView>
-        </SafeAreaView >
+                        }}>
+                            <Text style={{
+                                color: 'white',
+                            }}>
+                                Detail
+                            </Text>
+                        </TouchableOpacity>
+                        {/* <TouchableOpacity>
+                        <Text style={{
+                            color:'white'
+                        }}>
+                            See All
+                        </Text>
+                    </TouchableOpacity> */}
+                    </View>
+                }
+            </View>
+        </View >
     );
 };
+
 export default Diary;
-
-
