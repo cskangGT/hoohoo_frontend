@@ -1,8 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, TouchableOpacity, Image, Animated, TextInput } from 'react-native';
+import React, { cloneElement, useEffect, useRef, useState } from 'react';
+import { View, Text, TouchableOpacity, Image, Animated, TextInput, Modal } from 'react-native';
 import styled from 'styled-components';
 import { PanGestureHandler, State } from 'react-native-gesture-handler';
-import { format } from 'date-fns';
+import CalendarModal from './CalendarModal';
+import CustomButton from '../../components/common/Button';
+
 // import Button from './../../components/common/Button';
 const star1 = require('../../assets/star1.png');
 const star2 = require('../../assets/star2.png');
@@ -17,16 +19,17 @@ const SearchContainer = styled(View)`
     flex-direction: row;
     padding-bottom: 7%;
 `;
-const MonthInput = styled(TextInput)`
+const MonthInput = styled(TouchableOpacity)`
     flex: 1 10%;
     font-size: 30px;
     width: 20%;
     font-weight: bold;
     color : white;
     background-color: transparent;
-    padding-left:30%;
+    padding-left: 30%;
 `;
-const YearInput = styled(TextInput)`
+
+const YearInput = styled(TouchableOpacity)`
     flex: 1 15%;
     font-size: 30px;
     padding-right: 30%;
@@ -117,7 +120,7 @@ const FadeStar = ({ starImage, frequency }: { starImage: any, frequency: number 
         </Animated.View>
     );
 };
-const MyCalendar = () => {
+const Calendar = () => {
 
 
     const months = ["Jan", "Feb", "Mar", "Apr",
@@ -130,6 +133,8 @@ const MyCalendar = () => {
     // const fadeAnim = useRef(new Animated.Value(0)).current;
     const [month_text, setMonth_text] = useState<string>(months[date.getMonth()]);
     const [year_text, setYear_text] = useState<string>(String(date.getFullYear()));
+    // const [isModalVisible, setModalVisible] = useState<boolean>(false);
+    let isModalVisible: boolean = false;
 
     const changeMonth = (n: any) => {
         setDate(prevDate => {
@@ -233,21 +238,21 @@ const MyCalendar = () => {
     }
     const curr_date = moment().format('YYYY-MM-DD');
     let curr_split: string[] = curr_date.split("-");
-    let curr_yyyy: string = curr_split[0];
-    let curr_mm: number = parseInt(curr_split[1]);
-    let curr_dd: number = parseInt(curr_split[2]);
+    let selected_yyyy: string = curr_split[0];
+    let selected_mm: number = parseInt(curr_split[1]);
+    let selected_dd: number = parseInt(curr_split[2]);
 
     const handlerElement = (item: number) => {
         let index: number = Math.floor(Math.random() * 4);
         // item is day number. year and month is already stored
-        console.log("curr_dd", curr_dd);
-        console.log("date.getMonth()", date.getMonth());
-        console.log("curr_yyyy", year_text);
-        if (item == curr_dd && year_text == curr_yyyy && curr_mm == (date.getMonth() + 1)) {
+        // console.log("curr_dd", selected_dd);
+        // console.log("date.getMonth()", date.getMonth());
+        // console.log("curr_yyyy", year_text);
+        if (item == selected_dd && year_text == selected_yyyy && selected_mm == (date.getMonth() + 1)) {
             if (data_date.includes(item)) { // if the diary is in database
-                console.log("curr_dd", curr_dd);
-                console.log("curr_mm", curr_mm);
-                console.log("curr_yyyy", curr_yyyy);
+                // console.log("curr_dd", selected_dd);
+                // console.log("curr_mm", selected_mm);
+                // console.log("curr_yyyy", selected_yyyy);
                 return ( // if in database
                     <Today>
                         <Day> {item != -1 ? item : ''} </Day>
@@ -264,9 +269,9 @@ const MyCalendar = () => {
         }
         else if (y_data == year_text && months[parseInt(m_data) - 1] == month_text) {
             if (data_date.includes(item)) { // if the diary is in database
-                console.log("dd", item);
-                console.log("mm", month_text);
-                console.log("yyyy", y_data);
+                // console.log("dd", item);
+                // console.log("mm", month_text);
+                // console.log("yyyy", y_data);
                 return ( // if in database
                     <View>
                         <Day> {item != -1 ? item : ''} </Day>
@@ -323,6 +328,23 @@ const MyCalendar = () => {
         });
 
     }
+    console.log("I look into this", month_text);
+    console.log("I look into this", year_text);
+    console.log("date", date);
+
+    const onMonthYearChange = (mm: number, yyyy: string) => {
+
+        setDate(prevDate => {
+            const newDate = new Date(prevDate);
+            console.log("newDate.getMonth(", newDate.getMonth());
+            newDate.setFullYear(parseInt(yyyy));
+            newDate.setMonth(mm);
+            setMonth_text(months[newDate.getMonth()]);
+            setYear_text(String(newDate.getFullYear()));
+            return newDate;
+        });
+    }
+
     return (
 
         <View>
@@ -333,7 +355,12 @@ const MyCalendar = () => {
 
                 <View>
                     <SearchContainer>
-                        <MonthInput allowFontScaling={true}
+
+
+                        <CalendarModal date={date} onMonthYearChange={onMonthYearChange} />
+
+
+                        {/* <MonthInput allowFontScaling={true}
                             value={month_text}
                             maxLength={3}
                             onChangeText={setMonth_text}
@@ -349,7 +376,7 @@ const MyCalendar = () => {
                             placeholderTextColor={'white'}
                             keyboardType="numeric"
                             onSubmitEditing={handleSubmit}
-                        />
+                        /> */}
                     </SearchContainer>
                     {rows}
                 </View>
@@ -361,4 +388,4 @@ const MyCalendar = () => {
 
 
 }
-export default MyCalendar
+export default Calendar

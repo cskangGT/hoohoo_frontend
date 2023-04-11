@@ -7,12 +7,12 @@ const Container = styled(TouchableOpacity)`
     align-items: center;
     
     border-radius: 10px;
-    margin-left: 50px;
-    margin-right: 50px;
+    /* margin-left: 50px;
+    margin-right: 50px; */
     padding-top: 10px;
     padding-bottom: 20px;
     
-    box-shadow: 2px 2px 5px black;
+    /* box-shadow: 1px 1px 3px white; */
     /* box-sizing: content-box; */
 `;
 
@@ -24,6 +24,7 @@ const ButtonText = styled(Text)`
 `;
 
 interface Props {
+    key?: any;
     title: string;
     onPress: () => void;
     style?: any;
@@ -37,9 +38,10 @@ interface Props {
 
 const CustomButton = (props: Props) => {
 
-    const { title, onPress, style, backgroundColor, width, height, textStyle } = props;
+    const { key, title, onPress, style, backgroundColor, width, height, textStyle } = props;
     return (
         <Container
+            key={key}
             style={[{ backgroundColor, height, width }, style]}
             onPress={onPress}>
             <ButtonText style={textStyle}>{title}</ButtonText>
