@@ -133,8 +133,7 @@ const IntroScreen = ({ navigation, route }: any) => {
                 backgroundColor="transparent"
                 color="white"
                 textStyle={{ textDecorationLine: 'underline', fontSize: 17 }} />
-            {/* {showButton} */}
-            {/* rgb(202, 177, 157) */}
+
         </Background >);
 };
 
