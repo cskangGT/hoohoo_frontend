@@ -125,7 +125,6 @@ const IntroScreen = ({ navigation, route }: any) => {
 
 
             </IntroImage>
-
             <CustomButton
                 style={{ position: 'absolute', bottom: '5 %', left: '24 %' }}
                 title="Go to TagRecording"
@@ -133,8 +132,7 @@ const IntroScreen = ({ navigation, route }: any) => {
                 backgroundColor="transparent"
                 color="white"
                 textStyle={{ textDecorationLine: 'underline', fontSize: 17 }} />
-
-        </Background >);
+        </Background>);
 };
 
 
