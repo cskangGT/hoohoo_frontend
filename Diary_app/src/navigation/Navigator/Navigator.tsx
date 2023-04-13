@@ -24,7 +24,7 @@ const Navigator = () => {
                 <RootStack.Screen
                     name="TagRecording"
                     component={TagRecording}
-                    // options={{ headerShown: false }}
+                // options={{ headerShown: false }}
                 />
                 {/* <RootStack.Screen
                     name="Login"

@@ -25,6 +25,7 @@ const ButtonText = styled(Text)`
 
 interface Props {
     title: string;
+    style?: {};
     onPress: () => void;
     backgroundColor?: string;
     color?: string;
@@ -37,10 +38,10 @@ interface Props {
 
 const CustomButton = (props: Props) => {
 
-    const { title, onPress, backgroundColor, color, width, height, textStyle } = props;
+    const { title, style, onPress, backgroundColor, color, width, height, textStyle } = props;
     return (
         <Container
-            style={{ backgroundColor, height, width }}
+            style={[{ backgroundColor, height, width }, style]}
             onPress={onPress}>
             <ButtonText style={[{ color }, textStyle]} >{title}</ButtonText>
 
