@@ -10,11 +10,11 @@ const windowHeight = Dimensions.get('window').height;
 // const thirdText = "Who You Are";
 const Container = styled(View)`
     flex: 1;
-    width: ${windowWidth * 0.8}px;
-    padding-left: ${windowWidth * 0.15}px;
+    width: ${windowWidth*0.8}px;
+    padding-left: ${windowWidth*0.15}px;
     background-color: transparent;
     text-align: center;
-    margin-top: 250px;
+    align-items: center;
     justify-content: center;
     flex-direction: row;
     /* flex-wrap: wrap; */
@@ -22,7 +22,7 @@ const Container = styled(View)`
 const Anitext = styled(Animated.Text)`
     font-size: ${windowHeight * 0.04}px;
     font-weight: bold;
-    color: white;
+    color: rgb(255, 227, 180);
 `;
 
 interface Props {
@@ -30,7 +30,7 @@ interface Props {
 }
 // const firstText = "I Know/You Want to Know/Who You Are";
 const TextAnimation = (props: Props) => {
-    const { text } = props;
+    const {text} = props;
     // const tarr = firstText.split("/");
     // const 
     const arr = text.split(" ");
@@ -39,14 +39,14 @@ const TextAnimation = (props: Props) => {
     React.useEffect(() => {
         const timer = setInterval(() => {
             count++;
-            const animations = ref_arr.map((item, index) => {
+            const animations = ref_arr.map((item, index)=> {
                 return Animated.timing(item, {
                     toValue: 1,
                     duration: 500,
                     useNativeDriver: true,
                 });
             });
-            Animated.stagger(100, animations).start(() => { // animation 생성하는 모션 
+            Animated.stagger(100, animations).start( () => { // animation 생성하는 모션 
                 if (count === 3) {
                     clearInterval(timer);
                 }
@@ -61,12 +61,12 @@ const TextAnimation = (props: Props) => {
                     Animated.stagger(100, animations2.reverse()).start()
                 }, 100); // 지우는 모션 보여주고 1초뒤 지우기 시작
             });
-
+            
         }, 3000);
-
-        return () => {
-            clearInterval(timer);
-        };
+        
+        return () =>  {
+                clearInterval(timer);
+            };
     }, []);
 
 
@@ -75,9 +75,9 @@ const TextAnimation = (props: Props) => {
     return (
         <Container>
             {
-                arr.map((item, index) => (
-                    <Anitext key={index} style={{ opacity: ref_arr[index] }} >
-                        {item} {index < arr.length ? " " : ""}
+                    arr.map((item, index)=> (
+                    <Anitext key={index} style={{opacity: ref_arr[index]}} >
+                        {item} {index < arr.length ? " ": ""}
                     </Anitext>
                 ))
             }
