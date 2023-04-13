@@ -31,64 +31,64 @@ const Background = styled(View)`
 const IntroImage = styled(View)`
   width: ${windowWidth - 20}px;
   margin-left: 10px;
-  height: ${windowHeight-100}px; // 150은 시작버튼을 위해서 남겨준다.
+  height: ${windowHeight - 100}px; // 150은 시작버튼을 위해서 남겨준다.
 `;
 // const GoToTagRecording = (nav: any) => {
 
-    
+
 // };
 
 
-function Anime( props : any & JSX.Element): JSX.Element {
+function Anime(props: any & JSX.Element): JSX.Element {
     return props.textAnime
 }
 const IntroScreen = ({ navigation, route }: any) => {
-    
-    const texts = [{id: 0,text: "I Know"},  // storing text data 
-                    {id: 1,text:"You Want to Know"},
-                    {id: 2,text: "Who You Are"}]; 
+
+    const texts = [{ id: 0, text: "I Know" },  // storing text data 
+    { id: 1, text: "You Want to Know" },
+    { id: 2, text: "Who You Are" }];
     const [text, setText] = useState<string>(texts[0].text); // data
     const [textContents, setTextContents] = useState<JSX.Element>(<TextAnimation text={texts[0].text}></TextAnimation>);
     const [showAni, setShowAni] = useState<number>(1);
     if (showAni === 1) { // only show animation case, this is because keep counting time when re-rendering.
-        const timeout1 = setTimeout(()=> {
+        const timeout1 = setTimeout(() => {
             // console.log("first setText --11", text);
-            setText(texts[1].text);    
+            setText(texts[1].text);
             // console.log("first setText --", text);
-            
+
         }, 6000); // 6초 뒤에 second animation start
-        if (text === texts[1].text)  clearTimeout(timeout1);
+        if (text === texts[1].text) clearTimeout(timeout1);
     }
-        
-    useEffect( () => { // when text is changed, enter here (asynch)
-   
-        if (text ===texts[1].text) {
+
+    useEffect(() => { // when text is changed, enter here (asynch)
+
+        if (text === texts[1].text) {
             setTextContents(<TextAnimation text={text} ></TextAnimation>);
-            setTimeout( () => {
+            setTimeout(() => {
                 // console.log("settimeout for second text");
                 setText(texts[2].text); // 3초 뒤에 third animation start, 
             }, 3000);
-            
-            
-        } else if (text ===texts[2].text) {
-            
+
+
+        } else if (text === texts[2].text) {
+
             setTextContents(<TextAnimation text={text} ></TextAnimation>);
             // console.log(showAni);
-            setTimeout( () => {setShowAni(0)}, 4000);
-            
+            setTimeout(() => { setShowAni(0) }, 4000);
+
         }
         // clearTimeout(timeout1);
     }, [text]);
-    
-    
+
+
     return (
         <Background>
             <IntroImage>
                 {/* <StyledText> Hoo hoo</StyledText>  */}
                 {/* 나중에 gif나 이미지로 넣을 것, 지금은 animation으로 처리*/}
                 {/* <View style={{marginTop:100}}> */}
-                {showAni === 1?<Anime textAnime={textContents as JSX.Element}>
-                </Anime> : <StyledText> Hoohoo </StyledText> }
+                {showAni === 1 ? <Anime textAnime={textContents as JSX.Element}>
+                </Anime> : <StyledText> Rain Bi </StyledText>}
                 {/* <Anime textAnime={textContents as JSX.Element}>
                 </Anime> */}
                 {/* {texts.map((value, index) => {
@@ -99,7 +99,7 @@ const IntroScreen = ({ navigation, route }: any) => {
                     } else {
                             return <Text style={{color:'white'}}>Jisan</Text>};
                         })} */}
-                
+
                 {/* </View> */}
                 {/* <TextAnimation text="I Know" time={300}></TextAnimation> */}
                 {/* <TextAnimation text="You Want to Know" time={3000}></TextAnimation>
@@ -107,17 +107,17 @@ const IntroScreen = ({ navigation, route }: any) => {
                 {/* 버튼 나오게 한다.  */}
                 {/* 3초 기다린다. */}
                 {/*  it will be start button */}
-                
+
             </IntroImage>
-            <CustomButton
+            {/* <CustomButton
                 title="Go to Diary"
                 onPress={() => navigation.navigate('Diary')}
-                backgroundColor='rgb(255, 227, 180)'/>
+                backgroundColor='rgb(255, 227, 180)'/> */}
             <CustomButton
                 title="Go to TagRecording"
                 onPress={() => navigation.navigate('TagRecording')}
-                backgroundColor='rgb(255, 227, 180)'/>
-            
+                backgroundColor='rgb(255, 227, 180)' />
+
             {/* {showButton} */}
             {/* rgb(202, 177, 157) */}
         </Background>);

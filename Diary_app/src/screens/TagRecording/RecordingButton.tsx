@@ -89,6 +89,8 @@ function RecordingButton(props: any): JSX.Element {
     const stopRecognizing = async () => {
         //Stops listening for speech
         try {
+            setStarted('');
+            setEnd('');
             await Voice.stop();
 
         } catch (e) {
@@ -132,16 +134,30 @@ function RecordingButton(props: any): JSX.Element {
     return (
         <View>
             {/* operate STT  */}
-            <TouchableHighlight
-                style={{
-                    backgroundColor: started ? 'red' : 'rgb(000,220,020)',
-                    padding: 20,
-                    borderRadius: 10,
-                }}
-                onPress={startRecognizing}
-            >
-                <Text>{started ? 'Recording' : 'Record'}</Text>
-            </TouchableHighlight>
+            {
+                started ? (<TouchableHighlight
+                    style={{
+                        backgroundColor: 'red',
+                        padding: 20,
+                        borderRadius: 10,
+                    }}
+                    onPress={stopRecognizing}
+                >
+                    <Text style={{ textAlign: 'center' }}>{'Recording'}</Text>
+                </TouchableHighlight>)
+                    :
+                    (<TouchableHighlight
+                        style={{
+                            backgroundColor: 'rgb(000,220,020)',
+                            padding: 20,
+                            borderRadius: 10,
+                        }}
+                        onPress={startRecognizing}
+                    >
+                        <Text style={{ textAlign: 'center' }}>{'Record'}</Text>
+                    </TouchableHighlight>)
+            }
+
         </View>
     )
 }

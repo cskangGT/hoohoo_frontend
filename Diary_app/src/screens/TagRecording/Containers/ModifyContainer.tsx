@@ -6,8 +6,8 @@ import styled from 'styled-components';
 //The below three components are for Save and Edit buttons.
 //This button styles can be used in any other purposes.
 const StyledModifyContainer = styled(View)`
+    top: 15%;
     border-width: 1;
-    width: 100%;
     border-color: grey;
     `
 const StyledModifyButton = styled(TouchableOpacity)`
