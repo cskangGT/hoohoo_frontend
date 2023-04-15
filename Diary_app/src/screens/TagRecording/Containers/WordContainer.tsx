@@ -14,6 +14,7 @@ const StyledButtonContainer = styled(View)`
 
 //tag for user input or recorded ones
 function WordContainer(content: any & JSX.Element): JSX.Element {
+
     return (
         <StyledButtonContainer>
             {

@@ -3,10 +3,6 @@ import CustomButton from '../../components/common/Button';
 import React, { useEffect, useRef, useState } from 'react'
 import { TouchableHighlight, Text, View } from 'react-native';
 
-
-let stop: boolean = false;
-let pr: any = null;
-
 function RecordingButton(props: any): JSX.Element {
     const [pitch, setPitch] = useState('');
     const [error, setError] = useState('');
@@ -33,15 +29,12 @@ function RecordingButton(props: any): JSX.Element {
         setError(JSON.stringify(e.error));
     };
 
-    const onSpeechResults = (e: any) => {
-        //Invoked when SpeechRecognizer is finished recognizing
-        //console.log('onSpeechResults: ', e);
-        setResults(e.value);
-    };
 
     const onSpeechPartialResults = (e: any) => {
         //Invoked when any results are computed
         //console.log('onSpeechPartialResults: ', e);
+        console.log("e_partial results:", e);
+
         setPartialResults(e.value);
     };
 
@@ -81,7 +74,7 @@ function RecordingButton(props: any): JSX.Element {
 
             } catch (e) {
                 //eslint-disable-next-line
-                // console.error(e);
+                console.error(e);
             }
         }
     };
@@ -95,7 +88,7 @@ function RecordingButton(props: any): JSX.Element {
 
         } catch (e) {
             //eslint-disable-next-line
-            //console.error(e);
+            console.error(e);
         }
     };
 
@@ -105,7 +98,7 @@ function RecordingButton(props: any): JSX.Element {
             await Voice.cancel();
         } catch (e) {
             // eslint-disable-next-line
-            //console.error(e);
+            console.error(e);
         }
     };
 
@@ -122,15 +115,27 @@ function RecordingButton(props: any): JSX.Element {
 
         } catch (e) {
             //eslint-disable-next-line
-            //console.error(e);
+            console.error(e);
         }
     };
+    const onSpeechResults = (e: any) => {
+        //Invoked when SpeechRecognizer is finished recognizing
+        //console.log('onSpeechResults: ', e);
+        console.log("e:", e);
+        setResults(e.value);
+        destroyRecognizer();
+    };
+
     // add user Speech to user input states
     useEffect(() => {
+        console.log("results", results);
+
         if (results[0] !== undefined) {
             props.addInputs(results[0])
         }
-    }, [results])
+    }, [results]);
+
+
     return (
         <View>
             {/* operate STT  */}
@@ -141,7 +146,7 @@ function RecordingButton(props: any): JSX.Element {
                         padding: 20,
                         borderRadius: 10,
                     }}
-                    onPress={stopRecognizing}
+                    onPress={destroyRecognizer}
                 >
                     <Text style={{ textAlign: 'center' }}>{'Recording'}</Text>
                 </TouchableHighlight>)

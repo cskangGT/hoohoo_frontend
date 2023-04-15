@@ -89,7 +89,7 @@ function TagRecording(): JSX.Element {
     const createContent = (words: string[], setWords: React.Dispatch<React.SetStateAction<string[]>>, setWordContent: React.Dispatch<React.SetStateAction<JSX.Element[] | undefined>>, editable?: boolean, curr_size?: number) => {
         let contentHolder = (
             words.map((word: string, index: number) => (
-                <View style={{ backgroundColor: 'transparent' }}>
+                <View key={index} style={{ backgroundColor: 'transparent' }}>
                     <TouchableOpacity
                         style={{
                             borderWidth: 1,
@@ -251,7 +251,7 @@ function TagRecording(): JSX.Element {
                 focusOnInput={focusOnInput}
                 size={size}
             />
-        )
+        );
         setModeContent(ModeContentHolder)
     }
     return (
@@ -275,7 +275,6 @@ function TagRecording(): JSX.Element {
 
             {currTypeButton === "Type Mode" && (
                 <View style={{ top: '15%' }}>
-
                     <WordContainer content={InputContentHolder as JSX.Element[]} ></WordContainer>
 
                     <RecordingContainer>
