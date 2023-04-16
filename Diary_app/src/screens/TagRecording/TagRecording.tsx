@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 
-import { View, Text, Button, TextInput, TouchableOpacity, Keyboard, Switch } from "react-native";
+import { View, Text, Button, TextInput, TouchableOpacity, Keyboard, Switch, Dimensions } from "react-native";
 import styled from 'styled-components';
 import msg from '../../data/msg.json';
 import WordContainer from './Containers/WordContainer';
@@ -8,21 +8,27 @@ import UserTextInput from './Containers/UserTextInput';
 // import * as speech from './speechUtils';
 import RecordingButton from './RecordingButton';
 import CustomButton from '../../components/common/Button';
+import ImageBackground from '../../components/common/ImageBackground';
 
-const Container = styled(View)`
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+
+const Container = styled(ImageBackground)`
     width : 100%;
     height: 100% ;
-    background-color: black; 
     
 `;
 const ButtonContainer = styled(View)`
     top:5%;
+    position: absolute;
     width:30%;
     border-width: 2px;
     
 `;
 const TagContainers = styled(View)`
-    top:5%;
+    position: absolute;
+    top:18%;
     width: 100%;
     border-width: 2px;
     border-color: violet;
@@ -31,7 +37,8 @@ const TagContainers = styled(View)`
 `;
 const InputTextContainer = styled(View)`
     /* margin-top: 90%; */
-    top:30%;
+    top:50%;
+    position: absolute;
     width:100%;
     border-width: 2px;
     height:auto;
@@ -48,15 +55,16 @@ const SwitchContainer = styled(View)`
 const RecordingContainer = styled(View)`
     /* border-width: 1px; */
     width:100%;
+    
     /* top: 1000%; */
-    top:2000%;
+    /* top:2000%; */
     position: absolute;
 `;
 function TagRecording(): JSX.Element {
 
     function ModeContentContainer(props: any): JSX.Element {
         return (
-            <View style={{ width: '100%' }}>
+            <View style={{ width: '100%', position: 'absolute', top: '43 %' }}>
                 {props.content}
             </View>)
     }
@@ -274,19 +282,19 @@ function TagRecording(): JSX.Element {
             {/* The speech mode has Type mode button, text input for cursor blinking only, and record button at the bottom. */}
 
             {currTypeButton === "Type Mode" && (
-                <View style={{ top: '15%' }}>
-                    <WordContainer content={InputContentHolder as JSX.Element[]} ></WordContainer>
-
-                    <RecordingContainer>
+                <View style={{ top: '70%', position: 'absolute', width: '100 %' }}>
+                    <View style={{}}>
+                        <WordContainer content={InputContentHolder as JSX.Element[]} ></WordContainer>
+                    </View>
+                    <RecordingContainer style={{ top: windowHeight * 0.1 }}>
                         <RecordingButton addInputs={addInputs}></RecordingButton>
                     </RecordingContainer>
                 </View>
             )
-
             }
             {
                 currTypeButton === "Speech Mode" &&
-                <View style={{ width: '100%', top: '15%' }}>
+                <View style={{ width: '100%', top: '15%', position: 'absolute' }}>
                     <WordContainer content={InputContentHolder as JSX.Element[]}></WordContainer>
                 </View>
             }

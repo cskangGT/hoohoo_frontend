@@ -10,6 +10,7 @@ const StyledButtonContainer = styled(View)`
     flex-wrap: wrap;
     border-width:2px;
     border-color: white;
+    height: auto;
 `
 
 //tag for user input or recorded ones
