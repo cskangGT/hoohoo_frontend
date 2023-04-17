@@ -49,7 +49,7 @@ function TagRecording(): JSX.Element {
     const createContent = (words: string[], setWords: React.Dispatch<React.SetStateAction<string[]>>, setWordContent: React.Dispatch<React.SetStateAction<JSX.Element[] | undefined>>, editable?: boolean, curr_size?: number) => {
         let contentHolder = (
             words.map((word: string, index: number) => (
-                <View style={{ backgroundColor: 'transparent' }}>
+                <View  key = {index+"view"} style={{ backgroundColor: 'transparent' }}>
                     <StyledTagWord
                         // style={{
                         //     borderWidth: 1,

@@ -1,13 +1,15 @@
-import { View, Text, Dimensions, TouchableOpacity, FlatList, ScrollView, TextInput } from 'react-native';
+import { View, Text, Dimensions, TouchableOpacity, FlatList, ScrollView, TextInput, Image } from 'react-native';
 import React, { useState, useEffect, useRef } from 'react';
 import { SafeAreaView } from 'react-native';
 import styled from 'styled-components';
 import FunctionComponents, { showPlusButtonEx } from './FunctionComponents/FunctionComponents';
-import { updatePhotoContentEx } from './FunctionComponents/PhotoZone';
+import { openCameraEx, openGalleryEx, updatePhotoContentEx } from './FunctionComponents/PhotoZone';
 import diaryData from '../../data/diaryData.json'
-import TagZone, {updateTagContentEx} from './FunctionComponents/TagZone';
+import TagZone, { updateTagContentEx } from './FunctionComponents/TagZone';
 import PhotoZone from './FunctionComponents/PhotoZone';
 import NoteZone from './FunctionComponents/NoteZone';
+const icon_camera = require('./FunctionComponents/icons/camera.png');
+const icon_gallery = require('./FunctionComponents/icons/gallery.png');
 //lighter gray
 const StyledTagWord = styled(TouchableOpacity)`
     border-width: 1px;
@@ -46,11 +48,11 @@ type ItemProps = { title: string, index: number };
 export let countEx: number;
 export let setCountEx: React.Dispatch<React.SetStateAction<number>>;
 
-export let enableDeleteEx:boolean;
-export let setEnableDeleteEx:React.Dispatch<React.SetStateAction<boolean>>;
+export let enableDeleteEx: boolean;
+export let setEnableDeleteEx: React.Dispatch<React.SetStateAction<boolean>>;
 
 function DiaryEdit(route: any): JSX.Element {
-    
+
     // const jsonId = route.route.params.id
     const index = route.route.params.index
     //temporary data 
@@ -66,7 +68,7 @@ function DiaryEdit(route: any): JSX.Element {
     setCountEx = setCount
 
     const jsonDate = data[index].date
-    
+
     useEffect(() => {
         if (enableDelete && count == 0) {
             setEnableDelete(false)
@@ -92,31 +94,26 @@ function DiaryEdit(route: any): JSX.Element {
                 </Text>
 
                 <TagZone content={content} />
-                <PhotoZone/>
-                {/* <PhotoUpload /> */}
-                <Text style={{
-                    margin: 15,
-                    fontSize: 25,
-                    borderBottomWidth: 2,
-                    borderStyle: 'dotted',
-                    borderColor: 'white',
-                    color: 'white'
-                }}>
-                    {/* {savedText} */}
-                </Text>
-                <NoteZone/>
-            </ScrollView>
+                <StyledHorizontallyAlignedItems>
 
-            <View style={{
-                position: 'absolute', // Set position to absolute
-                width: 50,
-                height: 50,
-                alignSelf: 'center',
-                bottom: 60, // Position the component 10 units from the bottom
-                // right: 10, // Position the component 10 units from the right
-            }}>
-                <FunctionComponents/>
-            </View>
+                    <NoteZone />
+                    <PhotoZone />
+
+                </StyledHorizontallyAlignedItems>
+
+
+
+
+            </ScrollView>
+            {enableDelete &&
+                <TouchableOpacity onPress={() => { setEnableDelete(false); }}>
+                    <Text style={{
+                        color: 'white'
+                    }}>
+                        Done
+                    </Text>
+                </TouchableOpacity>
+            }
         </StyledBackgroundView>
 
     );
@@ -124,3 +121,23 @@ function DiaryEdit(route: any): JSX.Element {
 export default DiaryEdit;
 
 
+
+// <View style={{
+//     position: 'absolute', // Set position to absolute
+//     width: 50,
+//     height: 50,
+//     alignSelf: 'center',
+//     bottom: 60, // Position the component 10 units from the bottom
+//     // right: 10, // Position the component 10 units from the right
+// }}>
+//     <FunctionComponents/>
+// </View>
+
+// <TouchableOpacity
+//                     onPress={() => { openCameraEx(); }}>
+//                     <Image source={icon_camera} key='camera' style={{ height: 50, width: 50, borderRadius: 50 }} />
+//                 </TouchableOpacity>
+//                 <TouchableOpacity onPress={() => { openGalleryEx(); }}>
+//                     {/* open gallery */}
+//                     <Image source={icon_gallery} key='gallery' style={{ height: 50, width: 50, borderRadius: 50 }} />
+//                 </TouchableOpacity>

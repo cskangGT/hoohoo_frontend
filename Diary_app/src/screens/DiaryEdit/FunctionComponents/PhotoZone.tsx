@@ -9,14 +9,19 @@ import { TouchableHighlight } from 'react-native';
 import { countEx, enableDeleteEx, setCountEx, setEnableDeleteEx } from '../DiaryDetail';
 import { showPlusButtonEx } from './FunctionComponents';
 
+const icon_camera = require('../FunctionComponents/icons/camera.png');
+const icon_gallery = require('../FunctionComponents/icons/gallery.png');
+
+
 const StyledHorizontallyAlignedItems = styled(View)`
 flex-direction: row;
  justify-content: center;
  align-items: center;
  flex:1;
- padding-horizontal: 20;
 
 `
+// padding-horizontal: 20;
+
 const StyledCircleButton = styled(TouchableOpacity)`
 border-width: 1;
 border-radius: 50;
@@ -33,17 +38,24 @@ text-align: center;
 color: white;
 `
 
+const photoWidth: number = 200;
+const photoHeight: number = 500;
+//this is for the photozone only!
+//maxwidth = minwidth =photowidth!
 const StyledHorizontalScrollViewOverflow = styled(View)`
-overflow: hidden;
-border-radius:30;
-margin:5px;
+overflow:hidden;
+display: flex;
+border-radius:25;
+maxWidth: 200;
+minWidth: 200;
+maxHeight:500;
+minHeight:500;
 `
 const StyledScrollHorizontalScroll = styled(ScrollView)`
 background-color: #666666AA;
-border-radius:30;
-paddingHorizontal: 5px;
+border-radius:25;
 `
-
+// paddingHorizontal: 5px;
 const StyledTextInput = styled(TextInput)`
 border-radius: 50;
 border-color: white;
@@ -53,9 +65,9 @@ color:white;
 `
 
 export let updatePhotoContentEx: any;
-export let openCameraEx:any;
-export let openGalleryEx:any;
-export let deletePhotoEx:any;
+export let openCameraEx: any;
+export let openGalleryEx: any;
+export let deletePhotoEx: any;
 function PhotoZone(props: any): JSX.Element {
     let options: CameraOptions = {
         saveToPhotos: true,
@@ -72,6 +84,7 @@ function PhotoZone(props: any): JSX.Element {
         setEnableDelete(enableDelete)
         setPhoto(photo)
     })
+    const [photoCount, setPhotoCount] = useState<number>(0)
     const openCamera = async () => {
         try {
             const granted = await PermissionsAndroid.request(
@@ -83,6 +96,7 @@ function PhotoZone(props: any): JSX.Element {
                     photo.push(result.assets[0].uri)
                     setPhoto(photo)
                     setCount(count + 1)
+                    setPhotoCount(photoCount + 1)
                     // increaseCount()
                     setEnableDelete(false)
                     updatePhotoContent()
@@ -99,6 +113,7 @@ function PhotoZone(props: any): JSX.Element {
             photo.push(result.assets[0].uri)
             setPhoto(photo)
             setCount(count + 1)
+            setPhotoCount(photoCount + 1)
             // increaseCount()
             setEnableDelete(false)
             updatePhotoContent()
@@ -112,6 +127,7 @@ function PhotoZone(props: any): JSX.Element {
             delete photo[index]
             setPhoto(photo)
             setCount(count - 1)
+            setPhotoCount(photoCount - 1)
             // decreaseCount()
             updatePhotoContent()
 
@@ -120,24 +136,34 @@ function PhotoZone(props: any): JSX.Element {
     }
     deletePhotoEx = deletePhoto
 
+    const [dddContent, setDDDContent] = useState<JSX.Element[]>()
+    const [currPage, setCurrPage] = useState<number>(0);
+
+
     //포토에 새로운값이 들어왔다면, 즉각 컨텐츠를 업데이트.
     const updatePhotoContent = () => {
+        if (photo.length == 0) {
+            return
+        }
         let contentHolder = (
             photo.map((picture: string, index: number) => (
-                <View style={{ position: 'relative' }}>
-                    <TouchableHighlight onLongPress={() => {setEnableDelete(true);showPlusButtonEx(false)}} key={index}
-                        style={{
-                            margin: 5,
-
-                        }}>
-
-                        <Image source={{ uri: picture }} key={index} style={{ height: 150, width: 150, borderRadius: 50 }} />
+                <View style={{ position: 'relative', height: '100%' }} key={index + 'imgview'}>
+                    <TouchableHighlight onLongPress={() => { setEnableDelete(true); }} key={index + 'imgtouch'}
+                    >
+                        <Image source={{ uri: picture }} key={index + 'img'}
+                            style={{
+                                width: photoWidth,
+                                height: photoHeight, borderRadius: 25
+                            }} />
                     </TouchableHighlight >
-                    <View style={{ position: 'absolute', right: 0 }}>
+                    <View
+                        key={index + 'xview'}
+                        style={{ position: 'absolute', right: 0 }}>
                         {
                             enableDelete &&
                             //must componentize this. (duplicate code in diaryedit)
                             <TouchableHighlight
+                                key={index + 'xtouch'}
                                 onPress={() => { deletePhoto(enableDelete, index) }}
                                 style={{
                                     borderRadius: 50,
@@ -149,7 +175,8 @@ function PhotoZone(props: any): JSX.Element {
                                 <Text style={{
                                     color: 'white',
                                     textAlign: 'center'
-                                }}>
+                                }}
+                                    key={index + 'Xtext'}>
                                     X
                                 </Text>
                             </TouchableHighlight>
@@ -160,6 +187,26 @@ function PhotoZone(props: any): JSX.Element {
         )
 
         setPhotoContent(contentHolder)
+
+        let newDDD: JSX.Element[] = []
+        console.log("count", photoCount)
+        for (let i = 0; i < photoCount; i++) {
+            newDDD.push(
+                <View>
+                    <Text>
+                        {i}
+                    </Text>
+                </View>
+            )
+        }
+        let newDDDContent = (
+            newDDD.map((dot: JSX.Element, index: number) => (
+                <View key={index + 'dot'}>
+                    {dot}
+                </View>
+            ))
+        )
+        setDDDContent(newDDDContent);
     }
     updatePhotoContentEx = updatePhotoContent
 
@@ -168,14 +215,107 @@ function PhotoZone(props: any): JSX.Element {
         setEnableDelete(!enableDelete)
     }
 
+    const [pictureOptionVisible, setPictureOptionVisible] = useState<boolean>(false)
+    const scrollViewRef = useRef<ScrollView>(null);
+
+
+    const handleScroll = (event: any) => {
+        const offsetX = event.nativeEvent.contentOffset.x;
+        let page: number = Math.floor(offsetX / photoWidth);
+
+        if (offsetX - page * photoWidth > photoWidth / 2) {
+            scrollViewRef.current?.scrollTo({ x: (page + 1) * photoWidth, animated: true });
+            page = page + 1;
+        } else {
+            scrollViewRef.current?.scrollTo({ x: page * photoWidth, animated: true });
+        }
+        setCurrPage(page)
+    };
+    const pictureAdd = (
+        <View style={{
+            flex: 1, justifyContent: 'center', alignItems: 'center',
+            width: photoWidth,
+            height: photoHeight,
+            borderWidth: 1,
+            borderColor: 'blue'
+        }}>
+            {!pictureOptionVisible &&
+                <View style={{
+                    borderColor: 'blue',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                    <TouchableOpacity
+                        onPress={() => { setPictureOptionVisible(true) }}
+                        style={{
+                            borderRadius: 50,
+                            borderColor: 'white',
+                            borderWidth: 1,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            width: 50,
+                            height: 50
+                        }}>
+                        <Text style={{
+                            color: 'white',
+                        }}>
+                            +
+                        </Text>
+                    </TouchableOpacity>
+                    <Text style={{
+                        color: 'white',
+                    }}>
+                        Add a picture
+                    </Text>
+                </View>
+            }
+            {pictureOptionVisible &&
+
+                <View style={{
+                    borderColor: 'blue'
+                }}>
+                    <TouchableOpacity
+                        onPress={() => { openCameraEx(); setPictureOptionVisible(false); }}>
+                        <Image source={icon_camera} key='camera' style={{ height: 50, width: 50, borderRadius: 50 }} />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => { openGalleryEx(); setPictureOptionVisible(false); }}>
+                        {/* open gallery */}
+                        <Image source={icon_gallery} key='gallery' style={{ height: 50, width: 50, borderRadius: 50 }} />
+                    </TouchableOpacity>
+                </View>
+            }
+        </View>
+    )
+
     return (
-        <StyledHorizontalScrollViewOverflow >
-            <StyledScrollHorizontalScroll horizontal={true} showsHorizontalScrollIndicator={false}>
-                {
-                    photoContent
-                }
-            </StyledScrollHorizontalScroll>
-        </StyledHorizontalScrollViewOverflow>
+        <View>
+            <StyledHorizontalScrollViewOverflow >
+                <StyledScrollHorizontalScroll
+                    ref={scrollViewRef}
+                    pagingEnabled={true}
+                    onScroll={handleScroll} horizontal={true} showsHorizontalScrollIndicator={false}>
+                    {
+                        photoContent
+                    }
+
+                    {pictureAdd}
+
+                </StyledScrollHorizontalScroll>
+            </StyledHorizontalScrollViewOverflow >
+            {/* dotdotdot */}
+            <View style={{
+                borderColor: 'red',
+                borderWidth: 1,
+                position: 'absolute',
+                bottom: 10,
+                left: '50%',
+                justifyContent: 'center',
+                alignItems: 'center',
+                flex: 1,
+            }}>
+                {dddContent}
+            </View>
+        </View >
 
     );
 };

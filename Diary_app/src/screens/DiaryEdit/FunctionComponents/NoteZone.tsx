@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { TextInput } from 'react-native';
 import { showPlusButtonEx } from './FunctionComponents';
+import PhotoZone from './PhotoZone';
 
 const StyledHorizontallyAlignedItems = styled(View)`
 flex-direction: row;
@@ -17,7 +18,7 @@ text-align: center;
 color: white;
 `
 const StyledTextInput = styled(TextInput)`
-border-radius: 50;
+border-radius: 25;
 border-color: white;
 border-width: 1;
 padding: 15px;
@@ -41,21 +42,29 @@ function NoteZone(): JSX.Element {
     }
     const [note, setNote] = useState<JSX.Element>(<StyledTextInput
         ref={textinputref}
-        placeholder='Write a note'
+        placeholder='Add a note'
         value={text}
         multiline={true}
         onChangeText={(text) => { setText(text); }}
-        onFocus={()=>{
+        onFocus={() => {
             setWriteDiary(true)
 
-            showPlusButtonEx(false)
+            // showPlusButtonEx(false)
+        }}
+        placeholderTextColor="white"
+        style={{
+            width: 150,
+            height: 500,
+            textAlignVertical: 'top', 
+            textAlign: 'left',
         }}
     />)
     return (
         <View>
             {/* textinput on/off */}
             {/* {writeDiary && */}
-            <View>
+            <View >
+                {/* <PhotoZone/> */}
                 <NoteArea
                     note={note}
                 />
@@ -66,7 +75,7 @@ function NoteZone(): JSX.Element {
                 >
                     {
                         writeDiary &&
-                        <TouchableOpacity onPress={() => { console.log("save the text"); setWriteDiary(false);showPlusButtonEx(true) }}
+                        <TouchableOpacity onPress={() => { console.log("save the text"); setWriteDiary(false); showPlusButtonEx(true) }}
                             style={{
                                 borderColor: '#8FDF70',
                                 borderWidth: 1,
