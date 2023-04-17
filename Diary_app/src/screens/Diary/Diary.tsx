@@ -27,11 +27,7 @@ function TagContentHolder(props: any): JSX.Element {
 }
 const HiddenTag = (props: any) => {
     let gif = require('./sample.gif')
-    // let gifUri = `file:///C:/Users/mslim/Desktop/hoohooDev/hoohoo_frontend/Diary_app/src/screens/Diary/sample.gif?${Date.now()}`;
-    // const gifUri = `file://C:/Users/mslim/Desktop/hoohooDev/hoohoo_frontend/Diary_app/src/screens/Diary/sample.gif`
-    // let gifUri = 'https://www.adorama.com/alc/wp-content/uploads/2021/05/bird-wings-flying-feature.gif'
-    // FastImage.clearMemoryCache();
-    console.log("ki", props.ki, props.droplet)
+ 
     const droplet = props.droplet ? (<View>
         <GIF
             source={gif}
