@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import CustomButton from '../../components/common/Button';
 import TextAnimation from '../../components/common/TextAnimation';
+import ImageBackground from '../../components/common/ImageBackground';
 
 const background = require('../../assets/Intro_background.png');
 const font = require('../../assets/IntroFont.png');
@@ -10,16 +11,16 @@ const droplet = require('../../assets/try4.jpg');
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-const StyledText = styled(Text)`
-    margin-top: 200px;
-    padding: 30px;
-    /* background-color: ; */
-    text-align: center;
-    font-style: italic;
-    font-weight: bold;
-    font-size: 50px;
-    color: white;
-`;
+// const StyledText = styled(Text)`
+//     margin-top: 200px;
+//     padding: 30px;
+//     /* background-color: ; */
+//     text-align: center;
+//     font-style: italic;
+//     font-weight: bold;
+//     font-size: 50px;
+//     color: white;
+// `;
 
 const Background = styled(View)`
     flex: 1;
@@ -112,12 +113,7 @@ const IntroScreen = ({ navigation, route }: any) => {
 
 
     return (
-        <Background>
-
-            <ImageBG source={background} resizeMode={'cover'} />
-
-            <Drop source={droplet} resizeMode={'contain'} />
-            <View style={{ opacity: 0.3, backgroundColor: 'black', width: '100 %', height: '100 %', position: 'absolute' }}></View>
+        <ImageBackground>
             <IntroImage>
 
                 {showAni === 1 ? <Anime textAnime={textContents as JSX.Element}>
@@ -130,8 +126,11 @@ const IntroScreen = ({ navigation, route }: any) => {
                 title="Go to TagRecording"
                 onPress={() => navigation.navigate('TagRecording')}
                 backgroundColor="transparent"
-                textStyle={{ textDecorationLine: 'underline', fontSize: 17, color: 'white' }} />
-        </Background>);
+
+                color="white"
+                textStyle={{ textDecorationLine: 'underline', fontSize: 17 }} />
+        </ImageBackground>);
+
 };
 
 

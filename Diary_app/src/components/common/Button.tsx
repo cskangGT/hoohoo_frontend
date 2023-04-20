@@ -31,7 +31,9 @@ const CustomButton = (props: Props) => {
         <Container
             style={[{ backgroundColor, height, width }, style]}
             onPress={onPress}>
-            <ButtonText style={textStyle} >{title}</ButtonText>
+
+            <ButtonText style={[textStyle]} >{title}</ButtonText>
+
 
         </Container>
 
