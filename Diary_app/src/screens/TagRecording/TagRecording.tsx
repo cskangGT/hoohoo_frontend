@@ -9,6 +9,15 @@ import WordContainer from './Containers/WordContainer'
 import UserTextInput from './Containers/UserTextInput';
 // import * as speech from './speechUtils';
 import RecordingButton from './RecordingButton'
+const StyledTagWord = styled(TouchableOpacity)`
+    border-width: 1px;
+    border-color: orange;
+    border-radius: 50px;
+    padding: 10px;
+    background-color: transparent;
+    margin: 5px;
+`;
+
 function TagRecording(): JSX.Element {
     function ModeContentContainer(props: any): JSX.Element {
         return (
@@ -42,21 +51,21 @@ function TagRecording(): JSX.Element {
     const createContent = (words: string[], setWords: React.Dispatch<React.SetStateAction<string[]>>, setWordContent: React.Dispatch<React.SetStateAction<JSX.Element[] | undefined>>, editable?: boolean, curr_size?: number) => {
         let contentHolder = (
             words.map((word: string, index: number) => (
-                <View style={{ backgroundColor: 'transparent' }}>
-                    <TouchableOpacity
-                        style={{
-                            borderWidth: 1,
-                            borderColor: 'orange',
-                            borderRadius: 50,
-                            padding: 10,
-                            backgroundColor: 'transparent',
-                            margin: 5
-                        }}
+                <View  key = {index+"view"} style={{ backgroundColor: 'transparent' }}>
+                    <StyledTagWord
+                        // style={{
+                        //     borderWidth: 1,
+                        //     borderColor: 'orange',
+                        //     borderRadius: 50,
+                        //     padding: 10,
+                        //     backgroundColor: 'transparent',
+                        //     margin: 5
+                        // }}
                         key={index}
                     >
                         <Text key={index + "th_user_input_text"}
                             style={{ color: 'black' }}>{word}</Text>
-                    </TouchableOpacity>
+                    </StyledTagWord>
 
                     {(editable) && //add X button on the top right, when recording or edit button is pressed
                         <TouchableOpacity
@@ -156,7 +165,7 @@ function TagRecording(): JSX.Element {
         createContent(recordedInputs, setRecordedInputs, setRecordedContentHolder, isEditable, size)
         createContent(inputs, setInputs, setInputContentHolder)
     }, [isEditable])
-    
+
     function ModeContentComponents(props: any): JSX.Element {
 
         return (

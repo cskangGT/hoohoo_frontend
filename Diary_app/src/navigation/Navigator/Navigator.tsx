@@ -5,6 +5,7 @@ import IntroScreen from '../../screens/IntroScreen/IntroScreen';
 import TagRecording from '../../screens/TagRecording/TagRecording';
 
 import Diary from '../../screens/Diary/Diary';
+import DiaryDetail from '../../screens/DiaryEdit/DiaryDetail';
 
 import ListView from '../../screens/ListView/ListView';
 
@@ -34,7 +35,12 @@ const Navigator = () => {
 
                     name="Diary"
                     component={Diary}
-                    // options={{ headerShown: false }}
+                    options={{ headerShown: false }}
+                />
+                 <RootStack.Screen
+                    name="DiaryDetail"
+                    component={DiaryDetail}
+                    options={{ headerShown: false }}
                 />
                 {/* <RootStack.Screen
                     name="Login"
