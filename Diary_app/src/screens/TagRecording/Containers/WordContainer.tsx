@@ -8,10 +8,14 @@ const StyledButtonContainer = styled(View)`
     flex-direction: row;
     align-items: center;
     flex-wrap: wrap;
-    `
+    border-width:2px;
+    border-color: white;
+    height: auto;
+`
 
 //tag for user input or recorded ones
 function WordContainer(content: any & JSX.Element): JSX.Element {
+
     return (
         <StyledButtonContainer>
             {
