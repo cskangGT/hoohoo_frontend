@@ -9,7 +9,6 @@ import WordContainer from './Containers/WordContainer'
 import UserTextInput from './Containers/UserTextInput';
 // import * as speech from './speechUtils';
 import RecordingButton from './RecordingButton'
-import styled from 'styled-components';
 const StyledTagWord = styled(TouchableOpacity)`
     border-width: 1px;
     border-color: orange;
