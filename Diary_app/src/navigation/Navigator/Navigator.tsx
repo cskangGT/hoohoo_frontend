@@ -5,7 +5,6 @@ import IntroScreen from '../../screens/IntroScreen/IntroScreen';
 import TagRecording from '../../screens/TagRecording/TagRecording';
 import MonthlyView from '../../screens/MonthlyView/MonthlyView';
 import Diary from '../../screens/Diary/Diary';
-import ListView from '../../screens/ListView/ListView';
 
 
 const RootStack = createNativeStackNavigator();
@@ -33,13 +32,9 @@ const Navigator = () => {
 
                     name="Diary"
                     component={Diary}
-                // options={{ headerShown: false }}
-                />
-                <RootStack.Screen
-                    name="ListView"
-                    component={ListView}
                     options={{ headerShown: false }}
                 />
+
                 <RootStack.Screen
                     name="MonthlyView"
                     component={MonthlyView}
