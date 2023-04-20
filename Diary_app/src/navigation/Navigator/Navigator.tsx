@@ -3,8 +3,12 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import IntroScreen from '../../screens/IntroScreen/IntroScreen';
 import TagRecording from '../../screens/TagRecording/TagRecording';
+
 import Diary from '../../screens/Diary/Diary';
 import DiaryDetail from '../../screens/DiaryEdit/DiaryDetail';
+
+import ListView from '../../screens/ListView/ListView';
+
 
 const RootStack = createNativeStackNavigator();
 // 각 화면 전환 될 수 있는 기본 틀 제공
@@ -15,7 +19,7 @@ const Navigator = () => {
         // 네비 트리 관리 컴포넌트 
         <NavigationContainer>
             {/* 네비게이션 기본 스택 생성 */}
-            <RootStack.Navigator initialRouteName="Diary">
+            <RootStack.Navigator initialRouteName="TagRecording">
                 {/* 스택에 들어갈 화면 컴포넌트들  */}
                 <RootStack.Screen
                     name="IntroScreen"
@@ -25,9 +29,10 @@ const Navigator = () => {
                 <RootStack.Screen
                     name="TagRecording"
                     component={TagRecording}
-                    options={{ headerShown: false }}
+                // options={{ headerShown: false }}
                 />
                 <RootStack.Screen
+
                     name="Diary"
                     component={Diary}
                     options={{ headerShown: false }}
@@ -40,9 +45,13 @@ const Navigator = () => {
                 {/* <RootStack.Screen
                     name="Login"
                     component={Login}
+
+                    name="ListView"
+                    component={ListView}
+
                     options={{ headerShown: false }}
                 />
-                <RootStack.Screen
+                {/* <RootStack.Screen
                     name="Main"
                     component={Main}
                     options={{ headerShown: false }}

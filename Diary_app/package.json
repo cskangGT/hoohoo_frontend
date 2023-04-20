@@ -13,6 +13,13 @@
     "postinstall": "react-native setup-ios-permissions && pod-install"
   },
   "dependencies": {
+<<<<<<< HEAD
+=======
+    "@google-cloud/resource-manager": "^4.1.1",
+    "@google-cloud/speech": "^5.3.0",
+    "@google-cloud/storage": "^6.0.0",
+    "node-record-lpcm16": "^1.0.1",
+>>>>>>> main
     "@react-native-community/masked-view": "^0.1.11",
     "@react-native-voice/voice": "^3.2.4",
     "@react-navigation/native": "^6.1.4",
@@ -28,7 +35,14 @@
     "react-native-permissions": "^3.8.0",
     "react-native-safe-area-context": "^4.5.0",
     "react-native-screens": "^3.20.0",
+<<<<<<< HEAD
     "react-navigation": "^4.4.4"
+=======
+    "react-native-sound": "^0.11.2",
+    "react-native-sound-player": "^0.13.2",
+    "react-navigation": "^4.4.4",
+    "sox": "^0.1.0"
+>>>>>>> main
   },
   "devDependencies": {
     "@babel/cli": "^7.21.0",
