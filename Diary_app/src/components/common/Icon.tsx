@@ -6,13 +6,14 @@ interface Props {
     onPress?: () => void;
     source: any;
     style?: {};
+    imageStyle?: {};
 }
 
 const MyIcon = (props: Props) => {
-    const { onPress, source, style } = props;
+    const { onPress, source, style, imageStyle } = props;
     return (
         <TouchableOpacity onPress={onPress} style={style}>
-            <Image source={source} />
+            <Image source={source} style={imageStyle} />
         </TouchableOpacity>
     )
 };

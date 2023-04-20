@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, Text} from "react-native";
+import { TouchableOpacity, Text } from "react-native";
 import styled from 'styled-components';
 
 
@@ -18,12 +18,9 @@ const Container = styled(TouchableOpacity)`
 
 const ButtonText = styled(Text)`
   /* align-items: center; */
-  align-self: center;
-  font-weight: bold;
-  font-size: 16px;
 `;
 
-interface Props{
+interface Props {
     title: string;
     onPress: () => void;
     backgroundColor?: string;
@@ -35,16 +32,16 @@ interface Props{
 
 
 const CustomButton = (props: Props) => {
-    
-    const {title, onPress, backgroundColor, color, width, height} = props;
+
+    const { title, onPress, backgroundColor, color, width, height } = props;
     return (
-        <Container 
-            style={{backgroundColor, height, width}}
+        <Container
+            style={{ backgroundColor, height, width }}
             onPress={onPress}>
-                <ButtonText style={{color}} >{title}</ButtonText>
+            <ButtonText style={{ color }} >{title}</ButtonText>
 
         </Container>
-        
+
     )
 }
 

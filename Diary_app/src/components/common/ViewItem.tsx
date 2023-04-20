@@ -3,8 +3,8 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import styled from 'styled-components';
 import Tag from './Tag';
 import MyIcon from './Icon';
-const photo = require('../../assets/IconPhoto.png');
-const diary = require('../../assets/IconDiary.png');
+const photo = require('../../assets/gallery.png');
+const diary = require('../../assets/Text.png');
 const ItemContainer = styled(TouchableOpacity)`
     height: 80px;
     margin-top: 10px;
@@ -70,7 +70,7 @@ const ViewItem = (prop: Props) => {
                 <Date> {item.date} </Date>
                 <IconContainer>
                     {
-                        item.isPhoto && <MyIcon source={photo} style={{ marginTop: 5, marginRight: 5 }} />
+                        item.isPhoto && <MyIcon source={photo} style={{ marginTop: 5, marginRight: 5 }} imageStyle={{ width: 25, height: 25 }} />
                     }
                     {
                         item.isDiary && <MyIcon source={diary} style={{ marginTop: 5, marginRight: 5 }} />
