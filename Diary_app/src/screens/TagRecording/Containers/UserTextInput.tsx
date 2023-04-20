@@ -13,15 +13,17 @@ function UserTextInput(props: any): JSX.Element {
     return (
         <TextInput
             style={{
-                fontSize: 80, width: '100%', borderWidth: 1, padding: 10, borderBottomColor: 'white', borderTopColor: 'white'
+                alignSelf: 'center',
+                justifyContent: 'center', fontSize: 60, padding: 10, borderBottomColor: 'white', borderBottomWidth: 2, width: '80%'
             }}
             //when the textinput is touched, automatically switch to Type mode!
             onFocus={() => {
                 if (props.currTypeButton === "Type Mode") {
                     props.switchMode()
                 }
-            }
-            }
+            }}
+            autoCapitalize='sentences'
+            autoCorrect={false}
             pointerEvents="none"
             ref={props.focusOnInput}
             onChangeText={(text: string) => {

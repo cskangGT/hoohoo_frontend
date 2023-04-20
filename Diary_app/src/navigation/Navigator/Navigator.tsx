@@ -32,7 +32,6 @@ const Navigator = () => {
                 // options={{ headerShown: false }}
                 />
                 <RootStack.Screen
-
                     name="Diary"
                     component={Diary}
                     options={{ headerShown: false }}
