@@ -19,7 +19,7 @@ interface Props {
 }
 
 
-const CustomButton = (props: Props) => {
+const ImageButton = (props: Props) => {
 
     const { style, src, onPress, imageStyle } = props;
     return (
@@ -34,4 +34,4 @@ const CustomButton = (props: Props) => {
     )
 }
 
-export default CustomButton;
+export default ImageButton;

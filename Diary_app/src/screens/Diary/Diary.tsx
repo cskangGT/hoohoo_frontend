@@ -60,6 +60,7 @@ const FadeInOutText = (props: any) => {
         <Animated.View style={{
             opacity: fadeAnim,
         }}>
+            {/* {droplet} */}
             <Text
                 numberOfLines={1}
                 adjustsFontSizeToFit={true}
@@ -173,7 +174,7 @@ function Diary(): JSX.Element {
 
     const [showAll, setShowAll] = useState<boolean>(false)
     useEffect(() => {
-        let delay = (count == -1)?0:4000
+        let delay = (count == -1) ? 0 : 4000
         const interval = setInterval(() => {
             if (count < texts.length) {
                 let updatedContent: JSX.Element[] = [];
@@ -242,7 +243,7 @@ function Diary(): JSX.Element {
                             </FadeInOutText>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => {
-                            navigation.navigate('DiaryDetail', { index: index })
+                            navigation.navigate("DiaryDetail", { index: index })
                         }
                         } style={{
                             // borderColor: 'white',

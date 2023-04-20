@@ -5,37 +5,44 @@ import { TextInput } from 'react-native';
 import { showPlusButtonEx } from './FunctionComponents';
 import PhotoZone from './PhotoZone';
 
+const Container = styled(View)`
+    padding-top: 5px;
+    padding-bottom: 5px;
+`;
 const StyledHorizontallyAlignedItems = styled(View)`
-flex-direction: row;
- justify-content: center;
- align-items: center;
- flex:1;
- padding-horizontal: 20;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex:1;
+    padding-horizontal: 20px;
 `
 const StyledButtonText = styled(Text)`
-font-size: 25;
-text-align: center;
-color: white;
+    font-size: 25px;
+    text-align: center;
+    color: white;
 `
 const StyledTextInput = styled(TextInput)`
-border-radius: 25;
-border-color: white;
-border-width: 1;
-padding: 15px;
-color:white;
-placeholderTextColor:white;
+    border-radius: 25px;
+    border-color: white;
+    width:100%;
+    text-align: left;
+    border-width: 1px;
+    padding: 15px;
+    color:white;
+    font-family: 'Comfortaa-Regular';
 `
 function NoteArea(props: any): JSX.Element {
     return (props.note)
 }
 export let setWriteDiaryEx: React.Dispatch<React.SetStateAction<boolean>>;
 export let writeDiaryEx: boolean
+
 function NoteZone(): JSX.Element {
 
     const [writeDiary, setWriteDiary] = useState<boolean>(false)
     setWriteDiaryEx = setWriteDiary
     writeDiaryEx = writeDiary
-    const [text, setText] = useState<string>()
+    const [text, setText] = useState<string>();
     const textinputref = useRef<TextInput>(null)
     if (writeDiary) {
         textinputref.current?.focus()
@@ -45,22 +52,24 @@ function NoteZone(): JSX.Element {
         placeholder='Add a note'
         value={text}
         multiline={true}
-        onChangeText={(text) => { setText(text); }}
+        // onChangeText={(text) => { setText(text); }}
         onFocus={() => {
             setWriteDiary(true)
 
             // showPlusButtonEx(false)
         }}
+        onBlur={() => {
+            setText(text);
+            console.log("Blurred");
+
+        }}
         placeholderTextColor="white"
         style={{
-            width: 150,
-            height: 500,
-            textAlignVertical: 'top', 
-            textAlign: 'left',
-        }}
-    />)
+            textAlignVertical: 'top',
+        }} />)
+
     return (
-        <View>
+        <Container >
             {/* textinput on/off */}
             {/* {writeDiary && */}
             <View >
@@ -73,7 +82,7 @@ function NoteZone(): JSX.Element {
                         justifyContent: 'flex-end', alignItems: 'flex-end'
                     }}
                 >
-                    {
+                    {/* {
                         writeDiary &&
                         <TouchableOpacity onPress={() => { console.log("save the text"); setWriteDiary(false); showPlusButtonEx(true) }}
                             style={{
@@ -83,18 +92,18 @@ function NoteZone(): JSX.Element {
                                 backgroundColor: '#8FDF70',
                                 width: 50
                             }}>
-                            {/* save a note */}
+                            
                             <StyledButtonText>
                                 &#10003;
                             </StyledButtonText>
                         </TouchableOpacity>
-                    }
+                    } */}
 
 
                 </StyledHorizontallyAlignedItems>
             </View>
             {/* } */}
-        </View >)
+        </Container >)
 }
 export default NoteZone
 

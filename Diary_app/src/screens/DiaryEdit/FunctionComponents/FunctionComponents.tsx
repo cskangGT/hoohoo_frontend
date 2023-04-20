@@ -3,95 +3,109 @@ import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { ScrollView, Image } from 'react-native';
 import { TextInput } from 'react-native';
-import { countEx, setCountEx, enableDeleteEx, setEnableDeleteEx } from '../DiaryDetail';
-import { openCameraEx, openGalleryEx } from './PhotoZone';
-import { setWriteDiaryEx, writeDiaryEx } from './NoteZone';
-const icon_camera = require('../FunctionComponents/icons/camera.png');
-const icon_gallery = require('../FunctionComponents/icons/gallery.png');
-const icon_note = require('../FunctionComponents/icons/note.png');
+import { countEx, setCountEx, enableDeleteEx, setEnableDeleteEx, stackComponentEx, setStackComponentEx } from '../DiaryDetail';
+import PhotoZone, { openCameraEx, openGalleryEx } from './PhotoZone';
+import NoteZone, { setWriteDiaryEx, writeDiaryEx } from './NoteZone';
+import { TouchableHighlight } from 'react-native-gesture-handler';
+const icon_camera = require('../../../assets/DiaryEditPage/Camera.png');
+const icon_gallery = require('../../../assets/DiaryEditPage/gallery.png');
+const icon_note = require('../../../assets/DiaryEditPage/Note.png');
+const PLUS = require('../../../assets/DiaryEditPage/PLUS.png');
 // const icon_delete = require('../FunctionComponents/icons/delete.png');
-const icon_edit = require('../FunctionComponents/icons/edit.png');
-const StyledHorizontallyAlignedItems = styled(View)`
-flex-direction: row;
- justify-content: center;
- align-items: center;
- flex:1;
- padding-horizontal: 20;
-`
+// const icon_edit = require('../FunctionComponents/icons/edit.png');
+// 여기서 + 버튼을 부활
+// 
+
+// const StyledHorizontallyAlignedItems = styled(View)`
+//     flex-direction: row;
+//     justify-content: center;
+//     align-items: center;
+//     flex:1;
+//     padding-horizontal: 20px;
+// `
 const StyledCircleButton = styled(TouchableOpacity)`
-border-width: 1;
-border-radius: 50;
-background-color: #666666;
-width: 100%;
-height: 50;
-flex: 1;
-justify-content: center;
-align-items: center;
+    border-width: 1px;
+    border-radius: 50px;
+    position: absolute;
+    background-color: #666666;
+    width: 30px;
+    height: 30px;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
 `
 const StyledButtonText = styled(Text)`
-font-size: 25;
-text-align: center;
-color: white;
+    font-size: 21px;
+    text-align: center;
+    color: white;
 `
 
 
 const StyledTextInput = styled(TextInput)`
-border-radius: 50;
-border-color: white;
-border-width: 1;
-padding: 15px;
-color:white;
+    border-radius: 50px;
+    border-color: white;
+    border-width: 1;
+    padding: 15px;
+    color:white;
 `
-export let showPlusButtonEx:any;
-function FunctionComponents(): JSX.Element {
+export let showPlusButtonEx: any;
+interface Props {
+    style?: {};
+}
+function FunctionComponents(props: Props): JSX.Element {
     const enableDelete = enableDeleteEx
     const setEnableDelete = setEnableDeleteEx
 
-    const button_size = 25
+    const button_size = 20
     const start_x = 0
-    const start_y = -button_size;
+    const start_y = 0;
     //camera 
-    const [animation1] = useState(new Animated.ValueXY({ x: start_x, y: start_y }));
+    const [animation1, setAni1] = useState(new Animated.ValueXY({ x: start_x, y: start_y }));
     //gallery
-    const [animation2] = useState(new Animated.ValueXY({ x: start_x, y: start_y }));
+    const [animation2, setAni2] = useState(new Animated.ValueXY({ x: start_x, y: start_y }));
     //note
-    const [animation3] = useState(new Animated.ValueXY({ x: start_x, y: start_y }));
-    //remove
-    const [animation4] = useState(new Animated.ValueXY({ x: start_x, y: start_y }));
-    //edit
-    const [animation5] = useState(new Animated.ValueXY({ x: start_x, y: start_y }));
+    const [animation3, setAni3] = useState(new Animated.ValueXY({ x: start_x, y: start_y }));
+    // //remove
+    // const [animation4] = useState(new Animated.ValueXY({ x: start_x, y: start_y }));
+    // //edit
+    // const [animation5] = useState(new Animated.ValueXY({ x: start_x, y: start_y }));
 
     //the + button not visible by default
     const [visible, setVisible] = useState<boolean>(false)
     const moveComponent = () => {
+        // + 버튼속에 아이콘 높 낮이를 여기서 바꾼다.
+        // 카메라 갤러리 따로.
+        // 텍스트 컴포넌트
+        // 노트존을 하나씩 추가 
         Animated.timing(animation1, {
-            toValue: { x: -100, y: -button_size }, // Move component 100 units to the right and 100 units to the bottom
+            toValue: { x: 0, y: -55 }, // Move component 100 units to the right and 100 units to the bottom
             duration: 500, // Move component for 0.5 second
             useNativeDriver: true, // Use native driver for better performance
         }).start();
         Animated.timing(animation2, {
-            toValue: { x: -75, y: -100 }, // Move component 100 units to the right and 100 units to the bottom
+            toValue: { x: 0, y: -90 }, // Move component 100 units to the right and 100 units to the bottom
             duration: 500, // Move component for 0.5 second
             useNativeDriver: true, // Use native driver for better performance
         }).start();
         Animated.timing(animation3, {
-            toValue: { x: 75, y: -100 }, // Move component 100 units to the right and 100 units to the bottom
+            //높 낮이를 여기서 바꾼다.
+            toValue: { x: 0, y: -125 }, // Move component 100 units to the right and 100 units to the bottom
             duration: 500, // Move component for 0.5 second
             useNativeDriver: true, // Use native driver for better performance
         }).start();
-        Animated.timing(animation4, {
-            toValue: { x: 100, y: -button_size }, // Move component 100 units to the right and 100 units to the bottom
-            duration: 500, // Move component for 0.5 second
-            useNativeDriver: true, // Use native driver for better performance
-        }).start();
-        Animated.timing(animation5, {
-            toValue: { x: 0, y: -150 }, // Move component 100 units to the right and 100 units to the bottom
-            duration: 500, // Move component for 0.5 second
-            useNativeDriver: true, // Use native driver for better performance
-        }).start();
+
+        // Animated.timing(animation4, {
+        //     toValue: { x: 0, y: -180 }, // Move component 100 units to the right and 100 units to the bottom
+        //     duration: 500, // Move component for 0.5 second
+        //     useNativeDriver: true, // Use native driver for better performance
+        // }).start();
+
+
+
     };
     const setTransform = (x: Animated.Value, y: Animated.Value) => {
-        return{
+
+        return {
             transform: [
                 {
                     translateX: x,
@@ -103,57 +117,73 @@ function FunctionComponents(): JSX.Element {
         }
     }
 
+
+
+    // const animatedStyle4 = setTransform(animation4.x, animation4.y)
+    // const animatedStyle5 = setTransform(animation5.x, animation5.y)
+
+    const [isUp, setIsUp] = useState<boolean>(false)
+    const animationReset = () => {
+
+
+        Animated.timing(animation1, {
+            toValue: { x: 0, y: 0 }, // Move component 100 units to the right and 100 units to the bottom
+            duration: 500, // Move component for 0.5 second
+            useNativeDriver: true, // Use native driver for better performance
+        }).start();
+        Animated.timing(animation2, {
+            toValue: { x: 0, y: 0 }, // Move component 100 units to the right and 100 units to the bottom
+            duration: 500, // Move component for 0.5 second
+            useNativeDriver: true, // Use native driver for better performance
+        }).start();
+        Animated.timing(animation3, {
+            //높 낮이를 여기서 바꾼다.
+            toValue: { x: 0, y: 0 }, // Move component 100 units to the right and 100 units to the bottom
+            duration: 500, // Move component for 0.5 second
+            useNativeDriver: true, // Use native driver for better performance
+        }).start();
+
+
+
+    }
     const animatedStyle1 = setTransform(animation1.x, animation1.y)
     const animatedStyle2 = setTransform(animation2.x, animation2.y)
     const animatedStyle3 = setTransform(animation3.x, animation3.y)
-    const animatedStyle4 = setTransform(animation4.x, animation4.y)
-    const animatedStyle5 = setTransform(animation5.x, animation5.y)
-    const animationReset = () => {
-        animation1.setValue({ x: start_x, y: start_y });
-        animation2.setValue({ x: start_x, y: start_y });
-        animation3.setValue({ x: start_x, y: start_y });
-        animation4.setValue({ x: start_x, y: start_y });
-        animation5.setValue({ x: start_x, y: start_y });
-    }
-    
+
     const [showPlusButton, setShowPlusButton] = useState<boolean>(!writeDiaryEx && !enableDelete)
-    const updateShowPlus=(tf:boolean)=>{
+    const updateShowPlus = (tf: boolean) => {
         setShowPlusButton(tf)
     }
-    showPlusButtonEx=updateShowPlus
+    showPlusButtonEx = updateShowPlus
     return (
-        <View >
+        <View style={props.style}>
             {/* if user selects a note button, then stop displaying + button. */}
-            {enableDelete &&
-                <TouchableOpacity onPress={() => { setEnableDelete(false);updateShowPlus(true) }}>
+            {/* {enableDelete &&
+                <TouchableOpacity onPress={() => { setEnableDelete(false); updateShowPlus(true) }}>
                     <Text style={{
                         color: 'white'
                     }}>
                         Cancel
                     </Text>
                 </TouchableOpacity>
-            }
-            {((!writeDiaryEx && !enableDelete)||showPlusButton) &&
-                <StyledCircleButton style={{
-                    position: 'absolute',
-                    // left:'50%',
-                    width: '100%'
-                }}
+            } */}
+            {((!writeDiaryEx && !enableDelete) || showPlusButton) &&
+                <StyledCircleButton
+                    activeOpacity={0.8}
                     onPress={() => {
                         if (!visible) {
                             moveComponent();
+                            setVisible(!visible)
                         } else {
                             animationReset();
+                            setTimeout(() => setVisible(!visible), 300)
                         }
-                        setVisible(!visible);
+
+
                     }}>
-                    <StyledButtonText style={{
-                        position: 'absolute',
-                        // left:'50%',
-                        width: '100%'
-                    }}>
-                        +
-                    </StyledButtonText>
+
+                    <Image source={PLUS} style={{ height: 30, width: 30, borderRadius: 5 }} />
+
                     {visible && //hidden buttons, visible when + button is clicked.
                         <View style={{
                             position: 'absolute',
@@ -163,43 +193,55 @@ function FunctionComponents(): JSX.Element {
                                 position: 'absolute',
                             }, animatedStyle1]}>
                                 <TouchableOpacity
-                                    onPress={() => { openCameraEx(); animationReset(); setVisible(false) }}>
-                                    <Image source={icon_camera} key='camera' style={{ height: 50, width: 50, borderRadius: 50 }} />
+                                    onPress={() => {
+                                        animationReset();
+                                        stackComponentEx.push(<PhotoZone />)
+                                        setStackComponentEx(stackComponentEx)
+                                        setCountEx(countEx + 1)
+                                        // openCameraEx();
+                                        setVisible(false)
+                                    }}>
+                                    <Image source={icon_camera} key='camera' style={{ height: 30, width: 30, borderRadius: 5 }} />
                                 </TouchableOpacity>
                             </Animated.View>
                             <Animated.View style={[{
                                 position: 'absolute',
                             }, animatedStyle2]}>
-                                <TouchableOpacity onPress={() => { openGalleryEx(); animationReset(); setVisible(false) }}>
+                                <TouchableOpacity onPress={() => {
+                                    animationReset();
+                                    stackComponentEx.push(<PhotoZone />)
+                                    setStackComponentEx(stackComponentEx)
+                                    setCountEx(countEx + 1);
+                                    // openGalleryEx();
+                                    setVisible(false)
+                                }}>
                                     {/* open gallery */}
-                                    <Image source={icon_gallery} key='gallery' style={{ height: 50, width: 50, borderRadius: 50 }} />
+                                    <Image source={icon_gallery} key='gallery' style={{ height: 30, width: 30, borderRadius: 5 }} />
                                 </TouchableOpacity>
                             </Animated.View>
                             <Animated.View style={[{
                                 position: 'absolute',
                             }, animatedStyle3]}>
                                 <TouchableOpacity onPress={() => {
-                                    setWriteDiaryEx(true)
-                                    animationReset()
+                                    animationReset();
+                                    stackComponentEx.push(<NoteZone />)
+                                    setStackComponentEx(stackComponentEx)
+                                    setCountEx(countEx + 1)
+                                    // setWriteDiaryEx(true) 
+
                                     setVisible(false)
                                 }}>
-                                    <Image source={icon_note} key='note' style={{ height: 50, width: 50, borderRadius: 50 }} />
+                                    <Image source={icon_note} key='note' style={{ height: 30, width: 30, borderRadius: 5 }} />
                                 </TouchableOpacity>
                             </Animated.View>
-                            <Animated.View style={[{
-                                position: 'absolute',
-                            }, animatedStyle5]}>
-                                <TouchableOpacity onPress={() => { setEnableDelete(true); setVisible(false) }}>
-                                    {/* enable edit mode */}
-                                    <Image source={icon_edit} key='edit' style={{ height: 50, width: 50, borderRadius: 50 }} />
-                                </TouchableOpacity>
-                            </Animated.View>
+
                         </View>
                     }
+
                 </StyledCircleButton>
             }
 
-        </View>
+        </View >
     )
 }
 export default FunctionComponents

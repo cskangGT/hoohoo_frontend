@@ -10,6 +10,14 @@
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Your App needs access to your photo library for uploading photos.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Your App needs access to your photo library for saving photos.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Your App needs access to your camera for taking photos.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Your App needs access to your microphone for recording videos.</string>
 	<key>CFBundleName</key>
 	<string>$(PRODUCT_NAME)</string>
 	<key>CFBundlePackageType</key>
