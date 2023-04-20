@@ -1,7 +1,10 @@
 import Voice from '@react-native-voice/voice';
 import CustomButton from '../../components/common/Button';
 import React, { useEffect, useRef, useState } from 'react'
-import { TouchableHighlight, Text, View,ToastAndroid } from 'react-native';
+
+import { TouchableHighlight, Text, View, ToastAndroid, Image } from 'react-native';
+const microButton = require('../../assets/microphone.png');
+
 
 function RecordingButton(props: any): JSX.Element {
     const [pitch, setPitch] = useState('');
@@ -63,6 +66,7 @@ function RecordingButton(props: any): JSX.Element {
         //Starts listening for speech for a specific locale
         if (started != 'on') {
             try {
+                console.log("Start Recognizing");
 
                 await Voice.start('en-US');
                 setPitch('');
@@ -105,6 +109,7 @@ function RecordingButton(props: any): JSX.Element {
     const destroyRecognizer = async () => {
         //Destroys the current SpeechRecognizer instance
         try {
+            console.log("Destory Recognizing");
             await Voice.destroy();
             setPitch('');
             setError('');
@@ -134,7 +139,7 @@ function RecordingButton(props: any): JSX.Element {
         let result: string = results[0]
 
         if (result !== undefined && result.length < limit && capacity - result.length >= 0) {
-            
+
             result = result.charAt(0).toUpperCase().concat(result.substring(1, result.length))
             for (let i = 0; i < result.length; i++) {
                 let curr = result.charAt(i)
@@ -146,38 +151,34 @@ function RecordingButton(props: any): JSX.Element {
             }
             props.addInputs(result)
             setCapacity(capacity - result.length)
-        }else if(result !== undefined && result.length >=limit){
-            ToastAndroid.show('Max limit exceeded:\nLength of a tag must be less than '+limit, ToastAndroid.SHORT);
-        }else if(result !== undefined && capacity - result.length < 0){
-            ToastAndroid.show('Max capacity exceeded:\nYou have recorded more than '+ cap+ ' letters', ToastAndroid.SHORT);
+        } else if (result !== undefined && result.length >= limit) {
+            ToastAndroid.show('Max limit exceeded:\nLength of a tag must be less than ' + limit, ToastAndroid.SHORT);
+        } else if (result !== undefined && capacity - result.length < 0) {
+            ToastAndroid.show('Max capacity exceeded:\nYou have recorded more than ' + cap + ' letters', ToastAndroid.SHORT);
         }
     }, [results]);
 
 
     return (
-        <View>
+        <View style={{ justifyContent: 'center', alignSelf: 'center' }}>
             {/* operate STT  */}
             {
                 started ? (<TouchableHighlight
                     style={{
-                        backgroundColor: 'red',
-                        padding: 20,
-                        borderRadius: 10,
+
                     }}
                     onPress={destroyRecognizer}
                 >
-                    <Text style={{ textAlign: 'center' }}>{'Recording'}</Text>
+                    <Image source={microButton} style={{ width: 50, height: 50, alignItems: 'center' }} />
                 </TouchableHighlight>)
                     :
                     (<TouchableHighlight
                         style={{
-                            backgroundColor: 'rgb(000,220,020)',
-                            padding: 20,
-                            borderRadius: 10,
+
                         }}
                         onPress={startRecognizing}
                     >
-                        <Text style={{ textAlign: 'center' }}>{'Record'}</Text>
+                        <Image source={microButton} style={{ width: 50, height: 50, alignItems: 'center' }} />
                     </TouchableHighlight>)
             }
 

@@ -126,9 +126,11 @@ const IntroScreen = ({ navigation, route }: any) => {
                 title="Go to TagRecording"
                 onPress={() => navigation.navigate('TagRecording')}
                 backgroundColor="transparent"
+
                 color="white"
                 textStyle={{ textDecorationLine: 'underline', fontSize: 17 }} />
         </ImageBackground>);
+
 };
 
 

@@ -3,13 +3,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import IntroScreen from '../../screens/IntroScreen/IntroScreen';
 import TagRecording from '../../screens/TagRecording/TagRecording';
-
+import MonthlyView from '../../screens/MonthlyView/MonthlyView';
 import Diary from '../../screens/Diary/Diary';
-import DiaryDetail from '../../screens/DiaryEdit/DiaryDetail';
-
 import ListView from '../../screens/ListView/ListView';
-
-
 const RootStack = createNativeStackNavigator();
 // 각 화면 전환 될 수 있는 기본 틀 제공
 
@@ -19,7 +15,7 @@ const Navigator = () => {
         // 네비 트리 관리 컴포넌트 
         <NavigationContainer>
             {/* 네비게이션 기본 스택 생성 */}
-            <RootStack.Navigator initialRouteName="TagRecording">
+            <RootStack.Navigator initialRouteName="MonthlyView">
                 {/* 스택에 들어갈 화면 컴포넌트들  */}
                 <RootStack.Screen
                     name="IntroScreen"
@@ -32,23 +28,19 @@ const Navigator = () => {
                 // options={{ headerShown: false }}
                 />
                 <RootStack.Screen
-
                     name="Diary"
                     component={Diary}
                     options={{ headerShown: false }}
                 />
-                 <RootStack.Screen
-                    name="DiaryDetail"
-                    component={DiaryDetail}
-                    options={{ headerShown: false }}
-                />
-                {/* <RootStack.Screen
-                    name="Login"
-                    component={Login}
 
+                <RootStack.Screen
                     name="ListView"
                     component={ListView}
-
+                    options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                    name="MonthlyView"
+                    component={MonthlyView}
                     options={{ headerShown: false }}
                 />
                 {/* <RootStack.Screen
@@ -56,11 +48,12 @@ const Navigator = () => {
                     component={Main}
                     options={{ headerShown: false }}
                 />
+                {/*
                 <RootStack.Screen
                     name="Signup"
                     component={Signup}
                     options={{ title: '회원가입', headerTitleAlign: 'center' }}
-                /> */}
+                />*/}
             </RootStack.Navigator>
         </NavigationContainer>
     );
