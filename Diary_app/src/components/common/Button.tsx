@@ -23,7 +23,7 @@ interface Props {
     width?: any;
     height?: any;
     margin?: any;
-    textStyle?: {};
+    textStyle?: any;
 }
 
 
@@ -32,7 +32,7 @@ const CustomButton = (props: Props) => {
     const { title, style, onPress, backgroundColor, width, height, textStyle } = props;
     return (
         <Container
-            style={style}
+            style={[{ backgroundColor, height, width }, style]}
             onPress={onPress}>
             <ButtonText style={textStyle} >{title}</ButtonText>
 
