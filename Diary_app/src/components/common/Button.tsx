@@ -10,9 +10,6 @@ const Container = styled(TouchableOpacity)`
 
 const ButtonText = styled(Text)`
   /* align-items: center; */
-  align-self: center;
-  font-weight: bold;
-  font-size: 16px;
 `;
 
 interface Props {

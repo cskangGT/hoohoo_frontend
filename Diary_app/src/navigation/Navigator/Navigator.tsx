@@ -41,9 +41,7 @@ const Navigator = () => {
                     component={DiaryDetail}
                     options={{ headerShown: false }}
                 />
-                {/* <RootStack.Screen
-                    name="Login"
-                    component={Login}
+                <RootStack.Screen
 
                     name="ListView"
                     component={ListView}
@@ -59,7 +57,7 @@ const Navigator = () => {
                     name="Signup"
                     component={Signup}
                     options={{ title: '회원가입', headerTitleAlign: 'center' }}
-                /> */}
+                />*/}
             </RootStack.Navigator>
         </NavigationContainer>
     );
