@@ -125,6 +125,7 @@ function RecordingButton(props: any): JSX.Element {
     };
     // add user Speech to user input states
     useEffect(() => {
+        // console.log("recorded", results, results[0])
         if (results[0] !== undefined) {
             props.addInputs(results[0])
         }
