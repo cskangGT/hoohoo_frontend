@@ -16,9 +16,6 @@ const Container = styled(TouchableOpacity)`
 
 const ButtonText = styled(Text)`
   /* align-items: center; */
-  align-self: center;
-  font-weight: bold;
-  font-size: 16px;
 `;
 
 interface Props {
@@ -35,12 +32,12 @@ interface Props {
 
 const CustomButton = (props: Props) => {
 
-    const { title, style, onPress, backgroundColor, color, width, height, textStyle } = props;
+    const { title, style, onPress, backgroundColor, width, height, textStyle } = props;
     return (
         <Container
             style={[{ backgroundColor, height, width }, style]}
             onPress={onPress}>
-            <ButtonText style={[{ color }, textStyle]} >{title}</ButtonText>
+            <ButtonText style={textStyle} >{title}</ButtonText>
 
         </Container>
 
