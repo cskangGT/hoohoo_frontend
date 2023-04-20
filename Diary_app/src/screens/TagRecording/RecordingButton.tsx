@@ -1,7 +1,9 @@
 import Voice from '@react-native-voice/voice';
 import CustomButton from '../../components/common/Button';
 import React, { useEffect, useRef, useState } from 'react'
-import { TouchableHighlight, Text, View } from 'react-native';
+import { TouchableHighlight, Text, View, Image } from 'react-native';
+
+const microButton = require('../../assets/microphone.png');
 
 function RecordingButton(props: any): JSX.Element {
     const [pitch, setPitch] = useState('');
@@ -63,6 +65,7 @@ function RecordingButton(props: any): JSX.Element {
         //Starts listening for speech for a specific locale
         if (started != 'on') {
             try {
+                console.log("Start Recognizing");
 
                 await Voice.start('en-US');
                 setPitch('');
@@ -105,6 +108,7 @@ function RecordingButton(props: any): JSX.Element {
     const destroyRecognizer = async () => {
         //Destroys the current SpeechRecognizer instance
         try {
+            console.log("Destory Recognizing");
             await Voice.destroy();
             setPitch('');
             setError('');
@@ -137,29 +141,25 @@ function RecordingButton(props: any): JSX.Element {
 
 
     return (
-        <View>
+        <View style={{ justifyContent: 'center', alignSelf: 'center' }}>
             {/* operate STT  */}
             {
                 started ? (<TouchableHighlight
                     style={{
-                        backgroundColor: 'red',
-                        padding: 20,
-                        borderRadius: 10,
+
                     }}
                     onPress={destroyRecognizer}
                 >
-                    <Text style={{ textAlign: 'center' }}>{'Recording'}</Text>
+                    <Image source={microButton} style={{ width: 50, height: 50, alignItems: 'center' }} />
                 </TouchableHighlight>)
                     :
                     (<TouchableHighlight
                         style={{
-                            backgroundColor: 'rgb(000,220,020)',
-                            padding: 20,
-                            borderRadius: 10,
+
                         }}
                         onPress={startRecognizing}
                     >
-                        <Text style={{ textAlign: 'center' }}>{'Record'}</Text>
+                        <Image source={microButton} style={{ width: 50, height: 50, alignItems: 'center' }} />
                     </TouchableHighlight>)
             }
 
