@@ -15,6 +15,7 @@
     "@google-cloud/resource-manager": "^4.1.1",
     "@google-cloud/speech": "^5.3.0",
     "@google-cloud/storage": "^6.0.0",
+    "node-record-lpcm16": "^1.0.1",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-native-voice/voice": "^3.2.4",
     "@react-navigation/native": "^6.1.4",
