@@ -195,7 +195,7 @@ function TagRecording({ navigation, route }: any): JSX.Element {
                             <Text key={index + "del_bt_x"}
                                 style={{
                                     color: 'white',
-                                }}>X</Text>
+                                }}> X </Text>
                         </TouchableOpacity>
                     } */}
                     </StyledTagWord>

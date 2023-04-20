@@ -72,7 +72,7 @@ const DATA: ItemData[] = [
     },
     {
         id: "1", date: "2/15/2022", tags: ["homework", "Dinner", "Graphic Card", "Longterm"],
-        isPhoto: true, isQuote: true, isDiary: false
+        isPhoto: false, isQuote: true, isDiary: false
     },
     {
         id: "2", date: "1/10/2023", tags: ["Taehoon", "Lunch", "expo", "computer"],
@@ -80,7 +80,7 @@ const DATA: ItemData[] = [
     },
     {
         id: "3", date: "5/13/2022", tags: ["Jisan", "Dinner", "Graphic Card", "samsung"],
-        isPhoto: true, isQuote: true, isDiary: true
+        isPhoto: false, isQuote: true, isDiary: true
     }
 ];
 
@@ -107,16 +107,6 @@ const ListView = ({ navigation, route }: any) => {
             keyExtractor={(item) => item.id} />);
     };
 
-    // const filteredData = DATA.filter(item => {1
-    //     const query = searchQuery.toLowerCase();
-    //     const tags = item.tags.join(' ').toLowerCase();
-    //     return tags.includes(query);
-    //     });
-    // console.log('filteredData', filteredData)
-    // useEffect(()=> {
-    //     console.log('filteredData', filteredData)
-    //     console.log('query',searchQuery);
-    // }, [list]);
     return (
         <SafeAreaView source={bg}>
             <NavContainer>
