@@ -33,9 +33,6 @@ const IntroImage = styled(View)`
   margin-left: 10px;
   height: ${windowHeight - 100}px; // 150은 시작버튼을 위해서 남겨준다.
 `;
-// const GoToTagRecording = (nav: any) => {
-
-// };
 
 
 function Anime(props: any & JSX.Element): JSX.Element {
