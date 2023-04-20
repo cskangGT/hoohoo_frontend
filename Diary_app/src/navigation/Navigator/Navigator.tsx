@@ -19,7 +19,7 @@ const Navigator = () => {
         // 네비 트리 관리 컴포넌트 
         <NavigationContainer>
             {/* 네비게이션 기본 스택 생성 */}
-            <RootStack.Navigator initialRouteName="ListView">
+            <RootStack.Navigator initialRouteName="TagRecording">
                 {/* 스택에 들어갈 화면 컴포넌트들  */}
                 <RootStack.Screen
                     name="IntroScreen"
