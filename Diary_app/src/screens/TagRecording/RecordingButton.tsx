@@ -1,7 +1,7 @@
 import Voice from '@react-native-voice/voice';
 import CustomButton from '../../components/common/Button';
 import React, { useEffect, useRef, useState } from 'react'
-import { TouchableHighlight, Text, View } from 'react-native';
+import { TouchableHighlight, Text, View,ToastAndroid } from 'react-native';
 
 function RecordingButton(props: any): JSX.Element {
     const [pitch, setPitch] = useState('');
@@ -125,13 +125,31 @@ function RecordingButton(props: any): JSX.Element {
         setResults(e.value);
         destroyRecognizer();
     };
-
+    const cap = 300
+    const [capacity, setCapacity] = useState<number>(cap)
+    const limit = 30
     // add user Speech to user input states
     useEffect(() => {
         console.log("results", results);
+        let result: string = results[0]
 
-        if (results[0] !== undefined) {
-            props.addInputs(results[0])
+        if (result !== undefined && result.length < limit && capacity - result.length >= 0) {
+            
+            result = result.charAt(0).toUpperCase().concat(result.substring(1, result.length))
+            for (let i = 0; i < result.length; i++) {
+                let curr = result.charAt(i)
+                if (curr == ' ') {
+                    let next = result.charAt(i + 1).toUpperCase()
+                    result = result.substring(0, i).concat(next + result.substring(i + 2, result.length))
+                    console.log("next:", next, "result :", result)
+                }
+            }
+            props.addInputs(result)
+            setCapacity(capacity - result.length)
+        }else if(result !== undefined && result.length >=limit){
+            ToastAndroid.show('Max limit exceeded:\nLength of a tag must be less than '+limit, ToastAndroid.SHORT);
+        }else if(result !== undefined && capacity - result.length < 0){
+            ToastAndroid.show('Max capacity exceeded:\nYou have recorded more than '+ cap+ ' letters', ToastAndroid.SHORT);
         }
     }, [results]);
 
