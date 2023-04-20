@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 
-import { View, Text, Button, TextInput, TouchableOpacity, Keyboard, Switch, Dimensions } from "react-native";
+import { FlatList, View, Text, TouchableHighlight, TextInput, TouchableOpacity, Keyboard, Switch, Dimensions, Image } from "react-native";
 import styled from 'styled-components';
 import msg from '../../data/msg.json';
 import WordContainer from './Containers/WordContainer';
@@ -9,20 +9,22 @@ import UserTextInput from './Containers/UserTextInput';
 import RecordingButton from './RecordingButton';
 import CustomButton from '../../components/common/Button';
 import ImageBackground from '../../components/common/ImageBackground';
+const Xbutton = require('../../assets/remove.png');
 
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 const Container = styled(ImageBackground)`
-    width : 100%;
+    width : 100% ;
     height: 100% ;
-    
 `;
 const ButtonContainer = styled(View)`
     top:5%;
     position: absolute;
-    width:30%;
+    width:100%;
+    margin-left:70%;
+    margin-right:5%;
     border-width: 2px;
     
 `;
@@ -30,8 +32,8 @@ const TagContainers = styled(View)`
     position: absolute;
     top:18%;
     width: 100%;
-    border-width: 2px;
-    border-color: violet;
+    /* border-width: 2px;
+    border-color: violet; */
     height:25%;
     
 `;
@@ -40,17 +42,18 @@ const InputTextContainer = styled(View)`
     top:50%;
     position: absolute;
     width:100%;
-    border-width: 2px;
+    /* border-width: 2px; */
     height:auto;
-    border-color: blue;
+    /* border-color: blue; */
     
 `;
 const SwitchContainer = styled(View)`
     /* top: 110%; */
     top:30%;
+    margin-left: 5%;
     /* position: absolute; */
-    border-width: 2px;
-    border-color: red;
+    /* border-width: 2px;
+    border-color: red; */
 `;
 const RecordingContainer = styled(View)`
     /* border-width: 1px; */
@@ -60,7 +63,56 @@ const RecordingContainer = styled(View)`
     /* top:2000%; */
     position: absolute;
 `;
-function TagRecording(): JSX.Element {
+
+// const StyledTagWord = styled(View)`
+//     border-width: 1px;
+//     border-color: gray;
+//     border-radius: 50px;
+//     padding: 5px;
+//     background-color: rgb(71, 71, 70);
+//     opacity:1;
+//     margin: 5px;
+// `;
+// const InsideTagView = styled(View)`
+//     flex-direction: row;
+// `;
+// const RemoveTagImage = styled(Image)`
+//     width:15px;
+//     height:15px;
+//     padding-right: 5px;
+// `;
+const StyledTagWord = styled(View)`
+  border-width: 1px;
+  border-color: gray;
+  border-radius: 50px;
+  padding: 5px;
+  background-color: rgb(71, 71, 70);
+  opacity: 1;
+  margin-vertical: 5px; /* 수정: margin 속성을 marginVertical과 marginHorizontal로 분리 */
+  margin-horizontal: 5px;
+`;
+
+const InsideTagView = styled(View)`
+  flex-direction: row;
+`;
+
+const RemoveTagImage = styled(Image)`
+  width: 15px;
+  height: 15px;
+  padding-right: 5px;
+`;
+
+const TagText = styled(Text)`
+    color: white;
+`;
+const RemoveButton = styled(TouchableHighlight)`
+    width: 15px;
+    height: 15px;
+    margin-right: 5px;
+`;
+
+
+function TagRecording({ navigation, route }: any): JSX.Element {
 
     function ModeContentContainer(props: any): JSX.Element {
         return (
@@ -68,7 +120,9 @@ function TagRecording(): JSX.Element {
                 {props.content}
             </View>)
     }
+    // tags
     const [inputs, setInputs] = useState<string[]>([])
+    // 
     const [InputContentHolder, setInputContentHolder] = useState<JSX.Element[]>()
     const [recordedInputs, setRecordedInputs] = useState<string[]>([])
     const [recordedContentHolder, setRecordedContentHolder] = useState<JSX.Element[]>()
@@ -95,24 +149,34 @@ function TagRecording(): JSX.Element {
 
     //create tags on the modecontents?
     const createContent = (words: string[], setWords: React.Dispatch<React.SetStateAction<string[]>>, setWordContent: React.Dispatch<React.SetStateAction<JSX.Element[] | undefined>>, editable?: boolean, curr_size?: number) => {
+        const renderItem = ({ item, index }: any) => (
+            <StyledTagWord>
+                <InsideTagView>
+                    <RemoveButton onPress={() => DeleteContent(index, words, setWords, setWordContent, curr_size)}>
+                        <RemoveTagImage source={Xbutton} />
+                    </RemoveButton>
+                    <TagText>{item}</TagText>
+                </InsideTagView>
+            </StyledTagWord>
+        );
         let contentHolder = (
-            words.map((word: string, index: number) => (
-                <View key={index} style={{ backgroundColor: 'transparent' }}>
-                    <TouchableOpacity
-                        style={{
-                            borderWidth: 1,
-                            borderColor: 'orange',
-                            borderRadius: 50,
-                            padding: 10,
-                            backgroundColor: 'transparent',
-                            margin: 5
-                        }}
-                        key={index}>
-                        <Text key={index + "th_user_input_text"}
-                            style={{ color: 'white' }}>{word}</Text>
-                    </TouchableOpacity>
 
-                    {(editable) && //add X button on the top right, when recording or edit button is pressed
+            words.map((word: string, index: number) => (
+                <View>
+                    <StyledTagWord >
+                        <InsideTagView>
+                            <RemoveButton
+                                onPress={() => {
+                                    DeleteContent(index, words, setWords, setWordContent, curr_size)
+                                }}>
+                                <RemoveTagImage source={Xbutton} />
+                            </RemoveButton>
+                            <TagText key={index + word}>
+                                {word}
+                            </TagText>
+                        </InsideTagView>
+
+                        {/* {(editable) && //add X button on the top right, when recording or edit button is pressed
                         <TouchableOpacity
                             key={index + "delete_bt"}
                             style={{
@@ -126,17 +190,20 @@ function TagRecording(): JSX.Element {
                                 width: 25,
                                 height: 25,
                             }}
-                            onPress={() => DeleteContent(index, words, setWords, setWordContent, curr_size)}
+                            onPress={() => }
                         >
                             <Text key={index + "del_bt_x"}
                                 style={{
                                     color: 'white',
-                                }}>X</Text>
+                                }}> X </Text>
                         </TouchableOpacity>
-                    }
+                    } */}
+                    </StyledTagWord>
                 </View>
-            ))
-        )
+            )))
+
+
+
         setWordContent(contentHolder)
     }
     const increaseSize = () => {
@@ -265,13 +332,13 @@ function TagRecording(): JSX.Element {
     return (
         <Container>
             <ButtonContainer>
-                <CustomButton title="Save" onPress={() => {
-                    console.log("first");
-                }} textStyle={{ color: 'white' }} />
-
+                <CustomButton title="See Tags" onPress={() => {
+                    navigation.navigate('Diary')
+                }} style={{ padding: 10 }} textStyle={{ color: 'white', fontSize: 17 }} />
+                {/* 
                 <CustomButton title={isEditable ? "Cancel" : "Edit"} onPress={() => {
                     setIsEditable(!isEditable)
-                }} textStyle={{ color: 'white' }} />
+                }} textStyle={{ color: 'white' }} /> */}
 
             </ButtonContainer>
             <TagContainers>
@@ -283,21 +350,21 @@ function TagRecording(): JSX.Element {
 
             {currTypeButton === "Type Mode" && (
                 <View style={{ top: '70%', position: 'absolute', width: '100 %' }}>
-                    <View style={{}}>
+                    {/* <View style={{}}>
                         <WordContainer content={InputContentHolder as JSX.Element[]} ></WordContainer>
-                    </View>
+                    </View> */}
                     <RecordingContainer style={{ top: windowHeight * 0.1 }}>
                         <RecordingButton addInputs={addInputs}></RecordingButton>
                     </RecordingContainer>
                 </View>
-            )
-            }
-            {
+            )}
+
+            {/* {
                 currTypeButton === "Speech Mode" &&
                 <View style={{ width: '100%', top: '15%', position: 'absolute' }}>
                     <WordContainer content={InputContentHolder as JSX.Element[]}></WordContainer>
                 </View>
-            }
+            } */}
 
         </Container >
     )

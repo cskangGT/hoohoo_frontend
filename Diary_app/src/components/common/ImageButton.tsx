@@ -5,36 +5,29 @@ import styled from 'styled-components';
 
 const Container = styled(TouchableOpacity)`
 
-
 `;
 
-const ButtonImage = styled(Image)`
+const Imagebutton = styled(Image)`
 
-  
 `;
 
 interface Props {
-    src: any;
     style?: {};
+    src: {};
     onPress: () => void;
-    backgroundColor?: string;
-    color?: string;
-    width?: any;
-    height?: any;
-    margin?: any;
-    imagestyle?: {};
+    imageStyle?: {};
 }
 
 
 const ImageButton = (props: Props) => {
 
-    const { src, style, onPress, backgroundColor, width, height, imagestyle } = props;
+    const { style, src, onPress, imageStyle } = props;
     return (
         <Container
             activeOpacity={0.8}
-            style={[{ backgroundColor, height, width }, style]}
+            style={style}
             onPress={onPress}>
-            <ButtonImage source={src} style={imagestyle}></ButtonImage>
+            <Imagebutton source={src} style={imageStyle} />
 
         </Container>
 
