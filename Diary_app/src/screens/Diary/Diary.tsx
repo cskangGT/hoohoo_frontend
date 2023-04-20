@@ -27,12 +27,12 @@ function TagContentHolder(props: any): JSX.Element {
 }
 const HiddenTag = (props: any) => {
     let gif = require('./sample.gif')
- 
+
     const droplet = props.droplet ? (<View>
         <GIF
             source={gif}
             // source={{ uri: gifUri }}
-            style={{ width: 200, height: 200 ,position: 'absolute',}}
+            style={{ width: 200, height: 200, position: 'absolute', }}
             resizeMode="contain"
             autoPlay={true}
             onGIFEnd={() => console.log('GIF ended')}
@@ -63,7 +63,7 @@ const HiddenTag = (props: any) => {
             borderColor: 'red',
             borderWidth: 1
         }}>
-            {droplet}
+            {/* {droplet} */}
             <Text
                 numberOfLines={1}
                 adjustsFontSizeToFit={true}
@@ -178,7 +178,7 @@ function Diary(): JSX.Element {
                         alignItems: 'center'
                     }}>
                         <TouchableOpacity onPress={() => {
-                            navigation.navigate('DiaryDetail', { index: index })
+                            navigation.navigate("DiaryDetail", { index: index })
                         }
                         } style={{
                             borderColor: 'white',

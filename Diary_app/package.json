@@ -9,29 +9,26 @@
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest",
-    "build": "babel src -d lib --source-maps"
+    "build": "babel src -d lib --source-maps",
+    "postinstall": "react-native setup-ios-permissions && pod-install"
   },
   "dependencies": {
-    "@google-cloud/resource-manager": "^4.1.1",
-    "@google-cloud/speech": "^5.3.0",
-    "@google-cloud/storage": "^6.0.0",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-native-voice/voice": "^3.2.4",
     "@react-navigation/native": "^6.1.4",
     "@react-navigation/native-stack": "^6.9.10",
     "@react-navigation/stack": "^6.3.14",
-    "mic": "^2.1.2",
     "node-record-lpcm16": "^1.0.1",
     "react": "18.2.0",
-    "react-native": "0.71.1",
+    "react-native": "0.71.6",
     "react-native-fast-image": "^8.6.3",
     "react-native-gesture-handler": "^2.9.0",
     "react-native-gif": "^1.0.3",
     "react-native-image-picker": "^5.1.0",
+    "react-native-permissions": "^3.8.0",
     "react-native-safe-area-context": "^4.5.0",
     "react-native-screens": "^3.20.0",
-    "react-navigation": "^4.4.4",
-    "sox": "^0.1.0"
+    "react-navigation": "^4.4.4"
   },
   "devDependencies": {
     "@babel/cli": "^7.21.0",
@@ -56,9 +53,31 @@
     "metro-react-native-babel-preset": "0.73.7",
     "prettier": "^2.4.1",
     "react-test-renderer": "18.2.0",
-    "typescript": "4.8.4"
+    "typescript": "4.8.4",
+    "pod-install": "0.1.38"
   },
   "jest": {
     "preset": "react-native"
-  }
+  },
+  "reactNativePermissionsIOS": [
+    "AppTrackingTransparency",
+    "BluetoothPeripheral",
+    "Calendars",
+    "Camera",
+    "Contacts",
+    "FaceID",
+    "LocationAccuracy",
+    "LocationAlways",
+    "LocationWhenInUse",
+    "MediaLibrary",
+    "Microphone",
+    "Motion",
+    "Notifications",
+    "PhotoLibrary",
+    "PhotoLibraryAddOnly",
+    "Reminders",
+    "Siri",
+    "SpeechRecognition",
+    "StoreKit"
+  ]
 }

@@ -1,68 +1,69 @@
 import { CameraOptions, launchCamera, launchImageLibrary } from 'react-native-image-picker';
-import { PermissionsAndroid } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { PermissionsAndroid, Platform } from 'react-native';
+// import { useNavigation } from '@react-navigation/native';
 import { View, Text, Dimensions, TouchableOpacity, FlatList, ScrollView, TextInput } from 'react-native';
 import React, { useState, useEffect, useRef } from 'react';
 import { Image } from 'react-native';
 import styled from 'styled-components';
 import { TouchableHighlight } from 'react-native';
 import { countEx, enableDeleteEx, setCountEx, setEnableDeleteEx } from '../DiaryDetail';
-import { showPlusButtonEx } from './FunctionComponents';
+import ImageButton from '../../../components/common/ImageButton';
+import { PERMISSIONS } from 'react-native-permissions';
+import { check, request, RESULTS } from 'react-native-permissions';
+// import { showPlusButtonEx } from './FunctionComponents';
+const Xbutton = require('../../../assets/DiaryEditPage/remove.png');
+const icon_camera = require('../../../assets/DiaryEditPage/Camera.png');
+const icon_gallery = require('../../../assets/DiaryEditPage/gallery.png');
 
-const icon_camera = require('../FunctionComponents/icons/camera.png');
-const icon_gallery = require('../FunctionComponents/icons/gallery.png');
 
+// const StyledHorizontallyAlignedItems = styled(View)`
+//     flex-direction: row;
+//     justify-content: center;
+//     align-items: center;
+//     flex:1;
+// `
+// // padding-horizontal: 20;
 
-const StyledHorizontallyAlignedItems = styled(View)`
-flex-direction: row;
- justify-content: center;
- align-items: center;
- flex:1;
-
-`
-// padding-horizontal: 20;
-
-const StyledCircleButton = styled(TouchableOpacity)`
-border-width: 1;
-border-radius: 50;
-background-color: #666666;
-width: 100%;
-height: 50;
-flex: 1;
-justify-content: center;
-align-items: center;
-`
-const StyledButtonText = styled(Text)`
-font-size: 25;
-text-align: center;
-color: white;
-`
-
-const photoWidth: number = 200;
-const photoHeight: number = 500;
+// const StyledCircleButton = styled(TouchableOpacity)`
+//     border-width: 1;
+//     border-radius: 50;
+//     background-color: #666666;
+//     width: 100%;
+//     height: 50;
+//     flex: 1;
+//     justify-content: center;
+//     align-items: center;
+// `
+// const StyledButtonText = styled(Text)`
+//     font-size: 25;
+//     text-align: center;
+//     color: white;
+// `
+const photoWidth: number = Dimensions.get('screen').width * 0.95;
+const photoHeight: number = 300;
 //this is for the photozone only!
 //maxwidth = minwidth =photowidth!
 const StyledHorizontalScrollViewOverflow = styled(View)`
-overflow:hidden;
-display: flex;
-border-radius:25;
-maxWidth: 200;
-minWidth: 200;
-maxHeight:500;
-minHeight:500;
+    overflow:hidden;
+    display: flex;
+    border-radius:25px;
+    max-width: ${photoWidth}px;
+    min-width: ${photoWidth}px;
+    max-height:300px;
+    min-height:300px;
 `
 const StyledScrollHorizontalScroll = styled(ScrollView)`
-background-color: #666666AA;
-border-radius:25;
+    background-color: #666666AA;
+    border-radius:20px;
 `
 // paddingHorizontal: 5px;
-const StyledTextInput = styled(TextInput)`
-border-radius: 50;
-border-color: white;
-border-width: 1;
-padding: 15px;
-color:white;
-`
+// const StyledTextInput = styled(TextInput)`
+//     border-radius: 50;
+//     border-color: white;
+//     border-width: 1;
+//     padding: 15px;
+//     color:white;
+// `
 
 export let updatePhotoContentEx: any;
 export let openCameraEx: any;
@@ -73,6 +74,7 @@ function PhotoZone(props: any): JSX.Element {
         saveToPhotos: true,
         mediaType: 'photo'
     }
+
     const [photo, setPhoto] = useState<string[]>([])
     const [photoContent, setPhotoContent] = useState<JSX.Element[]>()
 
@@ -87,21 +89,39 @@ function PhotoZone(props: any): JSX.Element {
     const [photoCount, setPhotoCount] = useState<number>(0)
     const openCamera = async () => {
         try {
-            const granted = await PermissionsAndroid.request(
-                PermissionsAndroid.PERMISSIONS.CAMERA,
-            );
-            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                const result = await launchCamera(options)
-                if (result.assets !== undefined && result.assets[0].uri !== undefined) {
-                    photo.push(result.assets[0].uri)
-                    setPhoto(photo)
-                    setCount(count + 1)
-                    setPhotoCount(photoCount + 1)
-                    // increaseCount()
-                    setEnableDelete(false)
-                    updatePhotoContent()
+            if (Platform.OS === 'android') {
+                const granted = await PermissionsAndroid.request(
+                    PermissionsAndroid.PERMISSIONS.CAMERA,
+                );
+                if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                    const result = await launchCamera(options)
+                    if (result.assets !== undefined && result.assets[0].uri !== undefined) {
+                        photo.push(result.assets[0].uri)
+                        setPhoto(photo)
+                        setCount(count + 1)
+                        setPhotoCount(photoCount + 1)
+                        // increaseCount()
+                        setEnableDelete(false)
+                        updatePhotoContent()
+                    }
+                }
+            } else if (Platform.OS === 'ios') {
+
+                const granted = await request(PERMISSIONS.IOS.CAMERA)
+                if (granted === RESULTS.GRANTED) {
+                    const result = await launchCamera(options)
+                    if (result.assets !== undefined && result.assets[0].uri !== undefined) {
+                        photo.push(result.assets[0].uri)
+                        setPhoto(photo)
+                        setCount(count + 1)
+                        setPhotoCount(photoCount + 1)
+                        // increaseCount()
+                        setEnableDelete(false)
+                        updatePhotoContent()
+                    }
                 }
             }
+
         } catch (error) {
             console.log(error) // handle error
         }
@@ -140,9 +160,9 @@ function PhotoZone(props: any): JSX.Element {
     const [currPage, setCurrPage] = useState<number>(0);
 
 
-    //Æ÷Åä¿¡ »õ·Î¿î°ªÀÌ µé¾î¿Ô´Ù¸é, Áï°¢ ÄÁÅÙÃ÷¸¦ ¾÷µ¥ÀÌÆ®.
+    //í¬í† ì— ìƒˆë¡œìš´ê°’ì´ ë“¤ì–´ì™”ë‹¤ë©´, ì¦‰ê° ì»¨í…ì¸ ë¥¼ ì—…ë°ì´íŠ¸.
     const updatePhotoContent = () => {
-        if (photo.length == 0) {
+        if (photo.length === 0) {
             return
         }
         let contentHolder = (
@@ -160,26 +180,20 @@ function PhotoZone(props: any): JSX.Element {
                         key={index + 'xview'}
                         style={{ position: 'absolute', right: 0 }}>
                         {
-                            enableDelete &&
+                            enableDeleteEx &&
                             //must componentize this. (duplicate code in diaryedit)
-                            <TouchableHighlight
+                            <ImageButton
+                                src={Xbutton}
                                 key={index + 'xtouch'}
                                 onPress={() => { deletePhoto(enableDelete, index) }}
                                 style={{
                                     borderRadius: 50,
-                                    borderColor: 'white',
-                                    backgroundColor: 'black',
-                                    width: 25,
-                                    height: 25,
-                                }}>
-                                <Text style={{
-                                    color: 'white',
-                                    textAlign: 'center'
+                                    width: 20,
+                                    height: 20,
                                 }}
-                                    key={index + 'Xtext'}>
-                                    X
-                                </Text>
-                            </TouchableHighlight>
+                                imagestyle={{ width: 20, height: 20 }} />
+
+
                         }
                     </View>
                 </View>
@@ -220,15 +234,21 @@ function PhotoZone(props: any): JSX.Element {
 
 
     const handleScroll = (event: any) => {
-        const offsetX = event.nativeEvent.contentOffset.x;
+        const offsetX = event.nativeEvent.contentOffset.x; // 100
         let page: number = Math.floor(offsetX / photoWidth);
 
-        if (offsetX - page * photoWidth > photoWidth / 2) {
-            scrollViewRef.current?.scrollTo({ x: (page + 1) * photoWidth, animated: true });
-            page = page + 1;
-        } else {
-            scrollViewRef.current?.scrollTo({ x: page * photoWidth, animated: true });
-        }
+
+        // if (offsetX - page * photoWidth > photoWidth / 2) { // right ì ˆë°˜ì„ ë„˜ê²¼ë‹¤
+        //     // console.log("x value ", (page + 1) * photoWidth);
+
+        //     scrollViewRef.current?.scrollTo({ x: (page + 1) * photoWidth, animated: true });
+        //     page = page + 1;
+
+        // } else { // ì ˆë°˜ì„ ì•ˆë„˜ì—ˆë‹¤.
+        //     // console.log("x value not increment ", (page) * photoWidth);
+        //     scrollViewRef.current?.scrollTo({ x: page * photoWidth, animated: true });
+
+        // }
         setCurrPage(page)
     };
     const pictureAdd = (
@@ -236,12 +256,9 @@ function PhotoZone(props: any): JSX.Element {
             flex: 1, justifyContent: 'center', alignItems: 'center',
             width: photoWidth,
             height: photoHeight,
-            borderWidth: 1,
-            borderColor: 'blue'
         }}>
             {!pictureOptionVisible &&
                 <View style={{
-                    borderColor: 'blue',
                     justifyContent: 'center',
                     alignItems: 'center',
                 }}>
@@ -264,6 +281,7 @@ function PhotoZone(props: any): JSX.Element {
                     </TouchableOpacity>
                     <Text style={{
                         color: 'white',
+                        paddingTop: 15,
                     }}>
                         Add a picture
                     </Text>
@@ -276,11 +294,11 @@ function PhotoZone(props: any): JSX.Element {
                 }}>
                     <TouchableOpacity
                         onPress={() => { openCameraEx(); setPictureOptionVisible(false); }}>
-                        <Image source={icon_camera} key='camera' style={{ height: 50, width: 50, borderRadius: 50 }} />
+                        <Image source={icon_camera} key='camera' style={{ height: 50, width: 50, borderRadius: 20 }} />
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => { openGalleryEx(); setPictureOptionVisible(false); }}>
                         {/* open gallery */}
-                        <Image source={icon_gallery} key='gallery' style={{ height: 50, width: 50, borderRadius: 50 }} />
+                        <Image source={icon_gallery} key='gallery' style={{ height: 50, width: 50, borderRadius: 20 }} />
                     </TouchableOpacity>
                 </View>
             }
@@ -288,10 +306,11 @@ function PhotoZone(props: any): JSX.Element {
     )
 
     return (
-        <View>
+        <View style={{ marginVertical: 10 }}>
             <StyledHorizontalScrollViewOverflow >
                 <StyledScrollHorizontalScroll
                     ref={scrollViewRef}
+                    scrollEventThrottle={photoWidth}
                     pagingEnabled={true}
                     onScroll={handleScroll} horizontal={true} showsHorizontalScrollIndicator={false}>
                     {
@@ -320,5 +339,3 @@ function PhotoZone(props: any): JSX.Element {
     );
 };
 export default PhotoZone;
-
-
