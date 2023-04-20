@@ -1,11 +1,10 @@
 import Voice from '@react-native-voice/voice';
 import CustomButton from '../../components/common/Button';
 import React, { useEffect, useRef, useState } from 'react'
-import { TouchableHighlight, Text, View } from 'react-native';
 
+import { TouchableHighlight, Text, View, ToastAndroid, Image } from 'react-native';
+const microButton = require('../../assets/microphone.png');
 
-let stop: boolean = false;
-let pr: any = null;
 
 function RecordingButton(props: any): JSX.Element {
     const [pitch, setPitch] = useState('');
@@ -33,15 +32,12 @@ function RecordingButton(props: any): JSX.Element {
         setError(JSON.stringify(e.error));
     };
 
-    const onSpeechResults = (e: any) => {
-        //Invoked when SpeechRecognizer is finished recognizing
-        //console.log('onSpeechResults: ', e);
-        setResults(e.value);
-    };
 
     const onSpeechPartialResults = (e: any) => {
         //Invoked when any results are computed
         //console.log('onSpeechPartialResults: ', e);
+        console.log("e_partial results:", e);
+
         setPartialResults(e.value);
     };
 
@@ -70,6 +66,7 @@ function RecordingButton(props: any): JSX.Element {
         //Starts listening for speech for a specific locale
         if (started != 'on') {
             try {
+                console.log("Start Recognizing");
 
                 await Voice.start('en-US');
                 setPitch('');
@@ -81,7 +78,7 @@ function RecordingButton(props: any): JSX.Element {
 
             } catch (e) {
                 //eslint-disable-next-line
-                // console.error(e);
+                console.error(e);
             }
         }
     };
@@ -89,11 +86,13 @@ function RecordingButton(props: any): JSX.Element {
     const stopRecognizing = async () => {
         //Stops listening for speech
         try {
+            setStarted('');
+            setEnd('');
             await Voice.stop();
 
         } catch (e) {
             //eslint-disable-next-line
-            //console.error(e);
+            console.error(e);
         }
     };
 
@@ -103,13 +102,14 @@ function RecordingButton(props: any): JSX.Element {
             await Voice.cancel();
         } catch (e) {
             // eslint-disable-next-line
-            //console.error(e);
+            console.error(e);
         }
     };
 
     const destroyRecognizer = async () => {
         //Destroys the current SpeechRecognizer instance
         try {
+            console.log("Destory Recognizing");
             await Voice.destroy();
             setPitch('');
             setError('');
@@ -120,29 +120,68 @@ function RecordingButton(props: any): JSX.Element {
 
         } catch (e) {
             //eslint-disable-next-line
-            //console.error(e);
+            console.error(e);
         }
     };
+    const onSpeechResults = (e: any) => {
+        //Invoked when SpeechRecognizer is finished recognizing
+        //console.log('onSpeechResults: ', e);
+        console.log("e:", e);
+        setResults(e.value);
+        destroyRecognizer();
+    };
+    const cap = 300
+    const [capacity, setCapacity] = useState<number>(cap)
+    const limit = 30
     // add user Speech to user input states
     useEffect(() => {
-        // console.log("recorded", results, results[0])
-        if (results[0] !== undefined) {
-            props.addInputs(results[0])
+        console.log("results", results);
+        let result: string = results[0]
+
+        if (result !== undefined && result.length < limit && capacity - result.length >= 0) {
+
+            result = result.charAt(0).toUpperCase().concat(result.substring(1, result.length))
+            for (let i = 0; i < result.length; i++) {
+                let curr = result.charAt(i)
+                if (curr == ' ') {
+                    let next = result.charAt(i + 1).toUpperCase()
+                    result = result.substring(0, i).concat(next + result.substring(i + 2, result.length))
+                    console.log("next:", next, "result :", result)
+                }
+            }
+            props.addInputs(result)
+            setCapacity(capacity - result.length)
+        } else if (result !== undefined && result.length >= limit) {
+            ToastAndroid.show('Max limit exceeded:\nLength of a tag must be less than ' + limit, ToastAndroid.SHORT);
+        } else if (result !== undefined && capacity - result.length < 0) {
+            ToastAndroid.show('Max capacity exceeded:\nYou have recorded more than ' + cap + ' letters', ToastAndroid.SHORT);
         }
-    }, [results])
+    }, [results]);
+
+
     return (
-        <View>
+        <View style={{ justifyContent: 'center', alignSelf: 'center' }}>
             {/* operate STT  */}
-            <TouchableHighlight
-                style={{
-                    backgroundColor: started ? 'red' : 'rgb(000,220,020)',
-                    padding: 20,
-                    borderRadius: 10,
-                }}
-                onPress={startRecognizing}
-            >
-                <Text>{started ? 'Recording' : 'Record'}</Text>
-            </TouchableHighlight>
+            {
+                started ? (<TouchableHighlight
+                    style={{
+
+                    }}
+                    onPress={destroyRecognizer}
+                >
+                    <Image source={microButton} style={{ width: 50, height: 50, alignItems: 'center' }} />
+                </TouchableHighlight>)
+                    :
+                    (<TouchableHighlight
+                        style={{
+
+                        }}
+                        onPress={startRecognizing}
+                    >
+                        <Image source={microButton} style={{ width: 50, height: 50, alignItems: 'center' }} />
+                    </TouchableHighlight>)
+            }
+
         </View>
     )
 }
