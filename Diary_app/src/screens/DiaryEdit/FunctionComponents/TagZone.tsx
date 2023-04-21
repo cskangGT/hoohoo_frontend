@@ -1,5 +1,5 @@
 import { View, Text, Image, TouchableHighlight, TouchableOpacity } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { enableDeleteEx, setEnableDeleteEx } from '../DiaryDetail';
 import ImageButton from '../../../components/common/ImageButton';
@@ -82,6 +82,33 @@ const ViewText = styled(Text)`
     color: white;
     font-size: 17px;  
 `;
+
+type ItemData = {
+    id: string;
+    date: string;
+    tags: string[];
+    isPhoto: boolean;
+    isQuote: boolean;
+    isDiary: boolean;
+};
+const DATA: ItemData[] = [
+    {
+        id: "0", date: "4/21/2023", tags: ["Determine", "ItIsPossible", "HardTimes", "NeverGiveUp", "ListenToMyVoice"],
+        isPhoto: false, isQuote: false, isDiary: false
+    },
+    {
+        id: "1", date: "4/15/2023", tags: ["Homework", "TryHard", "ILoveThis", "Longterm"],
+        isPhoto: true, isQuote: true, isDiary: false
+    },
+    {
+        id: "2", date: "4/11/2023", tags: ["Pizza", "Lunch", "GirlFriend", "Expo"],
+        isPhoto: true, isQuote: true, isDiary: true
+    },
+    {
+        id: "3", date: "4/10/2023", tags: ["NeverGiveUp", "Dinner", "BeBrave", "Samsung"],
+        isPhoto: false, isQuote: true, isDiary: true
+    }
+];
 export let updateTagContentEx: any;
 //get stirng[] content data from DiaryDetail.
 function TagZone(props: any): JSX.Element {
@@ -89,7 +116,9 @@ function TagZone(props: any): JSX.Element {
     const [content, setContent] = useState<string[]>(props.content)
     const navigation = useNavigation();
 
-
+    useEffect(() => {
+        setContent(DATA[parseInt(key)].tags)
+    }, [key])
     //things to be exported
     const [tagZoneContent, setTagZoneContent] = useState<JSX.Element[]>(
         content.map((title: string, index: number) => (

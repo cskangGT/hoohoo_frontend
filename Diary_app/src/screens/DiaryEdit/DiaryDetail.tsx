@@ -121,14 +121,14 @@ function DiaryEdit(route: any): JSX.Element {
     console.log("screenHeight", screenHeight);
     console.log("width", screenWidth);
     // const jsonId = route.route.params.id
-    const index = route.route.params.index
-    DATA[index].date
+    const index: string = route.route.params.index
+    let datestring = DATA[parseInt(index)].date
     const navigation = useNavigation();
 
     const data = diaryData.data
     const data2 = sample.entries[11]
     const [date, setDate] = useState(new Date());
-    const [content, setContent] = useState<string[]>(DATA[index].tags)
+    const [content, setContent] = useState<string[]>(DATA[parseInt(index)].tags)
     const [count, setCount] = useState<number>(0)
     // this is including tag components
     const [enableDelete, setEnableDelete] = useState<boolean>(false)
@@ -140,27 +140,28 @@ function DiaryEdit(route: any): JSX.Element {
     setCountEx = setCount
     stackComponentEx = stackComponent
     setStackComponentEx = setStackComponent
-    const jsonDate = data[index].date;
+    // const jsonDate = data[index].date;
     const months: string[] = ["January", "Febrary", "March", "April", "May",
         "June", "July", "August", "September", "October", "November", "December"];
 
 
 
+    console.log("content", content);
 
 
 
 
-    const dateStringFormat = () => {
-        let dateStr: string = date.toLocaleDateString();;
+    const dateStringFormat = (dateStr: string) => {
+        // let dateStr: string = date.toLocaleDateString()
         let day: string = dateStr.split("/")[1];
         let month: string = months[parseInt(dateStr.split("/")[0]) - 1];
         let year: string = dateStr.split("/")[2];
         let dateFormat: string = day + " " + month + " " + year;
         return dateFormat
     }
-    let dateFormat: string = dateStringFormat()
+    let dateFormat: string = dateStringFormat(datestring)
     useEffect(() => {
-        dateFormat = dateStringFormat()
+        dateFormat = dateStringFormat(datestring)
     }, [date]);
 
     const initStackComponent = () => {
@@ -195,9 +196,16 @@ function DiaryEdit(route: any): JSX.Element {
         } // end delete mode, show plus button
         setStackComponent(stackComponentEx)
         updateTagContentEx();
+        console.log("content2", content);
+
         if (updatePhotoContentEx !== undefined)
             updatePhotoContentEx();
-    }, [enableDelete, count, content]);
+        setContent(DATA[parseInt(index)].tags)
+        console.log("content3", content);
+
+    }, [enableDelete, count, index, content]);
+
+    console.log("content22", content);
 
     return (
         <StyledBackgroundView source={background}>
@@ -205,7 +213,7 @@ function DiaryEdit(route: any): JSX.Element {
             {
                 stackComponent.length === 0 ?
                     <View style={{ top: '4%' }}>
-                        <TagZone content={content} index={index} />
+                        <TagZone content={DATA[parseInt(index)].tags} index={index} />
                         <View style={{ height: '100 %' }}>
 
                             <Placeholder style={{ top: '20 %' }}>
@@ -214,7 +222,7 @@ function DiaryEdit(route: any): JSX.Element {
                         </View>
                     </View> :
                     <ScrollView style={{ top: '4%', maxHeight: '80%' }}>
-                        <TagZone content={content} />
+                        <TagZone content={DATA[parseInt(index)].tags} index={index} />
                         <StyledHorizontallyAlignedItems>
                             {
                                 stackComponent.map((component, index) => (
