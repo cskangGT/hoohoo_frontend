@@ -104,6 +104,14 @@
     {
       "path": "src/assets/fonts/README.txt",
       "sha1": "aa12c181c60eb75a7aeef2444ce1f11034070b6d"
+    },
+    {
+      "path": "src/assets/fonts/Zumattan.ttf",
+      "sha1": "6db75c23b587793af458f43f791ecc6b43425f8b"
+    },
+    {
+      "path": "src/assets/fonts/info.txt",
+      "sha1": "3aa0f503ba22318f8f9221e843158c67f7e6bc64"
     }
   ]
 }
