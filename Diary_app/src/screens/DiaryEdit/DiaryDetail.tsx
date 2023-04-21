@@ -209,7 +209,7 @@ function DiaryEdit(route: any): JSX.Element {
                 <ContainerTransition>
 
                     <ImageButton src={arrow_ListView} onPress={() => {
-                        navigation.navigate('IntroPage')
+                        navigation.navigate('ListView')
                     }} />
                 </ContainerTransition>
             </FooterContainer>

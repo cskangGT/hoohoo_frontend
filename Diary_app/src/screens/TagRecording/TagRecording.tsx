@@ -1,11 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
 
-import { FlatList, View, Text, TouchableHighlight, TextInput, TouchableOpacity, Keyboard, Switch, Dimensions, Image } from "react-native";
+import { View, Text, TouchableHighlight, TextInput, TouchableOpacity, Keyboard, Switch, Dimensions, Image } from "react-native";
 import styled from 'styled-components';
 import msg from '../../data/msg.json';
 import WordContainer from './Containers/WordContainer';
 import UserTextInput from './Containers/UserTextInput';
-// import * as speech from './speechUtils';
 import RecordingButton from './RecordingButton';
 import CustomButton from '../../components/common/Button';
 import ImageBackground from '../../components/common/ImageBackground';

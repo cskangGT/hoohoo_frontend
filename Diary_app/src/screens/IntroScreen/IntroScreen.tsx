@@ -122,13 +122,11 @@ const IntroScreen = ({ navigation, route }: any) => {
 
             </IntroImage>
             <CustomButton
-                style={{ position: 'absolute', bottom: '5 %', left: '24 %' }}
+                style={{ position: 'absolute', bottom: '5 %', left: '30 %' }}
                 title="Go to TagRecording"
                 onPress={() => navigation.navigate('TagRecording')}
                 backgroundColor="transparent"
-
-                color="white"
-                textStyle={{ textDecorationLine: 'underline', fontSize: 17 }} />
+                textStyle={{ fontSize: 17, color: 'white' }} />
         </ImageBackground>);
 
 };
