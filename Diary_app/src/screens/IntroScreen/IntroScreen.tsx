@@ -30,6 +30,7 @@ const Background = styled(View)`
 `;
 
 const IntroImage = styled(View)`
+/* font-family: Arial, Helvetica, sans-serif; */
   width: ${windowWidth - 20}px;
   position: absolute;
   margin-left: 10px;
@@ -122,11 +123,11 @@ const IntroScreen = ({ navigation, route }: any) => {
 
             </IntroImage>
             <CustomButton
-                style={{ position: 'absolute', bottom: '5 %', left: '30 %' }}
-                title="Go to TagRecording"
+                style={{ position: 'absolute', bottom: '10 %', justifySelf: 'center', alignSelf: 'center' }}
+                title="START"
                 onPress={() => navigation.navigate('TagRecording')}
                 backgroundColor="transparent"
-                textStyle={{ fontSize: 17, color: 'white' }} />
+                textStyle={{ fontSize: 35, color: 'white', fontFamily: 'Zumattan' }} />
 
         </ImageBackground>);
 };
