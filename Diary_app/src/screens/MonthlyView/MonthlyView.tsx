@@ -5,7 +5,7 @@ import Calendar from './Calendar';
 import CustomButton from '../../components/common/Button';
 import { useState } from 'react';
 
-const night = require('../../assets/Night3.png');
+const night = require('../../assets/DiaryEditPage/Background.png');
 const Background = styled(ImageBackground)`
     width: 100%;
     height: 100%;
@@ -13,7 +13,7 @@ const Background = styled(ImageBackground)`
 const ContentContainer = styled(View)`
     width : 100%;
     height: 100%;
-    top : 10%;
+    top : 20%;
 `;
 const Grid = styled(View)`
     flex: 1;

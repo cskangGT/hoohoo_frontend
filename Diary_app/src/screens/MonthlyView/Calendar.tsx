@@ -82,24 +82,25 @@ const DateText = styled(Text)`
     text-align: center;
 
 `;
-const DATA = [
+const DATA: any = [
     {
-        id: "0", date: "2023-04-10", tags: ["Jisan", "Lunch", "react", "computer"],
-        isPhoto: false, isDiary: false
+        id: "0", date: "4/21/2023", tags: ["Determine", "ItIsPossible", "HardTimes", "NeverGiveUp"],
+        isPhoto: false, isQuote: false, isDiary: false
     },
     {
-        id: "1", date: "2023-04-14", tags: ["homework", "Dinner", "Graphic Card", "Longterm"],
-        isPhoto: true, isDiary: true
+        id: "1", date: "4/15/2023", tags: ["Homework", "TryHard", "ILoveThis", "Longterm"],
+        isPhoto: true, isQuote: true, isDiary: false
     },
     {
-        id: "2", date: "2023-04-03", tags: ["Taehoon", "Lunch", "expo", "computer"],
-        isPhoto: true, isDiary: false
+        id: "2", date: "4/11/2023", tags: ["Pizza", "Lunch", "GirlFriend", "Expo"],
+        isPhoto: true, isQuote: true, isDiary: true
     },
     {
-        id: "3", date: "2023-04-25", tags: ["Jisan", "Dinner", "Graphic Card", "samsung"],
-        isPhoto: false, isDiary: true
+        id: "3", date: "4/10/2023", tags: ["NeverGiveUp", "Dinner", "BeBrave", "Samsung"],
+        isPhoto: false, isQuote: true, isDiary: true
     }
 ];
+
 // global state management required.
 
 const FadeStar = ({ starImage, frequency }: { starImage: any, frequency: number }) => {
@@ -231,10 +232,10 @@ const Calendar = () => {
     const data_date: number[] = [];
     for (let i = 0; i < DATA.length; i++) {
         let str: string = DATA[i].date;
-        let date_split: string[] = str.split('-');
-        y_data = date_split[0]; // yyyy
-        m_data = date_split[1]; // mm
-        data_date.push(parseInt(date_split[2]));
+        let date_split: string[] = str.split('/');
+        y_data = date_split[2]; // yyyy
+        m_data = date_split[0]; // mm
+        data_date.push(parseInt(date_split[1]));
     }
     const curr_date = moment().format('YYYY-MM-DD');
     let curr_split: string[] = curr_date.split("-");
@@ -328,9 +329,7 @@ const Calendar = () => {
         });
 
     }
-    console.log("I look into this", month_text);
-    console.log("I look into this", year_text);
-    console.log("date", date);
+
 
     const onMonthYearChange = (mm: number, yyyy: string) => {
 
