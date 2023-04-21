@@ -1,13 +1,17 @@
 
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Image, Animated, Text, TouchableOpacity, Easing } from 'react-native';
+import { View, StyleSheet, Image, Animated, Text, TouchableOpacity, Easing, Dimensions } from 'react-native';
 import diaryData from '../../data/diaryData.json'
 import { useNavigation } from '@react-navigation/native';
 
 import GIF from 'react-native-gif';
-
+const next_Detail = require("../../assets/DiaryEditPage/SideButton.png")
+const replay = require("../../assets/replay.png")
 // import Sound from 'react-native-sound';
 // import SoundPlayer from 'react-native-sound-player'
+
+const WIDTH = Dimensions.get('window').width
+const HEIGHT = Dimensions.get('window').height
 
 function TagContentHolder(props: any): JSX.Element {
     let contentHolder: JSX.Element = (
@@ -60,32 +64,43 @@ const FadeInOutText = (props: any) => {
         <Animated.View style={{
             opacity: fadeAnim,
         }}>
-            {/* {droplet} */}
-            <Text
-                numberOfLines={1}
-                adjustsFontSizeToFit={true}
-                minimumFontScale={0.1}
-                style={{
-                    color: 'white',
-                    fontSize: 30,
-                    fontFamily: 'Comfortaa-Regular'
+            {
+                props.isButton &&
+                <Image
+                    style={{
+                        width: 50,
+                        height: 50
+                    }}
+                    source={props.source}
+                />
+            }
+            {
+                !props.isButton &&
+                <Text
+                    numberOfLines={1}
+                    adjustsFontSizeToFit={true}
+                    minimumFontScale={0.1}
+                    style={{
+                        color: 'white',
+                        fontSize: 25,
+                        fontFamily: 'Comfortaa-Regular'
 
-                }}>
-                {props.text}
-            </Text>
-
+                    }}>
+                    {props.text}
+                </Text>
+            }
         </Animated.View>
     );
 };
 
 const HiddenTag = (props: any) => {
+
     let gif = require('./droplet.gif')
-    let gifSize = 200 + props.text.length * 5
-    let adjust = 30 //used to adjust the location of droplet on a word.
+    let gifSize = WIDTH / 2 + props.text.length * 5
+    let adjust = WIDTH / 15 //used to adjust the location of droplet on a word.
     const droplet = (props.droplet || props.showAll) ? (<View>
         <GIF
             source={gif}
-            // source={{ uri: gifUri }}
             style={{
                 width: gifSize, height: gifSize, position: 'absolute', top: -gifSize / 2 + adjust, left: -gifSize / 2, right: 0, marginLeft: 'auto', marginRight: 'auto'
             }}
@@ -94,11 +109,12 @@ const HiddenTag = (props: any) => {
             loop={false}
         />
     </View>) : (<View></View>)
-    let left = props.index % 2 == 0 ? -100 + props.text.length * 5 : 100 - props.text.length * 5
+
+    let left = props.index % 2 == 0 ? -WIDTH / 3 + props.text.length * 5 : WIDTH / 3 - props.text.length * 5
     return (
         <View style={{
             // width: 400,
-            height: 90,
+            height: '13%',
 
         }}>
             {(props.droplet || props.showAll) &&
@@ -132,24 +148,6 @@ const HiddenTag = (props: any) => {
 }
 
 function Diary(): JSX.Element {
-    // const playMusic = () => {
-    //     console.log("play it")
-    //     const sound = new Sound('rainsound.mp3', Sound.MAIN_BUNDLE, (error) => {
-    //         if (error) {
-    //             console.log('Failed to load the sound', error);
-    //             return;
-    //         }
-    //     });
-    //     console.log("soundosund", sound)
-    //     sound.play((success) => {
-    //         if (success) {
-    //             console.log('successfully finished playing');
-    //         } else {
-    //             console.log('playback failed due to audio decoding errors');
-    //         }
-    //     });
-    //     sound.setVolume(1);
-    // };
 
 
     const [viewButtons, setViewButtons] = useState<boolean>(false)
@@ -216,7 +214,7 @@ function Diary(): JSX.Element {
                 }>Play Music</Text>
             </TouchableOpacity> */}
             <View style={{
-                marginTop: 50
+                marginTop: '7.5%' //50
             }}>
                 <TagContentHolder content={tagContent} />
             </View>
@@ -224,40 +222,48 @@ function Diary(): JSX.Element {
             <View style={{
                 position: 'absolute',
                 bottom: 0,
-                height: 100,
+                height: '15%', //100
                 alignSelf: 'center'
             }}>
                 {viewButtons &&
                     <View style={{
-                        alignItems: 'center'
+                        // alignItems: 'center',
+                        flexDirection: 'row', justifyContent: 'center',
+                        padding: '5%'
                     }}>
-                        <TouchableOpacity onPress={() => { setCount(-1); setViewButtons(false); }}>
+                        <TouchableOpacity
+                            style={{
+                                width: '50%'
+                            }}
+                            onPress={() => { setCount(-1); setViewButtons(false); }}>
                             <FadeInOutText
                                 style={{
-                                    color: 'white'
+                                    color: 'white',
                                 }}
-                                text="Replay"
+                                // text="Replay"
+                                isButton={true}
+                                source={replay}
                                 stay={true}
                                 continue={true}>
                             </FadeInOutText>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => {
-                            navigation.navigate("DiaryDetail", { index: index })
-                        }
-                        } style={{
-                            // borderColor: 'white',
-                            // borderWidth: 1,
-                            borderRadius: 25,
-                            width: 150,
-                            alignItems: 'center',
-                            padding: 5
-
-                        }}>
+                        <TouchableOpacity
+                            style={{
+                                width: '50%',
+                                flexDirection: 'row',
+                                justifyContent: 'flex-end'
+                            }}
+                            onPress={() => {
+                                navigation.navigate("DiaryDetail", { index: index })
+                            }}>
                             <FadeInOutText
                                 style={{
-                                    color: 'white'
+                                    color: 'white',
+                                    alignSelf: 'flex-end'
                                 }}
-                                text="Continue"
+                                // text="Continue"
+                                isButton={true}
+                                source={next_Detail}
                                 stay={true}
                                 continue={true}
                             >

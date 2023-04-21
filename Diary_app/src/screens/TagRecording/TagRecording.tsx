@@ -25,8 +25,6 @@ const ButtonContainer = styled(View)`
     width:100%;
     margin-left:70%;
     margin-right:5%;
-    
-    
 `;
 const TagContainers = styled(View)`
     position: absolute;
@@ -111,7 +109,7 @@ const RemoveButton = styled(TouchableHighlight)`
     margin-right: 5px;
 `;
 
-const tags_group = ["Determine", "ItIsPossible", "HardTimes", "NeverGiveUp", "ListenToMyVoice"]
+const tags_group = ["Determine", "ItIsPossible", "HardTimes", "ListenToMyVoice"]
 
 function TagRecording({ navigation, route }: any): JSX.Element {
 
