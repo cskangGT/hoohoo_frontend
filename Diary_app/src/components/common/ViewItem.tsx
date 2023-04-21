@@ -1,7 +1,8 @@
 import React from 'react'
 import { View, Text, TouchableOpacity } from 'react-native';
 import styled from 'styled-components';
-import Tag from './Tag';
+
+import Tag from '../common/Tag';
 import MyIcon from './Icon';
 const photo = require('../../assets/gallery.png');
 const diary = require('../../assets/Text.png');
