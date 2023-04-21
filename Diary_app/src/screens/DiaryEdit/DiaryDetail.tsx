@@ -80,7 +80,32 @@ const ContainerTransition = styled(View)`
     /* border-color: white;
     border-width: 1px; */
 `;
-
+type ItemData = {
+    id: string;
+    date: string;
+    tags: string[];
+    isPhoto: boolean;
+    isQuote: boolean;
+    isDiary: boolean;
+};
+const DATA: ItemData[] = [
+    {
+        id: "0", date: "4/21/2023", tags: ["Determine", "ItIsPossible", "HardTimes", "NeverGiveUp", "ListenToMyVoice"],
+        isPhoto: false, isQuote: false, isDiary: false
+    },
+    {
+        id: "1", date: "4/15/2023", tags: ["Homework", "TryHard", "ILoveThis", "Longterm"],
+        isPhoto: true, isQuote: true, isDiary: false
+    },
+    {
+        id: "2", date: "4/11/2023", tags: ["Pizza", "Lunch", "GirlFriend", "Expo"],
+        isPhoto: true, isQuote: true, isDiary: true
+    },
+    {
+        id: "3", date: "4/10/2023", tags: ["NeverGiveUp", "Dinner", "BeBrave", "Samsung"],
+        isPhoto: false, isQuote: true, isDiary: true
+    }
+];
 type ItemProps = { title: string, index: number };
 const texts = ["Determine", "ItIsPossible", "HardTimes", "NeverGiveUp", "ListenToMyVoice"];
 
@@ -96,14 +121,14 @@ function DiaryEdit(route: any): JSX.Element {
     console.log("screenHeight", screenHeight);
     console.log("width", screenWidth);
     // const jsonId = route.route.params.id
-    // const index = route.route.params.index
-    const index = 1
+    const index = route.route.params.index
+    DATA[index].date
     const navigation = useNavigation();
 
     const data = diaryData.data
     const data2 = sample.entries[11]
     const [date, setDate] = useState(new Date());
-    const [content, setContent] = useState<string[]>(texts)
+    const [content, setContent] = useState<string[]>(DATA[index].tags)
     const [count, setCount] = useState<number>(0)
     // this is including tag components
     const [enableDelete, setEnableDelete] = useState<boolean>(false)

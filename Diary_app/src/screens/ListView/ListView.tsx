@@ -67,7 +67,7 @@ type ItemData = {
 };
 const DATA: ItemData[] = [
     {
-        id: "0", date: "4/21/2023", tags: ["Determine", "ItIsPossible", "HardTimes", "NeverGiveUp"],
+        id: "0", date: "4/21/2023", tags: ["Determine", "ItIsPossible", "HardTimes", "NeverGiveUp", "ListenToMyVoice"],
         isPhoto: false, isQuote: false, isDiary: false
     },
     {

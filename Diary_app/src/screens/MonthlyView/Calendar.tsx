@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { PanGestureHandler, State } from 'react-native-gesture-handler';
 import CalendarModal from './CalendarModal';
 import CustomButton from '../../components/common/Button';
+import { useNavigation } from '@react-navigation/native';
 
 // import Button from './../../components/common/Button';
 const star1 = require('../../assets/star1.png');
@@ -18,26 +19,6 @@ const SearchContainer = styled(View)`
     display: flex;
     flex-direction: row;
     padding-bottom: 7%;
-`;
-const MonthInput = styled(TouchableOpacity)`
-    flex: 1 10%;
-    font-size: 30px;
-    width: 20%;
-    font-weight: bold;
-    color : white;
-    background-color: transparent;
-    padding-left: 30%;
-`;
-
-const YearInput = styled(TouchableOpacity)`
-    flex: 1 15%;
-    font-size: 30px;
-    padding-right: 30%;
-    width:20%;
-    font-weight: bold;
-    color : white;
-    background-color: transparent;
-    align-items: center;
 `;
 
 const Row = styled(View)`
@@ -122,8 +103,8 @@ const FadeStar = ({ starImage, frequency }: { starImage: any, frequency: number 
     );
 };
 const Calendar = () => {
-
-
+    const navigation = useNavigation();
+    const data_inverse = { "21": "0", "15": "1", "11": "2", "10": "3" }
     const months = ["Jan", "Feb", "Mar", "Apr",
         "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     const weekDays = ["Su", "M", "T", "W", "Th", "F", "Sa"];
@@ -305,7 +286,10 @@ const Calendar = () => {
             } else {
                 return (
                     <Element
-                        onPress={() => console.log('item', item)}>
+                        onPress={() => {
+                            item = String(item)
+                            navigation.navigate('DiaryDetail', { index: data_inverse[item] })
+                        }}>
                         {handlerElement(item)}
                     </Element>
                 );
