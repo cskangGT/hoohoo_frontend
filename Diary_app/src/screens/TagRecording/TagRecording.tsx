@@ -123,7 +123,13 @@ function TagRecording({ navigation, route }: any): JSX.Element {
     const [inputs, setInputs] = useState<string[]>([])
     // 
     const [InputContentHolder, setInputContentHolder] = useState<JSX.Element[]>()
-    const [recordedInputs, setRecordedInputs] = useState<string[]>([])
+    const [recordedInputs, setRecordedInputs] = useState<string[]>(["Determine",
+        "Think",
+        "ItIsPossible",
+        "HardTimes",
+        "MyTwenities",
+        "NeverGiveUp",
+        "ListenToMyVoice"])
     const [recordedContentHolder, setRecordedContentHolder] = useState<JSX.Element[]>()
     const [size, setSize] = useState<number>(0)
     const [isEditable, setIsEditable] = useState<boolean>(false);
@@ -162,13 +168,14 @@ function TagRecording({ navigation, route }: any): JSX.Element {
 
             words.map((word: string, index: number) => (
                 <View>
-                    <StyledTagWord >
-                        <InsideTagView>
+                    <StyledTagWord key={index + "a"}>
+                        <InsideTagView key={index + "b"}>
                             <RemoveButton
+                                key={index + "c"}
                                 onPress={() => {
                                     DeleteContent(index, words, setWords, setWordContent, curr_size)
                                 }}>
-                                <RemoveTagImage source={Xbutton} />
+                                <RemoveTagImage key={index + "d"} source={Xbutton} />
                             </RemoveButton>
                             <TagText key={index + word}>
                                 {word}
