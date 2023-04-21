@@ -127,13 +127,7 @@ const IntroScreen = ({ navigation, route }: any) => {
                 title="START"
                 onPress={() => navigation.navigate('TagRecording')}
                 backgroundColor="transparent"
-<<<<<<< Updated upstream
-                textStyle={{ fontSize: 17, color: 'white' }} />
-=======
                 textStyle={{ fontSize: 35, color: 'white', fontFamily: 'Zumattan' }} />
-
-        </ImageBackground>);
->>>>>>> Stashed changes
 
         </ImageBackground>);
 };
