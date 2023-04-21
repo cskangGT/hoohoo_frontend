@@ -167,9 +167,8 @@ function Diary(): JSX.Element {
     const text5: string = data[index].content[4]
     const text6: string = data[index].content[5]
     const text7: string = data[index].content[6]
-
-    const texts = [text1, text2, text3, text4, text5, text6, text7]
-
+    // const texts = [text1, text2, text3, text4, text5, text6, text7]
+    const texts = ["Determine", "ItIsPossible", "HardTimes", "NeverGiveUp", "ListenToMyVoice"];
     const [tagContent, setTagContent] = useState<JSX.Element[]>([]);
 
     const [showAll, setShowAll] = useState<boolean>(false)
