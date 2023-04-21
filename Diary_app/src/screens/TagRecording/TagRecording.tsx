@@ -21,10 +21,11 @@ const Container = styled(ImageBackground)`
 const ButtonContainer = styled(View)`
     top:5%;
     position: absolute;
+    align-items: center;
     width:100%;
     margin-left:70%;
     margin-right:5%;
-    border-width: 2px;
+    
     
 `;
 const TagContainers = styled(View)`
@@ -110,6 +111,7 @@ const RemoveButton = styled(TouchableHighlight)`
     margin-right: 5px;
 `;
 
+const tags_group = ["Determine", "ItIsPossible", "HardTimes", "NeverGiveUp", "ListenToMyVoice"]
 
 function TagRecording({ navigation, route }: any): JSX.Element {
 
@@ -123,9 +125,9 @@ function TagRecording({ navigation, route }: any): JSX.Element {
     const [inputs, setInputs] = useState<string[]>([])
     // 
     const [InputContentHolder, setInputContentHolder] = useState<JSX.Element[]>()
-    const [recordedInputs, setRecordedInputs] = useState<string[]>([])
+    const [recordedInputs, setRecordedInputs] = useState<string[]>(tags_group)
     const [recordedContentHolder, setRecordedContentHolder] = useState<JSX.Element[]>()
-    const [size, setSize] = useState<number>(0)
+    const [size, setSize] = useState<number>(tags_group.length)
     const [isEditable, setIsEditable] = useState<boolean>(false);
 
     const DeleteContent = (index: number, words: string[], setWords: React.Dispatch<React.SetStateAction<string[]>>, setWordContent: React.Dispatch<React.SetStateAction<JSX.Element[] | undefined>>, curr_size?: number) => {
@@ -331,7 +333,7 @@ function TagRecording({ navigation, route }: any): JSX.Element {
     return (
         <Container>
             <ButtonContainer>
-                <CustomButton title="See Tags" onPress={() => {
+                <CustomButton title="Save" onPress={() => {
                     navigation.navigate('Diary')
                 }} style={{ padding: 10 }} textStyle={{ color: 'white', fontSize: 17 }} />
                 {/* 
