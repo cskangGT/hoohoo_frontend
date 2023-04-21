@@ -13,7 +13,8 @@ import { useNavigation } from '@react-navigation/native';
 import sample from '../../data/data.json';
 
 const background = require('../../assets/DiaryEditPage/Background.png');
-const arrow_ListView = require('../../assets/DiaryEditPage/SideButton.png');
+const arrow_ListView = require('../../assets/DiaryEditPage/arrow_right.png');
+const arrow_tagPage = require('../../assets/DiaryEditPage/arrow_left.png');
 const microButton = require('../../assets/DiaryEditPage/microphone.png');
 const screenWidth: number = Dimensions.get('window').width;
 const screenHeight: number = Dimensions.get('window').height;
@@ -47,7 +48,7 @@ const FooterContainer = styled(View)`
     position: absolute; // Set position to absolute
     justify-content: space-between;
     align-self: baseline;
-    align-items: center;
+    /* align-items: center; */
     width: 95%;
     bottom: 4%; // Position the component 10 units from the bottom
     left: 2.5%;
@@ -56,7 +57,7 @@ const FooterContainer = styled(View)`
 `;
 const TextDateContainer = styled(View)`
     padding:5px;
-    margin-left: 10%;
+    align-self: flex-end;
     /* margin-left:35%; */
     /* align-self: center; */
     background-color: #3a3535;
@@ -81,6 +82,7 @@ const ContainerTransition = styled(View)`
 `;
 
 type ItemProps = { title: string, index: number };
+const texts = ["Determine", "ItIsPossible", "HardTimes", "NeverGiveUp", "ListenToMyVoice"];
 
 //things to be used in other files 
 export let countEx: number;
@@ -94,14 +96,14 @@ function DiaryEdit(route: any): JSX.Element {
     console.log("screenHeight", screenHeight);
     console.log("width", screenWidth);
     // const jsonId = route.route.params.id
-    const index = route.route.params.index
-
+    // const index = route.route.params.index
+    const index = 1
     const navigation = useNavigation();
 
     const data = diaryData.data
     const data2 = sample.entries[11]
     const [date, setDate] = useState(new Date());
-    const [content, setContent] = useState<string[]>(data[index].content)
+    const [content, setContent] = useState<string[]>(texts)
     const [count, setCount] = useState<number>(0)
     // this is including tag components
     const [enableDelete, setEnableDelete] = useState<boolean>(false)
@@ -135,7 +137,6 @@ function DiaryEdit(route: any): JSX.Element {
     useEffect(() => {
         dateFormat = dateStringFormat()
     }, [date]);
-    console.log("dateFormat", dateFormat);
 
     const initStackComponent = () => {
 
@@ -200,11 +201,17 @@ function DiaryEdit(route: any): JSX.Element {
                         </StyledHorizontallyAlignedItems>
                     </ScrollView>
             }
-            <FooterContainer >
-                <FunctionComponents style={{
-                    alignSelf: 'center',
-                    justifyContent: 'center',
-                }} />
+            <FooterContainer>
+                <View style={{ flexDirection: 'column-reverse' }}>
+                    <ImageButton src={arrow_tagPage} onPress={() => { navigation.navigate('Diary') }} />
+                    <FunctionComponents style={{
+
+                        width: '100%', marginBottom: 50
+                        // alignSelf: 'center',
+                        // justifyContent: 'center',
+                    }} />
+
+                </View>
                 <TextDateContainer><TextDate>{dateFormat}</TextDate></TextDateContainer>
                 <ContainerTransition>
 

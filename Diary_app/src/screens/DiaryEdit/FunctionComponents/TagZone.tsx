@@ -25,6 +25,7 @@ const HeaderContainer = styled(View)`
     width: 100%;
     align-items: center;
     flex-direction: row;
+    justify-content: space-between;
     /* border-width: 1px;
     border-color: white; */
     height: 40px;
@@ -180,10 +181,10 @@ function TagZone(props: any): JSX.Element {
         <TagContainer>
             <HeaderContainer>
                 <HeaderText>Yes, It's your day : ) </HeaderText>
-                <ButtontoView onPress={() => { navigation.navigate('Diary', { index: key }) }}>
+                {/* <ButtontoView onPress={() => { navigation.navigate('Diary', { index: key }) }}>
                     <ViewText >
                         View
-                    </ViewText></ButtontoView>
+                    </ViewText></ButtontoView> */}
                 <View style={{ width: '20%', alignItems: 'center' }}>
                     <ImageButton src={microButton} onPress={() => {
                         navigation.navigate('TagRecording', { index: key })
