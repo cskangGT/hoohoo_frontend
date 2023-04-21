@@ -26,7 +26,7 @@ const Navigator = () => {
                 <RootStack.Screen
                     name="TagRecording"
                     component={TagRecording}
-                // options={{ headerShown: false }}
+                    options={{ headerShown: false }}
                 />
                 <RootStack.Screen
                     name="Diary"
@@ -38,10 +38,6 @@ const Navigator = () => {
                     component={DiaryEdit}
                     options={{ headerShown: false }}
                 />
-                {/* <RootStack.Screen
-                    name="Login"
-                    component={Login}
-
                 <RootStack.Screen
                     name="ListView"
                     component={ListView}
@@ -51,6 +47,12 @@ const Navigator = () => {
                     name="MonthlyView"
                     component={MonthlyView}
                     options={{ headerShown: false }}
+                />
+                {/* <RootStack.Screen
+                    name="Login"
+                    component={Login}
+
+                
                 />
                 {/* <RootStack.Screen
                     name="Main"
