@@ -14,7 +14,7 @@ function UserTextInput(props: any): JSX.Element {
         <TextInput
             style={{
                 alignSelf: 'center',
-                justifyContent: 'center', fontSize: 60, padding: 10, borderBottomColor: 'white', borderBottomWidth: 2, width: '80%'
+                justifyContent: 'center', fontSize: 60, padding: 10, borderBottomColor: 'white', borderBottomWidth: 2, width: '80%', color: "white"
             }}
             //when the textinput is touched, automatically switch to Type mode!
             onFocus={() => {
