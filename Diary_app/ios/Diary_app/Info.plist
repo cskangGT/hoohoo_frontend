@@ -49,6 +49,7 @@
 	<string/>
 	<key>UIAppFonts</key>
 	<array>
+		<string>Zumattan.ttf</string>
 		<string>fonts/Comfortaa-Regular.ttf</string>
 		<string>fonts/Poppins-Regular.ttf</string>
 		<string>Comfortaa-Bold.ttf</string>

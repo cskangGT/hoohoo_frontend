@@ -30,6 +30,7 @@ const CustomButton = (props: Props) => {
     return (
         <Container
             style={[{ backgroundColor, height, width }, style]}
+            activeOpacity={0.7}
             onPress={onPress}>
             <ButtonText style={textStyle} >{title}</ButtonText>
         </Container>
