@@ -132,6 +132,7 @@ const HiddenTag = (props: any) => {
 }
 
 function Diary(): JSX.Element {
+<<<<<<< Updated upstream
     // const playMusic = () => {
     //     console.log("play it")
     //     const sound = new Sound('rainsound.mp3', Sound.MAIN_BUNDLE, (error) => {
@@ -150,6 +151,12 @@ function Diary(): JSX.Element {
     //     });
     //     sound.setVolume(1);
     // };
+=======
+   
+    //list of moving rectangles that will show each tag one by one
+    const [rect, setRect] = useState<JSX.Element[]>([<MovingRect title={DATA[0].title} index={0}  key = {DATA[0].title+0} />]);
+    const [index, setIndex] = useState<number>(1);
+>>>>>>> Stashed changes
 
 
     const [viewButtons, setViewButtons] = useState<boolean>(false)
@@ -174,6 +181,7 @@ function Diary(): JSX.Element {
 
     const [showAll, setShowAll] = useState<boolean>(false)
     useEffect(() => {
+<<<<<<< Updated upstream
         let delay = (count == -1) ? 0 : 4000
         const interval = setInterval(() => {
             if (count < texts.length) {
@@ -231,6 +239,36 @@ function Diary(): JSX.Element {
                 {viewButtons &&
                     <View style={{
                         alignItems: 'center'
+=======
+        if (index < DATA.length) {
+            rect.push(<MovingRect title={DATA[index].title} index={index} key = {DATA[index].title+index} />);
+            setRect(rect)
+        }
+        setTimeout(() => {
+            setIndex(index + 1);
+        }, 3000);
+    }, [index]);
+
+    const [tagContentHeight, setTagContentHeight] = useState<number>(0)
+    const windowHeight = Dimensions.get('window').height
+    const getHeight = (event: LayoutChangeEvent) => {
+        const tagHeight = event.nativeEvent.layout.height
+        setTagContentHeight(tagHeight)
+    }
+    return (
+        <StyledBackgroundView >
+            <ScrollView>
+                <RectContentContainer
+                    onLayout={getHeight}
+                    content={rect as JSX.Element[]} />
+                <View
+                    style={{
+                        backgroundColor: 'black',
+                        width: '100%',
+                        height: windowHeight - tagContentHeight,
+                        borderColor: 'black',
+                        borderWidth: 1,
+>>>>>>> Stashed changes
                     }}>
                         <TouchableOpacity onPress={() => { setCount(-1); setViewButtons(false); }}>
                             <FadeInOutText
@@ -265,10 +303,16 @@ function Diary(): JSX.Element {
                             </FadeInOutText>
                         </TouchableOpacity>
 
+<<<<<<< Updated upstream
                     </View>
                 }
             </View>
         </View >
+=======
+                </View>
+            </ScrollView>
+        </StyledBackgroundView >
+>>>>>>> Stashed changes
     );
 };
 
