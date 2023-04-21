@@ -32,7 +32,7 @@ const IconContainer = styled(View)`
 `;
 const TagArea = styled(View)`
     margin-left: 10px;
-    margin-top: 10px;
+    margin-top: 5px;
     flex-direction: row;
 `;
 
@@ -50,7 +50,8 @@ interface Props {
     // input : any;
     // setInput: any;
 }
-
+const months: string[] = ["Jan", "Feb", "Mar", "Apr", "May",
+    "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const ViewItem = (prop: Props) => {
     const item = prop.item;
     let color = "white";
@@ -63,12 +64,18 @@ const ViewItem = (prop: Props) => {
     // } else {
     //     color = "#95bac9e8";
     // }
-
+    const dateStringFormat = (dateStr: string) => {
+        let day: string = dateStr.split("/")[1];
+        let month: string = months[parseInt(dateStr.split("/")[0]) - 1];
+        let year: string = dateStr.split("/")[2];
+        let dateFormat: string = month + " " + day + " " + year;
+        return dateFormat
+    }
     console.log('item', item);
     return (
         <ItemContainer style={{ borderColor: color }}>
             <FlexRow>
-                <Date> {item.date} </Date>
+                <Date> {dateStringFormat(item.date)} </Date>
                 <IconContainer>
                     {
                         item.isPhoto && <MyIcon source={photo} style={{ marginTop: 5, marginRight: 5 }} imageStyle={{ width: 25, height: 25 }} />
