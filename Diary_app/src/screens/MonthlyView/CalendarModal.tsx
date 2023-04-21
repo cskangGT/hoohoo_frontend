@@ -16,6 +16,7 @@ const ButtonModal = styled(CustomButton)`
 `;
 const ModalContainer = styled(View)`
     background-color: #5e5454;
+    height:50%;
     padding: 20px;
     border-radius: 20px;
     box-shadow: 2px 2px 5px black;
@@ -41,6 +42,7 @@ const Months = styled(View)`
 `;
 const MonthItem = styled(CustomButton)`
     width: 30%;
+    height: 30%;
     margin: 3px;
     align-items: center;
 
@@ -112,7 +114,7 @@ const CalendarModal = (props: Props) => {
             {/* Your calendar component */}
             <ButtonModal
                 title={buttontitle}
-                textStyle={{ color: "white", fontSize: 30 }}
+                textStyle={{ color: "white", fontSize: 30, fontWeight: 600, alignSelf: 'center' }}
                 onPress={toggleModal}
             />
             <Modal isVisible={isModalVisible} onBackdropPress={toggleModal}
@@ -144,10 +146,10 @@ const CalendarModal = (props: Props) => {
                                     key={item}
                                     title={months[item].label}
                                     style={[
-                                        selectedMonth === item && { backgroundColor: "white" },
+                                        selectedMonth === item && { backgroundColor: "white", borderRadius: 15 }, { justifyContent: 'center', alignSelf: 'center' }
                                     ]}
                                     onPress={() => onSelectMonth(item)}
-                                    textStyle={[{ color: "white" },
+                                    textStyle={[{ color: "white", justifyContent: 'center', alignSelf: 'center' },
                                     selectedMonth === item && { color: "black" }]}
                                 />
 
