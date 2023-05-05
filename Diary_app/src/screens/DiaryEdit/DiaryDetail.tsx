@@ -146,11 +146,6 @@ function DiaryEdit(route: any): JSX.Element {
 
 
 
-    console.log("content", content);
-
-
-
-
     const dateStringFormat = (dateStr: string) => {
         // let dateStr: string = date.toLocaleDateString()
         let day: string = dateStr.split("/")[1];
@@ -196,16 +191,13 @@ function DiaryEdit(route: any): JSX.Element {
         } // end delete mode, show plus button
         setStackComponent(stackComponentEx)
         updateTagContentEx();
-        console.log("content2", content);
 
         if (updatePhotoContentEx !== undefined)
             updatePhotoContentEx();
         setContent(DATA[parseInt(index)].tags)
-        console.log("content3", content);
 
     }, [enableDelete, count, index, content]);
 
-    console.log("content22", content);
 
     return (
         <StyledBackgroundView source={background}>

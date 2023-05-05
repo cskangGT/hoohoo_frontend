@@ -109,7 +109,7 @@ const RemoveButton = styled(TouchableHighlight)`
     margin-right: 5px;
 `;
 
-const tags_group = ["Determine", "ItIsPossible", "HardTimes", "ListenToMyVoice"]
+const tags_group = ["Determine", "ItIsPossible", "HardTimes", "ListenToMyVoice", "NeverGiveUp"]
 
 function TagRecording({ navigation, route }: any): JSX.Element {
 
