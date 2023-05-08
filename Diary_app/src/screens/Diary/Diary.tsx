@@ -171,7 +171,7 @@ function Diary(): JSX.Element {
 
     const [showAll, setShowAll] = useState<boolean>(false)
     useEffect(() => {
-        let delay = (count == -1) ? 0 : 4000
+        let delay = (count == -1) ? 0 : 100
         const interval = setInterval(() => {
             if (count < texts.length) {
                 let updatedContent: JSX.Element[] = [];

@@ -30,6 +30,12 @@ const Row = styled(View)`
     padding-right: 13px;
     padding-bottom: 13px;
 `;
+const Blank = styled(View)`
+  flex: 1;
+    height: 50px;
+    background-color: transparent;
+    color : white;
+`;
 
 const Element = styled(TouchableOpacity)`
     flex: 1;
@@ -236,15 +242,15 @@ const Calendar = () => {
                 // console.log("curr_mm", selected_mm);
                 // console.log("curr_yyyy", selected_yyyy);
                 return ( // if in database
-                    <Today>
-                        <Day> {item != -1 ? item : ''} </Day>
-                        <FadeStar starImage={arr_star[index]} frequency={index + 1} />
+                    <Today >
+                        <Day key={"day" + item}> {item != -1 ? item : ''} </Day>
+                        <FadeStar key={item} starImage={arr_star[index]} frequency={index + 1} />
                     </Today>);
             } else {
 
                 return ( // if not in database
                     <Today>
-                        <Day> {item != -1 ? item : ''} </Day>
+                        <Day key={"day" + item}> {item != -1 ? item : ''} </Day>
                     </Today>);
             }
 
@@ -256,20 +262,20 @@ const Calendar = () => {
                 // console.log("yyyy", y_data);
                 return ( // if in database
                     <View>
-                        <Day> {item != -1 ? item : ''} </Day>
-                        <FadeStar starImage={arr_star[index]} frequency={index + 1} />
+                        <Day key={"day" + item}> {item != -1 ? item : ''} </Day>
+                        <FadeStar key={item} starImage={arr_star[index]} frequency={index + 1} />
                     </View>);
             } else {
 
                 return ( // if not in database
                     <View>
-                        <Day> {item != -1 ? item : ''} </Day>
+                        <Day key={"day" + item}> {item != -1 ? item : ''} </Day>
                     </View>);
             }
         } else {
             return ( // if not in database
                 <View>
-                    <Day> {item != -1 ? item : ''} </Day>
+                    <Day key={"day" + item}> {item != -1 ? item : ''} </Day>
                 </View>);
         }
 
@@ -278,25 +284,30 @@ const Calendar = () => {
 
     const matrix = generateMatrix();
     rows = matrix.map((row, rowIndex) => {
-        let rowItems = row.map((item: any, colIndex: number) => {
+        let rowItems = row.map((item: number, colIndex: number) => {
             if (rowIndex == 0) {
-                return (<DateText>
+                return (<DateText key={"Text" + rowIndex * colIndex + colIndex}>
                     {item != -1 ? item : ''}
                 </DateText>);
             } else {
                 return (
-                    <Element
+
+                    <Element key={"element" + rowIndex * colIndex + colIndex}
                         onPress={() => {
-                            item = String(item)
-                            navigation.navigate('DiaryDetail', { index: data_inverse[item] })
+                            if (item != -1) {
+                                let strItem = String(item)
+                                navigation.navigate('DiaryDetail', { index: data_inverse[strItem] })
+                            }
                         }}>
                         {handlerElement(item)}
                     </Element>
+
+
                 );
             }
         });
         return (
-            <Row>
+            <Row key={rowIndex}>
                 {rowItems}
             </Row>
         );

@@ -107,7 +107,7 @@ const ViewItem = (prop: Props) => {
                 {
                     item.tags.map((tag: string, index: number) => {
                         if (index < 3)
-                            return <Tag text={tag} style={{ borderColor: "white" }} textStyle={{ color: "white" }} />
+                            return <Tag key={index} text={tag} style={{ borderColor: "white" }} textStyle={{ color: "white", fontFamily: 'Poppins-Regular' }} />
                     })
                 }
             </TagArea>

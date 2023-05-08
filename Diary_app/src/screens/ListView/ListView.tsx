@@ -87,9 +87,9 @@ const texts = ["Determine", "ItIsPossible", "HardTimes", "NeverGiveUp", "ListenT
 
 const ListView = ({ navigation, route }: any) => {
     // This is rendering callback function. It shows every item view.
-    const renderItem = ({ item }: { item: ItemData }) => {
+    const renderItem = ({ item, index }: { item: ItemData, index: number }) => {
         console.log('Viewitem', item);
-        return <ViewItem item={item} />;
+        return <ViewItem item={item} key={index} />;
     };
     const [searchQuery, setSearchQuery] = useState<string>("");
     const [masterData, setMasterData] = useState<ItemData[]>(DATA);

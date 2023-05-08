@@ -122,14 +122,15 @@ function TagZone(props: any): JSX.Element {
     //things to be exported
     const [tagZoneContent, setTagZoneContent] = useState<JSX.Element[]>(
         content.map((title: string, index: number) => (
-            <View style={{ position: 'relative' }}>
-                <StyledTagWord >
-                    <InsideTagView>
-                        <RemoveButton
+            <View style={{ position: 'relative' }} key={"View" + index}>
+                <StyledTagWord key={"View2" + index}>
+                    <InsideTagView key={"View3" + index}>
+                        <RemoveButton key={"remove" + index}
                             onPress={() => {
                                 deleteTag(index)
-                            }}>
-                            <RemoveTagImage source={Xbutton} />
+                            }}
+                        >
+                            <RemoveTagImage key={"img" + index} source={Xbutton} />
                         </RemoveButton>
                         <TagText key={index + title}>
                             {title}
@@ -156,15 +157,15 @@ function TagZone(props: any): JSX.Element {
         setTagZoneContent(tagZoneContent)
         let contentHolder: JSX.Element[] = (
             content.map((title: string, index: number) => (
-                <View style={{}}>
-                    <StyledTagWord >
-                        <InsideTagView>
-                            <RemoveButton
+                <View style={{ position: 'relative' }} key={"View" + index}>
+                    <StyledTagWord key={"View2" + index}>
+                        <InsideTagView key={"View3" + index}>
+                            <RemoveButton key={"remove" + index}
                                 onPress={() => {
                                     deleteTag(index)
                                 }}
                             >
-                                <RemoveTagImage source={Xbutton} />
+                                <RemoveTagImage key={"img" + index} source={Xbutton} />
                             </RemoveButton>
                             <TagText key={index + title}>
                                 {title}

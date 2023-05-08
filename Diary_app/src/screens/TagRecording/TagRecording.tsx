@@ -161,14 +161,14 @@ function TagRecording({ navigation, route }: any): JSX.Element {
         let contentHolder = (
 
             words.map((word: string, index: number) => (
-                <View>
-                    <StyledTagWord >
-                        <InsideTagView>
-                            <RemoveButton
+                <View key={"View" + index}>
+                    <StyledTagWord key={"View2" + index}>
+                        <InsideTagView key={"View3" + index}>
+                            <RemoveButton key={"button" + index}
                                 onPress={() => {
                                     DeleteContent(index, words, setWords, setWordContent, curr_size)
                                 }}>
-                                <RemoveTagImage source={Xbutton} />
+                                <RemoveTagImage key={"img" + index} source={Xbutton} />
                             </RemoveButton>
                             <TagText key={index + word}>
                                 {word}

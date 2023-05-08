@@ -3,11 +3,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import { ImageBackground } from 'react-native';
 import styled from 'styled-components';
 import FunctionComponents, { showPlusButtonEx } from './FunctionComponents/FunctionComponents';
-import { openCameraEx, openGalleryEx, updatePhotoContentEx } from './FunctionComponents/PhotoZone';
+import { updatePhotoContentEx } from './FunctionComponents/PhotoZone';
 import diaryData from '../../data/diaryData.json'
 import TagZone, { updateTagContentEx } from './FunctionComponents/TagZone';
-import PhotoZone from './FunctionComponents/PhotoZone';
-import NoteZone from './FunctionComponents/NoteZone';
+
 import ImageButton from '../../components/common/ImageButton';
 import { useNavigation } from '@react-navigation/native';
 import sample from '../../data/data.json';
@@ -15,7 +14,6 @@ import sample from '../../data/data.json';
 const background = require('../../assets/DiaryEditPage/Background.png');
 const arrow_ListView = require('../../assets/DiaryEditPage/arrow_right.png');
 const arrow_tagPage = require('../../assets/DiaryEditPage/arrow_left.png');
-const microButton = require('../../assets/DiaryEditPage/microphone.png');
 const screenWidth: number = Dimensions.get('window').width;
 const screenHeight: number = Dimensions.get('window').height;
 const StyledTagWord = styled(TouchableOpacity)`
@@ -122,7 +120,8 @@ function DiaryEdit(route: any): JSX.Element {
     console.log("width", screenWidth);
     // const jsonId = route.route.params.id
     const index: string = route.route.params.index
-    let datestring = DATA[parseInt(index)].date
+    console.log("what", parseInt(index));
+    let datestring: string = DATA[parseInt(index)].date
     const navigation = useNavigation();
 
     const data = diaryData.data
@@ -134,8 +133,6 @@ function DiaryEdit(route: any): JSX.Element {
     const [enableDelete, setEnableDelete] = useState<boolean>(false)
     const [stackComponent, setStackComponent] = useState<JSX.Element[]>([]);
     //things to be exported
-    enableDeleteEx = enableDelete
-    setEnableDeleteEx = setEnableDelete
     countEx = count
     setCountEx = setCount
     stackComponentEx = stackComponent
@@ -183,9 +180,9 @@ function DiaryEdit(route: any): JSX.Element {
 
 
     useEffect(() => {
-        console.log("count", count);
+        console.log("count", stackComponent.length);
 
-        if (enableDelete && count == 0) {
+        if (enableDelete && stackComponent.length == 0) {
             setEnableDelete(false);
             showPlusButtonEx(true);
         } // end delete mode, show plus button
@@ -196,7 +193,7 @@ function DiaryEdit(route: any): JSX.Element {
             updatePhotoContentEx();
         setContent(DATA[parseInt(index)].tags)
 
-    }, [enableDelete, count, index, content]);
+    }, [enableDelete, stackComponent, index, content]);
 
 
     return (
@@ -230,16 +227,15 @@ function DiaryEdit(route: any): JSX.Element {
                 <View style={{ flexDirection: 'column-reverse' }}>
                     <ImageButton src={arrow_tagPage} onPress={() => { navigation.navigate('Diary') }} />
                     <FunctionComponents style={{
-
                         width: '100%', marginBottom: 50
                         // alignSelf: 'center',
                         // justifyContent: 'center',
-                    }} />
+                    }}
+                        stack={stackComponent} count={count} setCount={setCount} />
 
                 </View>
                 <TextDateContainer><TextDate>{dateFormat}</TextDate></TextDateContainer>
                 <ContainerTransition>
-
                     <ImageButton src={arrow_ListView} onPress={() => {
                         navigation.navigate('ListView')
                     }} />

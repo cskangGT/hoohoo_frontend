@@ -16,7 +16,7 @@ const ButtonModal = styled(CustomButton)`
 `;
 const ModalContainer = styled(View)`
     background-color: #5e5454;
-    height:50%;
+    height:60%;
     padding: 20px;
     border-radius: 20px;
     box-shadow: 2px 2px 5px black;
@@ -38,7 +38,7 @@ const ModalHeader = styled(View)`
 const Months = styled(View)`
     flex-direction:row;
     flex-wrap: wrap;
-    margin: 20px;
+    margin: 5%;
 `;
 const MonthItem = styled(CustomButton)`
     width: 30%;
