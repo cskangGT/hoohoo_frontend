@@ -68,8 +68,9 @@ function RecordingButton(props: any): JSX.Element {
     const cap = 300
     const [capacity, setCapacity] = useState<number>(cap)
     const limit = 30
+    let resultArr: string[] = []
     // add user Speech to user input states
-    useEffect(() => {
+    function convertResult(results: string[]): void {
         console.log("results", results);
         let result: string = results[results.length - 1]
 
@@ -91,16 +92,22 @@ function RecordingButton(props: any): JSX.Element {
         } else if (result !== undefined && capacity - result.length < 0) {
             ToastAndroid.show('Max capacity exceeded:\nYou have recorded more than ' + cap + ' letters', ToastAndroid.SHORT);
         }
-    }, [results]);
+    }
+
     const onSpeechResults = (e: any) => {
         //Invoked when SpeechRecognizer is finished recognizing
         //console.log('onSpeechResults: ', e);
 
         setTimeout(() => {
             destroyRecognizer();
-            console.log("e:", e);
-            setResults(e.value);
+            resultArr.push(e.value[0])
+            console.log("e:", resultArr);
+
         }, 2000)
+        setTimeout(() => {
+            convertResult(resultArr)
+            resultArr = []
+        }, 3000)
     };
     const startRecognizing = async () => {
         //Starts listening for speech for a specific locale

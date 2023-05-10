@@ -61,7 +61,7 @@ const TagText = styled(Text)`
     /* font-size: 15px; */
     font-family: 'Poppins-Regular';
 `;
-const RemoveButton = styled(TouchableHighlight)`
+const RemoveButton = styled(TouchableOpacity)`
     width: 15px;
     height: 15px;
     margin-right: 5px;
@@ -129,6 +129,7 @@ function TagZone(props: any): JSX.Element {
                             onPress={() => {
                                 deleteTag(index)
                             }}
+                            activeOpacity={0.8}
                         >
                             <RemoveTagImage key={"img" + index} source={Xbutton} />
                         </RemoveButton>
@@ -164,6 +165,7 @@ function TagZone(props: any): JSX.Element {
                                 onPress={() => {
                                     deleteTag(index)
                                 }}
+                                activeOpacity={0.8}
                             >
                                 <RemoveTagImage key={"img" + index} source={Xbutton} />
                             </RemoveButton>
