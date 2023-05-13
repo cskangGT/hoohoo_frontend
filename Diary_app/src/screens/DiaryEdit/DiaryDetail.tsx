@@ -102,6 +102,9 @@ const DATA: ItemData[] = [
     {
         id: "3", date: "4/10/2023", tags: ["NeverGiveUp", "Dinner", "BeBrave", "Samsung"],
         isPhoto: false, isQuote: true, isDiary: true
+    },
+    {
+        id: "-1", date: "F", tags: [], isPhoto: false, isQuote: false, isDiary: false
     }
 ];
 type ItemProps = { title: string, index: number };
@@ -116,18 +119,33 @@ export let enableDeleteEx: boolean;
 export let setEnableDeleteEx: React.Dispatch<React.SetStateAction<boolean>>;
 
 function DiaryEdit(route: any): JSX.Element {
-    console.log("screenHeight", screenHeight);
-    console.log("width", screenWidth);
     // const jsonId = route.route.params.id
-    const index: string = route.route.params.index
+    let index: string = route.route.params.index
     console.log("what", parseInt(index));
-    let datestring: string = DATA[parseInt(index)].date
+    let datestring: string;
+    if (index === undefined) {
+        index = "4"
+        let today = new Date()
+        let y = today.getFullYear()
+        let m = today.getMonth() + 1
+        let d = today.getDate()
+        datestring = m + "/" + d + "/" + y
+        console.log("datestring", datestring);
+
+    } else {
+        datestring = DATA[parseInt(index)].date
+    }
+
     const navigation = useNavigation();
 
     const data = diaryData.data
     const data2 = sample.entries[11]
     const [date, setDate] = useState(new Date());
-    const [content, setContent] = useState<string[]>(DATA[parseInt(index)].tags)
+    if (DATA[parseInt(index)].tags === undefined) {
+        console.log("first", DATA[parseInt(index)].tags);
+
+    }
+    const [content, setContent] = useState<string[]>(DATA[parseInt(index)].tags === undefined ? [] : DATA[parseInt(index)].tags)
     const [count, setCount] = useState<number>(0)
     // this is including tag components
     const [enableDelete, setEnableDelete] = useState<boolean>(false)

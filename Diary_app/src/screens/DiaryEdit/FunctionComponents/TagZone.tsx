@@ -46,10 +46,13 @@ const StyledTagWord = styled(View)`
     padding: 5px;
     background-color: rgb(71, 71, 70);
     opacity:1;
-    margin: 5px;
+    /* margin: 5px; */
+    margin-vertical: 5px; /* 수정: margin 속성을 marginVertical과 marginHorizontal로 분리 */
+    margin-horizontal: 5px;
 `;
 const InsideTagView = styled(View)`
     flex-direction: row;
+    align-items: center;
 `;
 const RemoveTagImage = styled(Image)`
     width:15px;
@@ -61,7 +64,7 @@ const TagText = styled(Text)`
     /* font-size: 15px; */
     font-family: 'Poppins-Regular';
 `;
-const RemoveButton = styled(TouchableOpacity)`
+const RemoveButton = styled(TouchableHighlight)`
     width: 15px;
     height: 15px;
     margin-right: 5px;
@@ -107,12 +110,18 @@ const DATA: ItemData[] = [
     {
         id: "3", date: "4/10/2023", tags: ["NeverGiveUp", "Dinner", "BeBrave", "Samsung"],
         isPhoto: false, isQuote: true, isDiary: true
+    },
+    {
+        id: "-1", date: "F", tags: [], isPhoto: false, isQuote: false, isDiary: false
     }
 ];
 export let updateTagContentEx: any;
 //get stirng[] content data from DiaryDetail.
 function TagZone(props: any): JSX.Element {
-    const key = props.index
+    let key = props.index
+    if (key === undefined) {
+        key = 4
+    }
     const [content, setContent] = useState<string[]>(props.content)
     const navigation = useNavigation();
 
@@ -130,6 +139,7 @@ function TagZone(props: any): JSX.Element {
                                 deleteTag(index)
                             }}
                             activeOpacity={0.8}
+                            underlayColor='transparent'
                         >
                             <RemoveTagImage key={"img" + index} source={Xbutton} />
                         </RemoveButton>
@@ -166,6 +176,7 @@ function TagZone(props: any): JSX.Element {
                                     deleteTag(index)
                                 }}
                                 activeOpacity={0.8}
+                                underlayColor='transparent'
                             >
                                 <RemoveTagImage key={"img" + index} source={Xbutton} />
                             </RemoveButton>
