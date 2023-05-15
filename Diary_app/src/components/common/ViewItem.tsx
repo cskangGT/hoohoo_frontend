@@ -1,38 +1,51 @@
 import React from 'react'
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import styled from 'styled-components';
 import { useNavigation } from '@react-navigation/native';
 import Tag from '../common/Tag';
-import MyIcon from './Icon';
+
+
 const photo = require('../../assets/gallery.png');
 const diary = require('../../assets/Text.png');
-const ItemContainer = styled(TouchableOpacity)`
-    height: 80px;
+const ItemContainer = styled(View)`
     margin-top: 10px;
-    background-color: transparent;
+    
+    background-color: #413b3b;
     border-radius: 15px;
-    border: 1px;
-    flex-direction: column;
+    
+    opacity: 0.7;
+`;
+const CardContainer = styled(View)`
+  margin-vertical: 7px;
+  flex-direction: row;
+  justify-items: center;
+  align-items: center;
+  margin-left:15px;
+    border-left-color: white;
+    border-left-width: 1px;
 `;
 const FlexRow = styled(View)`
     flex-direction: row;
     display: flex;
     justify-content: space-between;
+    /* margin-left:15px;
+    border-left-color: white;
+    border-left-width: 1px; */
 `;
 const Date = styled(Text)`
-    margin-left: 10px;
-    font-size: 20px;
+    margin-left: 5px;
+    font-size: 11px;
     text-align: left;
     color: white;
 `;
-const IconContainer = styled(View)`
-    flex-direction: row;
-    margin-left: auto;
-    margin-right: 10px;
-`;
-const TagArea = styled(View)`
+// const IconContainer = styled(View)`
+//     flex-direction: row;
+//     margin-left: auto;
+//     margin-right: 10px;
+// `;
+const TagArea = styled(ScrollView)`
     margin-left: 10px;
-    margin-top: 5px;
+    margin-right: 10px;
     flex-direction: row;
 `;
 
@@ -78,39 +91,42 @@ const ViewItem = (prop: Props) => {
         let day: string = dateStr.split("/")[1];
         let month: string = months[parseInt(dateStr.split("/")[0]) - 1];
         let year: string = dateStr.split("/")[2];
-        let dateFormat: string = month + " " + day + " " + year;
+        let dateFormat: string = month + " " + day ;
         return dateFormat
     }
     console.log('item', item);
     return (
-        <ItemContainer style={{ borderColor: color }} onPress={() => {
-            console.log("item.id", item.id);
-
-            navigation.navigate('DiaryDetail', { index: item.id })
-        }}>
+        <ItemContainer style={{ borderColor: color }} >
+            <CardContainer>
             <FlexRow>
+                <TouchableOpacity onPress={() => {
+                    console.log("item.id", item.id);
+                    navigation.navigate("DiaryDetail", { index: item.id })
+                }}>
                 <Date> {dateStringFormat(item.date)} </Date>
-                <IconContainer>
+                </TouchableOpacity>
+                {/* <IconContainer>
                     {
                         item.isPhoto && <MyIcon source={photo} style={{ marginTop: 5, marginRight: 5 }} imageStyle={{ width: 25, height: 25 }} />
                     }
                     {
                         item.isDiary && <MyIcon source={diary} style={{ marginTop: 5, marginRight: 5 }} />
                     }
-                </IconContainer>
+                </IconContainer> */}
             </FlexRow>
 
-            <TagArea>
+            <TagArea horizontal={true}>
                 {/* <FlatList data={dict_tags} renderItem={renderItem} keyExtractor={(dict)=>dict.index} 
                 /> */}
 
                 {
                     item.tags.map((tag: string, index: number) => {
-                        if (index < 3)
-                            return <Tag key={index} text={tag} style={{ borderColor: "white" }} textStyle={{ color: "white", fontFamily: 'Poppins-Regular' }} />
+                        
+                        return <Tag key={index} text={tag} style={{  }} textStyle={{ fontSize:15, color: "white", fontFamily: 'Poppins-Regular' }} />
                     })
                 }
             </TagArea>
+            </CardContainer>
         </ItemContainer>
 
     );

@@ -4,58 +4,59 @@ import { View, FlatList, TextInput, ImageBackground, Text } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import styled from 'styled-components';
 import ViewItem from '../../components/common/ViewItem';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
+
 
 const bg = require('../../assets/Background.png');
-const SafeAreaView = styled(ImageBackground)`
-    
-    /* margin-top: 100px; // 헤더로부터 100px아래부터 백그라운드 시작 */
+
+const BgContainer = styled(ImageBackground)`
     width: 100%;
     height:100%;
 `;
 const SearchArea = styled(View)`
-    top:7%;
-    height: 15%;
+    margin-top:6%;
+    margin-bottom: 2%;
+`;
+const NavContainer = styled(View)`
+    
+    margin-top:3%;
+    width: 94%;
+    align-items: flex-end;
+    margin-right:3%;
+    margin-left: 3%;
 `;
 const SearchBar = styled(TextInput)`
-    height: 30%;
-    border-radius: 13px;
-    background-color: white;
-    
-    margin-left: 5%;
-    margin-right: 5%;
+    border-bottom-width: 2px;
+    border-bottom-color: white;
+    padding-bottom: 5px;
+    margin-left: 7%;
+    margin-right: 7%;
     padding-left: 12px;
-    opacity: 0.9;
+    opacity: 0.8;
 `;
 
 const Container = styled(View)`
-
     flex-direction: row;
     width: 95%;
     margin-left: 2.5%;
     margin-right: 2.5%;
-    height: 80%;
+    height: 83%;
     padding: 5px;
     padding-top: -5px;
     background-color: transparent ;
     border-radius: 30px;
 `;
-const NavContainer = styled(View)`
-
-    top:6%;
-    width: 84%;
-    align-items: flex-end;
-    margin-right:8%;
-    margin-left: 8%;
-`;
 const ButtontoMonth = styled(TouchableOpacity)`
-    border-width: 1px;
-    border-color: white;
     border-radius: 10px;
     padding:5px;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 `;
 const ButtonText = styled(Text)`
     color: white;
-    font-size:15px;
+    font-size: 15px;
 `;
 type ItemData = {
     id: string;
@@ -112,18 +113,14 @@ const ListView = ({ navigation, route }: any) => {
     };
 
     return (
-        <SafeAreaView source={bg}>
-            <NavContainer>
-                <ButtontoMonth onPress={() => {
-                    console.log("nav");
-                    navigation.navigate('MonthlyView')
-                }}>
-                    <ButtonText>Monthly</ButtonText>
-                </ButtontoMonth>
-            </NavContainer>
+        <SafeAreaView style={{flex: 1}}>
+        <BgContainer source={bg}>
+            
             <SearchArea>
                 <SearchBar
                     onChangeText={handleSearch}
+                    placeholderTextColor="#dfdfdf"
+                    style={{color:'white', fontSize:17}}
                     value={searchQuery}
                     placeholder="Search by tags"
                 />
@@ -132,7 +129,17 @@ const ListView = ({ navigation, route }: any) => {
             <Container>
                 {list}
             </Container>
-
+            <NavContainer>
+                <ButtontoMonth onPress={() => {
+                    
+                    navigation.navigate('MonthlyView')
+                }}>
+                    <ButtonText>Calendar </ButtonText>
+                    <Icon name="arrow-forward-ios" color={'white'}/>
+                </ButtontoMonth>
+            </NavContainer>
+        </BgContainer>
+        
         </SafeAreaView>
     )
 };
