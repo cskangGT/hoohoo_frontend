@@ -8,6 +8,8 @@ import UserTextInput from './Containers/UserTextInput';
 import RecordingButton from './RecordingButton';
 import CustomButton from '../../components/common/Button';
 import ImageButton from '../../components/common/ImageButton';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 // import ImageBackground from '../../components/common/ImageBackground';
 const Xbutton = require('../../assets/remove.png');
 const Background = require('../../assets/tagRecordingBg.png');
@@ -35,8 +37,8 @@ const TagContainers = styled(View)`
     top:18%; */
     top:3%;
     width: 100%;
-    border-width: 2px;
-    border-color: violet;
+    /* border-width: 2px;
+    border-color: violet; */
     height:37%;
     
 `;
@@ -55,8 +57,8 @@ const SwitchContainer = styled(View)`
     top:20%;
     margin-left: 5%;
     /* position: absolute; */
-    border-width: 2px;
-    border-color: red;
+    /* border-width: 2px;
+    border-color: red; */
 `;
 const RecordingContainer = styled(View)`
     /* border-width: 1px; */
@@ -71,8 +73,8 @@ const RecordingContainer = styled(View)`
 const MicContainer = styled(View)`
   /* top: 70%; 
   position: absolute; */
-  border-width: 2px;
-    border-color: green;
+  /* border-width: 2px;
+    border-color: green; */
     top:10%;
   width: 100%;
 `;
@@ -88,7 +90,7 @@ const Transition = styled(ImageButton)`
 //     opacity:1;
 //     margin: 5px;
 // `;
-// const InsideTagView = styled(View)`
+// const InsideTagView = styled(View)`r
 //     flex-direction: row;
 // `;
 // const RemoveTagImage = styled(Image)`

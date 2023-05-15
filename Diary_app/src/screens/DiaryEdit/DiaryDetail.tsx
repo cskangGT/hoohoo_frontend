@@ -46,6 +46,7 @@ const FooterContainer = styled(View)`
     position: absolute; // Set position to absolute
     justify-content: space-between;
     align-self: baseline;
+    
     /* align-items: center; */
     width: 95%;
     bottom: 4%; // Position the component 10 units from the bottom
@@ -109,7 +110,12 @@ const DATA: ItemData[] = [
 ];
 type ItemProps = { title: string, index: number };
 const texts = ["Determine", "ItIsPossible", "HardTimes", "NeverGiveUp", "ListenToMyVoice"];
-
+const TZContainer = styled(View)`
+  top:4%;
+`;
+const EmptyHolder = styled(View)`
+  height: 100%;
+`;
 //things to be used in other files 
 export let countEx: number;
 export let setCountEx: React.Dispatch<React.SetStateAction<number>>;
@@ -219,15 +225,15 @@ function DiaryEdit(route: any): JSX.Element {
             {/* <View style={{ top: '5 %', width:'100%', height:'100%' }}> */}
             {
                 stackComponent.length === 0 ?
-                    <View style={{ top: '4%' }}>
+                    <TZContainer style={{ top: '4%' }}>
                         <TagZone content={DATA[parseInt(index)].tags} index={index} />
-                        <View style={{ height: '100 %' }}>
+                        <EmptyHolder style={{ height: '100 %' }}>
 
                             <Placeholder style={{ top: '20 %' }}>
                                 Press + to add components
                             </Placeholder>
-                        </View>
-                    </View> :
+                        </EmptyHolder>
+                    </TZContainer> :
                     <ScrollView style={{ top: '4%', maxHeight: '80%' }}>
                         <TagZone content={DATA[parseInt(index)].tags} index={index} />
                         <StyledHorizontallyAlignedItems>
@@ -242,10 +248,10 @@ function DiaryEdit(route: any): JSX.Element {
                     </ScrollView>
             }
             <FooterContainer>
-                <View style={{ flexDirection: 'column-reverse' }}>
-                    <ImageButton src={arrow_tagPage} onPress={() => { navigation.navigate('Diary') }} />
+                <View>
+                    {/* <ImageButton src={arrow_tagPage} onPress={() => { navigation.navigate('Diary') }} /> */}
                     <FunctionComponents style={{
-                        width: '100%', marginBottom: 50
+                        width: '100%'
                         // alignSelf: 'center',
                         // justifyContent: 'center',
                     }}
@@ -254,7 +260,7 @@ function DiaryEdit(route: any): JSX.Element {
                 </View>
                 <TextDateContainer><TextDate>{dateFormat}</TextDate></TextDateContainer>
                 <ContainerTransition>
-                    <ImageButton src={arrow_ListView} onPress={() => {
+                    <ImageButton style={{width:15, height:15}} src={arrow_ListView} onPress={() => {
                         navigation.navigate('ListView')
                     }} />
                 </ContainerTransition>

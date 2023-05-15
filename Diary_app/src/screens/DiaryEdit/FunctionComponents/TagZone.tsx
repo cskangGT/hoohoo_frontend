@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { enableDeleteEx, setEnableDeleteEx } from '../DiaryDetail';
 import ImageButton from '../../../components/common/ImageButton';
 import { useNavigation } from '@react-navigation/native';
-
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const Xbutton = require('../../../assets/DiaryEditPage/remove.png');
 const microButton = require('../../../assets/DiaryEditPage/microphone.png');
@@ -69,14 +69,20 @@ const RemoveButton = styled(TouchableHighlight)`
     height: 15px;
     margin-right: 5px;
 `;
-const ButtontoView = styled(TouchableOpacity)`
-    border-width: 1px;
-    border-color: gray;
-    width:20%;
-    border-radius: 50px;
-    padding: 5px;
+const TransitionContainer = styled(View)`
+    width: 25%;
+    /* border-color: white;
+    border-width: 1px; */
+    flex-direction: row;
     
-    background-color: rgb(71, 71, 70);
+`;
+const ButtontoView = styled(TouchableOpacity)`
+    justify-content: center;
+    /* width:10%; */
+    /* border-radius: 10px; */
+    padding: 5px;
+    margin-right:20%;
+    /* background-color: rgb(71, 71, 70); */
     align-items: center;
 `;
 const ViewText = styled(Text)`
@@ -84,6 +90,15 @@ const ViewText = styled(Text)`
     /* text-align: center; */
     color: white;
     font-size: 17px;  
+`;
+const MicButton = styled(TouchableOpacity)`
+    align-items: center;
+    justify-content: center;
+`;
+
+const IconBtn = styled(Icon)`
+    background-color: transparent;
+    align-items: center;
 `;
 
 type ItemData = {
@@ -224,17 +239,21 @@ function TagZone(props: any): JSX.Element {
         <TagContainer>
             <HeaderContainer>
                 <HeaderText>Yes, It's your day : ) </HeaderText>
-                {/* <ButtontoView onPress={() => { navigation.navigate('Diary', { index: key }) }}>
-                    <ViewText >
-                        View
-                    </ViewText></ButtontoView> */}
-                <View style={{ width: '20%', alignItems: 'center' }}>
-                    <ImageButton src={microButton} onPress={() => {
+                <TransitionContainer>
+                <ButtontoView onPress={() => { navigation.navigate('Diary', { index: key })}}
+                activeOpacity={0.8}>
+                    <Icon name="eye" size={25} color="white"/></ButtontoView>
+                <MicButton onPress={() => {
+                        navigation.navigate('TagRecording', { index: key })
+                    }} >
+                    <IconBtn name="microphone" size={25} color="white" />
+                    {/* <ImageButton src={microButton} onPress={() => {
                         navigation.navigate('TagRecording', { index: key })
                     }}
                         style={{ justifyContent: 'center' }}
-                    />
-                </View>
+                    /> */}
+                </MicButton>
+                </TransitionContainer>
             </HeaderContainer>
             {tagZoneContent}
         </TagContainer>

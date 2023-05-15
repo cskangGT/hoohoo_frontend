@@ -38,7 +38,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Your App needs access to your camera for taking photos.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string></string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Your App needs access to your microphone for recording videos.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
@@ -46,9 +46,14 @@
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Your App needs access to your photo library for uploading photos.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
-	<string/>
+	<string></string>
 	<key>UIAppFonts</key>
 	<array>
+		<string>fonts/FontAwesome.ttf</string>
+		<string>fonts/Ionicons.ttf</string>
+		<string>fonts/Foundation.ttf</string>
+		<string>fonts/MaterialCommunityIcons.ttf</string>
+		<string>fonts/MaterialIcons.ttf</string>
 		<string>Zumattan.ttf</string>
 		<string>fonts/Comfortaa-Regular.ttf</string>
 		<string>fonts/Poppins-Regular.ttf</string>
