@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 import { View, Image } from 'react-native';
-
+import React from 'react';
 
 
 const background = require('../../assets/Intro_background.png');
-const droplet = require('../../assets/try4.jpg');
+const droplet = require('../../assets/droplets.png');
 
 
 const Background = styled(View)`
@@ -22,7 +22,7 @@ const Drop = styled(Image)`
     left: 0;
     bottom: 0;
     right: 0;
-    opacity: 0.60;
+    opacity: 0.8;
 `;
 type ContainerProps = {
     children: React.ReactNode;
