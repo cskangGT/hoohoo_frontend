@@ -44,6 +44,7 @@ const Date = styled(Text)`
 //     margin-right: 10px;
 // `;
 const TagArea = styled(ScrollView)`
+
     margin-left: 10px;
     margin-right: 10px;
     flex-direction: row;

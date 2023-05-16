@@ -1,32 +1,35 @@
 
 import React, { useState } from 'react'
-import { View, FlatList, TextInput, ImageBackground, Text } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableHighlight, TouchableOpacity, View, FlatList, TextInput, ImageBackground, Text, StatusBar, Platform } from 'react-native';
+import {  } from 'react-native-gesture-handler';
 import styled from 'styled-components';
 import ViewItem from '../../components/common/ViewItem';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
-
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const bg = require('../../assets/ListView_bg.png');
 
 const BgContainer = styled(ImageBackground)`
-    width: 100%;
-    height:100%;
+
 `;
 const SearchArea = styled(View)`
     margin-top:6%;
     margin-bottom: 2%;
 `;
 const NavContainer = styled(View)`
-    
-    margin-top:3%;
-    width: 94%;
+    border-color: red;
+    border-width: 1px;
+    /* width: 94%; */
     align-items: flex-end;
-    margin-right:3%;
-    margin-left: 3%;
+    /* padding-top: 3%; */
+    /* margin-right: 3%;
+    margin-left: 3%; */
+    /* height:8%; */
+    
 `;
 const SearchBar = styled(TextInput)`
+
     border-bottom-width: 2px;
     border-bottom-color: white;
     padding-bottom: 5px;
@@ -37,6 +40,9 @@ const SearchBar = styled(TextInput)`
 `;
 
 const Container = styled(View)`
+
+    border-color: white;
+    border-width: 1px;
     flex-direction: row;
     width: 95%;
     margin-left: 2.5%;
@@ -44,17 +50,24 @@ const Container = styled(View)`
     height: 83%;
     padding: 5px;
     padding-top: -5px;
-    background-color: transparent ;
+    background-color: transparent;
     border-radius: 30px;
 `;
 const ButtontoMonth = styled(TouchableOpacity)`
+border-color: blue;
+    border-width: 1px;
     border-radius: 10px;
-    padding:5px;
+    /* padding:5px; */
+    
+    
+
     flex-direction: row;
     justify-content: center;
     align-items: center;
 `;
 const ButtonText = styled(Text)`
+border-color: purple;
+    border-width: 1px;
     color: white;
     font-size: 15px;
 `;
@@ -88,17 +101,16 @@ const texts = ["Determine", "ItIsPossible", "HardTimes", "NeverGiveUp", "ListenT
 
 const ListView = ({ navigation, route }: any) => {
     // This is rendering callback function. It shows every item view.
+    
     const renderItem = ({ item, index }: { item: ItemData, index: number }) => {
         console.log('Viewitem', item);
-        return <ViewItem item={item} key={index} />;
+        return (<ViewItem item={item} key={index} />);
     };
     const [searchQuery, setSearchQuery] = useState<string>("");
     const [masterData, setMasterData] = useState<ItemData[]>(DATA);
     const [filteredData, setFilteredData] = useState<ItemData[]>(DATA);
     const [list, setList] = useState<JSX.Element>(<FlatList data={DATA} renderItem={renderItem}
         keyExtractor={(item) => item.id} />);
-
-
 
 
     const handleSearch = (text: string) => {
@@ -113,9 +125,9 @@ const ListView = ({ navigation, route }: any) => {
     };
 
     return (
-        <SafeAreaView style={{flex: 1}}>
-        <BgContainer source={bg}>
-            
+        
+        <BgContainer source={bg} resizeMode='cover' style={{flex:1}}>
+            <SafeAreaView style={{flex: 1}}>
             <SearchArea>
                 <SearchBar
                     onChangeText={handleSearch}
@@ -131,16 +143,16 @@ const ListView = ({ navigation, route }: any) => {
             </Container>
             <NavContainer>
                 <ButtontoMonth onPress={() => {
-                    
-                    navigation.navigate('MonthlyView')
+                    console.log("pressed");
+                    navigation.navigate('MonthlyView');
                 }}>
                     <ButtonText>Calendar </ButtonText>
                     <Icon name="arrow-forward-ios" color={'white'}/>
                 </ButtontoMonth>
             </NavContainer>
+            </SafeAreaView>
         </BgContainer>
         
-        </SafeAreaView>
     )
 };
 
