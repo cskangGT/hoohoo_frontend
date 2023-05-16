@@ -3,11 +3,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import { ImageBackground } from 'react-native';
 import styled from 'styled-components';
 import FunctionComponents, { showPlusButtonEx } from './FunctionComponents/FunctionComponents';
-import { openCameraEx, openGalleryEx, updatePhotoContentEx } from './FunctionComponents/PhotoZone';
+import { updatePhotoContentEx } from './FunctionComponents/PhotoZone';
 import diaryData from '../../data/diaryData.json'
 import TagZone, { updateTagContentEx } from './FunctionComponents/TagZone';
-import PhotoZone from './FunctionComponents/PhotoZone';
-import NoteZone from './FunctionComponents/NoteZone';
+
 import ImageButton from '../../components/common/ImageButton';
 import { useNavigation } from '@react-navigation/native';
 import sample from '../../data/data.json';
@@ -15,7 +14,6 @@ import sample from '../../data/data.json';
 const background = require('../../assets/DiaryEditPage/Background.png');
 const arrow_ListView = require('../../assets/DiaryEditPage/arrow_right.png');
 const arrow_tagPage = require('../../assets/DiaryEditPage/arrow_left.png');
-const microButton = require('../../assets/DiaryEditPage/microphone.png');
 const screenWidth: number = Dimensions.get('window').width;
 const screenHeight: number = Dimensions.get('window').height;
 const StyledTagWord = styled(TouchableOpacity)`
@@ -48,6 +46,7 @@ const FooterContainer = styled(View)`
     position: absolute; // Set position to absolute
     justify-content: space-between;
     align-self: baseline;
+    
     /* align-items: center; */
     width: 95%;
     bottom: 4%; // Position the component 10 units from the bottom
@@ -80,10 +79,43 @@ const ContainerTransition = styled(View)`
     /* border-color: white;
     border-width: 1px; */
 `;
-
+type ItemData = {
+    id: string;
+    date: string;
+    tags: string[];
+    isPhoto: boolean;
+    isQuote: boolean;
+    isDiary: boolean;
+};
+const DATA: ItemData[] = [
+    {
+        id: "0", date: "4/21/2023", tags: ["Determine", "ItIsPossible", "HardTimes", "NeverGiveUp", "ListenToMyVoice"],
+        isPhoto: false, isQuote: false, isDiary: false
+    },
+    {
+        id: "1", date: "4/15/2023", tags: ["Homework", "TryHard", "ILoveThis", "Longterm"],
+        isPhoto: true, isQuote: true, isDiary: false
+    },
+    {
+        id: "2", date: "4/11/2023", tags: ["Pizza", "Lunch", "GirlFriend", "Expo"],
+        isPhoto: true, isQuote: true, isDiary: true
+    },
+    {
+        id: "3", date: "4/10/2023", tags: ["NeverGiveUp", "Dinner", "BeBrave", "Samsung"],
+        isPhoto: false, isQuote: true, isDiary: true
+    },
+    {
+        id: "-1", date: "F", tags: [], isPhoto: false, isQuote: false, isDiary: false
+    }
+];
 type ItemProps = { title: string, index: number };
 const texts = ["Determine", "ItIsPossible", "HardTimes", "NeverGiveUp", "ListenToMyVoice"];
-
+const TZContainer = styled(View)`
+  top:4%;
+`;
+const EmptyHolder = styled(View)`
+  height: 100%;
+`;
 //things to be used in other files 
 export let countEx: number;
 export let setCountEx: React.Dispatch<React.SetStateAction<number>>;
@@ -93,49 +125,59 @@ export let enableDeleteEx: boolean;
 export let setEnableDeleteEx: React.Dispatch<React.SetStateAction<boolean>>;
 
 function DiaryEdit(route: any): JSX.Element {
-    console.log("screenHeight", screenHeight);
-    console.log("width", screenWidth);
     // const jsonId = route.route.params.id
-    // const index = route.route.params.index
-    const index = 1
+    let index: string = route.route.params.index
+    console.log("what", parseInt(index));
+    let datestring: string;
+    if (index === undefined) {
+        index = "4"
+        let today = new Date()
+        let y = today.getFullYear()
+        let m = today.getMonth() + 1
+        let d = today.getDate()
+        datestring = m + "/" + d + "/" + y
+        console.log("datestring", datestring);
+
+    } else {
+        datestring = DATA[parseInt(index)].date
+    }
+
     const navigation = useNavigation();
 
     const data = diaryData.data
     const data2 = sample.entries[11]
     const [date, setDate] = useState(new Date());
-    const [content, setContent] = useState<string[]>(texts)
+    if (DATA[parseInt(index)].tags === undefined) {
+        console.log("first", DATA[parseInt(index)].tags);
+
+    }
+    const [content, setContent] = useState<string[]>(DATA[parseInt(index)].tags === undefined ? [] : DATA[parseInt(index)].tags)
     const [count, setCount] = useState<number>(0)
     // this is including tag components
     const [enableDelete, setEnableDelete] = useState<boolean>(false)
     const [stackComponent, setStackComponent] = useState<JSX.Element[]>([]);
     //things to be exported
-    enableDeleteEx = enableDelete
-    setEnableDeleteEx = setEnableDelete
     countEx = count
     setCountEx = setCount
     stackComponentEx = stackComponent
     setStackComponentEx = setStackComponent
-    const jsonDate = data[index].date;
+    // const jsonDate = data[index].date;
     const months: string[] = ["January", "Febrary", "March", "April", "May",
         "June", "July", "August", "September", "October", "November", "December"];
 
 
 
-
-
-
-
-    const dateStringFormat = () => {
-        let dateStr: string = date.toLocaleDateString();;
+    const dateStringFormat = (dateStr: string) => {
+        // let dateStr: string = date.toLocaleDateString()
         let day: string = dateStr.split("/")[1];
         let month: string = months[parseInt(dateStr.split("/")[0]) - 1];
         let year: string = dateStr.split("/")[2];
         let dateFormat: string = day + " " + month + " " + year;
         return dateFormat
     }
-    let dateFormat: string = dateStringFormat()
+    let dateFormat: string = dateStringFormat(datestring)
     useEffect(() => {
-        dateFormat = dateStringFormat()
+        dateFormat = dateStringFormat(datestring)
     }, [date]);
 
     const initStackComponent = () => {
@@ -162,34 +204,38 @@ function DiaryEdit(route: any): JSX.Element {
 
 
     useEffect(() => {
-        console.log("count", count);
+        console.log("count", stackComponent.length);
 
-        if (enableDelete && count == 0) {
+        if (enableDelete && stackComponent.length == 0) {
             setEnableDelete(false);
             showPlusButtonEx(true);
         } // end delete mode, show plus button
         setStackComponent(stackComponentEx)
         updateTagContentEx();
+
         if (updatePhotoContentEx !== undefined)
             updatePhotoContentEx();
-    }, [enableDelete, count, content]);
+        setContent(DATA[parseInt(index)].tags)
+
+    }, [enableDelete, stackComponent, index, content]);
+
 
     return (
         <StyledBackgroundView source={background}>
             {/* <View style={{ top: '5 %', width:'100%', height:'100%' }}> */}
             {
                 stackComponent.length === 0 ?
-                    <View style={{ top: '4%' }}>
-                        <TagZone content={content} index={index} />
-                        <View style={{ height: '100 %' }}>
+                    <TZContainer style={{ top: '4%' }}>
+                        <TagZone content={DATA[parseInt(index)].tags} index={index} />
+                        <EmptyHolder style={{ height: '100 %' }}>
 
                             <Placeholder style={{ top: '20 %' }}>
                                 Press + to add components
                             </Placeholder>
-                        </View>
-                    </View> :
+                        </EmptyHolder>
+                    </TZContainer> :
                     <ScrollView style={{ top: '4%', maxHeight: '80%' }}>
-                        <TagZone content={content} />
+                        <TagZone content={DATA[parseInt(index)].tags} index={index} />
                         <StyledHorizontallyAlignedItems>
                             {
                                 stackComponent.map((component, index) => (
@@ -202,20 +248,19 @@ function DiaryEdit(route: any): JSX.Element {
                     </ScrollView>
             }
             <FooterContainer>
-                <View style={{ flexDirection: 'column-reverse' }}>
-                    <ImageButton src={arrow_tagPage} onPress={() => { navigation.navigate('Diary') }} />
+                <View>
+                    {/* <ImageButton src={arrow_tagPage} onPress={() => { navigation.navigate('Diary') }} /> */}
                     <FunctionComponents style={{
-
-                        width: '100%', marginBottom: 50
+                        width: '100%'
                         // alignSelf: 'center',
                         // justifyContent: 'center',
-                    }} />
+                    }}
+                        stack={stackComponent} count={count} setCount={setCount} />
 
                 </View>
                 <TextDateContainer><TextDate>{dateFormat}</TextDate></TextDateContainer>
                 <ContainerTransition>
-
-                    <ImageButton src={arrow_ListView} onPress={() => {
+                    <ImageButton style={{width:15, height:15}} src={arrow_ListView} onPress={() => {
                         navigation.navigate('ListView')
                     }} />
                 </ContainerTransition>

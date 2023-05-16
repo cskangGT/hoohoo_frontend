@@ -1,21 +1,26 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { View, Text, Button, StyleSheet, TextInput, TouchableOpacity, Pressable, Keyboard, Switch } from "react-native";
+import React, { useState } from 'react'
+import {TextInput} from "react-native";
 import styled from 'styled-components';
 
 //this component could be reusable if further modified. ex) modify fontSize, autoFocus etc..
 //could be usuable in search bar, quote typing, etc..
-
+const InputText = styled(TextInput)`
+  align-self: center;
+  /* justify-content: center; */
+  font-size: 60px;
+  padding: 5px;
+  border-bottom-color: white;
+  border-bottom-width: 2px;
+  width: 80%;
+  color: white;
+`;
 //contains user type input. 
 function UserTextInput(props: any): JSX.Element {
     const [typeText, setTypeText] = useState<string>()
     //focus if current mode is type mode which contains Speech Mode button
     let focus = (props.currTypeButton === "Speech Mode")
     return (
-        <TextInput
-            style={{
-                alignSelf: 'center',
-                justifyContent: 'center', fontSize: 60, padding: 10, borderBottomColor: 'white', borderBottomWidth: 2, width: '80%'
-            }}
+        <InputText
             //when the textinput is touched, automatically switch to Type mode!
             onFocus={() => {
                 if (props.currTypeButton === "Type Mode") {

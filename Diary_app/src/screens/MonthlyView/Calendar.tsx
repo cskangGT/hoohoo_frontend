@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { PanGestureHandler, State } from 'react-native-gesture-handler';
 import CalendarModal from './CalendarModal';
 import CustomButton from '../../components/common/Button';
+import { useNavigation } from '@react-navigation/native';
 
 // import Button from './../../components/common/Button';
 const star1 = require('../../assets/star1.png');
@@ -19,26 +20,6 @@ const SearchContainer = styled(View)`
     flex-direction: row;
     padding-bottom: 7%;
 `;
-const MonthInput = styled(TouchableOpacity)`
-    flex: 1 10%;
-    font-size: 30px;
-    width: 20%;
-    font-weight: bold;
-    color : white;
-    background-color: transparent;
-    padding-left: 30%;
-`;
-
-const YearInput = styled(TouchableOpacity)`
-    flex: 1 15%;
-    font-size: 30px;
-    padding-right: 30%;
-    width:20%;
-    font-weight: bold;
-    color : white;
-    background-color: transparent;
-    align-items: center;
-`;
 
 const Row = styled(View)`
     
@@ -48,6 +29,12 @@ const Row = styled(View)`
     padding-left: 13px;
     padding-right: 13px;
     padding-bottom: 13px;
+`;
+const Blank = styled(View)`
+  flex: 1;
+    height: 50px;
+    background-color: transparent;
+    color : white;
 `;
 
 const Element = styled(TouchableOpacity)`
@@ -122,8 +109,8 @@ const FadeStar = ({ starImage, frequency }: { starImage: any, frequency: number 
     );
 };
 const Calendar = () => {
-
-
+    const navigation = useNavigation();
+    const data_inverse = { "21": "0", "15": "1", "11": "2", "10": "3" }
     const months = ["Jan", "Feb", "Mar", "Apr",
         "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     const weekDays = ["Su", "M", "T", "W", "Th", "F", "Sa"];
@@ -255,15 +242,15 @@ const Calendar = () => {
                 // console.log("curr_mm", selected_mm);
                 // console.log("curr_yyyy", selected_yyyy);
                 return ( // if in database
-                    <Today>
-                        <Day> {item != -1 ? item : ''} </Day>
-                        <FadeStar starImage={arr_star[index]} frequency={index + 1} />
+                    <Today >
+                        <Day key={"day" + item}> {item != -1 ? item : ''} </Day>
+                        <FadeStar key={item} starImage={arr_star[index]} frequency={index + 1} />
                     </Today>);
             } else {
 
                 return ( // if not in database
                     <Today>
-                        <Day> {item != -1 ? item : ''} </Day>
+                        <Day key={"day" + item}> {item != -1 ? item : ''} </Day>
                     </Today>);
             }
 
@@ -275,20 +262,20 @@ const Calendar = () => {
                 // console.log("yyyy", y_data);
                 return ( // if in database
                     <View>
-                        <Day> {item != -1 ? item : ''} </Day>
-                        <FadeStar starImage={arr_star[index]} frequency={index + 1} />
+                        <Day key={"day" + item}> {item != -1 ? item : ''} </Day>
+                        <FadeStar key={item} starImage={arr_star[index]} frequency={index + 1} />
                     </View>);
             } else {
 
                 return ( // if not in database
                     <View>
-                        <Day> {item != -1 ? item : ''} </Day>
+                        <Day key={"day" + item}> {item != -1 ? item : ''} </Day>
                     </View>);
             }
         } else {
             return ( // if not in database
                 <View>
-                    <Day> {item != -1 ? item : ''} </Day>
+                    <Day key={"day" + item}> {item != -1 ? item : ''} </Day>
                 </View>);
         }
 
@@ -297,22 +284,30 @@ const Calendar = () => {
 
     const matrix = generateMatrix();
     rows = matrix.map((row, rowIndex) => {
-        let rowItems = row.map((item: any, colIndex: number) => {
+        let rowItems = row.map((item: number, colIndex: number) => {
             if (rowIndex == 0) {
-                return (<DateText>
+                return (<DateText key={"Text" + rowIndex * colIndex + colIndex}>
                     {item != -1 ? item : ''}
                 </DateText>);
             } else {
                 return (
-                    <Element
-                        onPress={() => console.log('item', item)}>
+
+                    <Element key={"element" + rowIndex * colIndex + colIndex}
+                        onPress={() => {
+                            if (item != -1) {
+                                let strItem = String(item)
+                                navigation.navigate('DiaryDetail', { index: data_inverse[strItem] })
+                            }
+                        }}>
                         {handlerElement(item)}
                     </Element>
+
+
                 );
             }
         });
         return (
-            <Row>
+            <Row key={rowIndex}>
                 {rowItems}
             </Row>
         );

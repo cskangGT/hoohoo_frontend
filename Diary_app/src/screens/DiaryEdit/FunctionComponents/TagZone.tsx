@@ -1,10 +1,10 @@
 import { View, Text, Image, TouchableHighlight, TouchableOpacity } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { enableDeleteEx, setEnableDeleteEx } from '../DiaryDetail';
 import ImageButton from '../../../components/common/ImageButton';
 import { useNavigation } from '@react-navigation/native';
-
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const Xbutton = require('../../../assets/DiaryEditPage/remove.png');
 const microButton = require('../../../assets/DiaryEditPage/microphone.png');
@@ -46,10 +46,13 @@ const StyledTagWord = styled(View)`
     padding: 5px;
     background-color: rgb(71, 71, 70);
     opacity:1;
-    margin: 5px;
+    /* margin: 5px; */
+    margin-vertical: 5px; /* 수정: margin 속성을 marginVertical과 marginHorizontal로 분리 */
+    margin-horizontal: 5px;
 `;
 const InsideTagView = styled(View)`
     flex-direction: row;
+    align-items: center;
 `;
 const RemoveTagImage = styled(Image)`
     width:15px;
@@ -66,14 +69,20 @@ const RemoveButton = styled(TouchableHighlight)`
     height: 15px;
     margin-right: 5px;
 `;
-const ButtontoView = styled(TouchableOpacity)`
-    border-width: 1px;
-    border-color: gray;
-    width:20%;
-    border-radius: 50px;
-    padding: 5px;
+const TransitionContainer = styled(View)`
+    width: 25%;
+    /* border-color: white;
+    border-width: 1px; */
+    flex-direction: row;
     
-    background-color: rgb(71, 71, 70);
+`;
+const ButtontoView = styled(TouchableOpacity)`
+    justify-content: center;
+    /* width:10%; */
+    /* border-radius: 10px; */
+    padding: 5px;
+    margin-right:20%;
+    /* background-color: rgb(71, 71, 70); */
     align-items: center;
 `;
 const ViewText = styled(Text)`
@@ -82,25 +91,72 @@ const ViewText = styled(Text)`
     color: white;
     font-size: 17px;  
 `;
+const MicButton = styled(TouchableOpacity)`
+    align-items: center;
+    justify-content: center;
+`;
+
+const IconBtn = styled(Icon)`
+    background-color: transparent;
+    align-items: center;
+`;
+
+type ItemData = {
+    id: string;
+    date: string;
+    tags: string[];
+    isPhoto: boolean;
+    isQuote: boolean;
+    isDiary: boolean;
+};
+const DATA: ItemData[] = [
+    {
+        id: "0", date: "4/21/2023", tags: ["Determine", "ItIsPossible", "HardTimes", "NeverGiveUp", "ListenToMyVoice"],
+        isPhoto: false, isQuote: false, isDiary: false
+    },
+    {
+        id: "1", date: "4/15/2023", tags: ["Homework", "TryHard", "ILoveThis", "Longterm"],
+        isPhoto: true, isQuote: true, isDiary: false
+    },
+    {
+        id: "2", date: "4/11/2023", tags: ["Pizza", "Lunch", "GirlFriend", "Expo"],
+        isPhoto: true, isQuote: true, isDiary: true
+    },
+    {
+        id: "3", date: "4/10/2023", tags: ["NeverGiveUp", "Dinner", "BeBrave", "Samsung"],
+        isPhoto: false, isQuote: true, isDiary: true
+    },
+    {
+        id: "-1", date: "F", tags: [], isPhoto: false, isQuote: false, isDiary: false
+    }
+];
 export let updateTagContentEx: any;
 //get stirng[] content data from DiaryDetail.
 function TagZone(props: any): JSX.Element {
-    const key = props.index
+    let key = props.index
+    if (key === undefined) {
+        key = 4
+    }
     const [content, setContent] = useState<string[]>(props.content)
     const navigation = useNavigation();
 
-
+    useEffect(() => {
+        setContent(DATA[parseInt(key)].tags)
+    }, [key])
     //things to be exported
     const [tagZoneContent, setTagZoneContent] = useState<JSX.Element[]>(
         content.map((title: string, index: number) => (
-            <View style={{ position: 'relative' }}>
-                <StyledTagWord >
-                    <InsideTagView>
-                        <RemoveButton
+            <View style={{ position: 'relative' }} key={"View" + index}>
+                <StyledTagWord key={"View2" + index}>
+                    <InsideTagView key={"View3" + index}>
+                        <RemoveButton key={"remove" + index}
                             onPress={() => {
                                 deleteTag(index)
-                            }}>
-                            <RemoveTagImage source={Xbutton} />
+                            }}
+                            activeOpacity={0.8}
+                            underlayColor='transparent'
+                        >
+                            <RemoveTagImage key={"img" + index} source={Xbutton} />
                         </RemoveButton>
                         <TagText key={index + title}>
                             {title}
@@ -127,15 +183,17 @@ function TagZone(props: any): JSX.Element {
         setTagZoneContent(tagZoneContent)
         let contentHolder: JSX.Element[] = (
             content.map((title: string, index: number) => (
-                <View style={{}}>
-                    <StyledTagWord >
-                        <InsideTagView>
-                            <RemoveButton
+                <View style={{ position: 'relative' }} key={"View" + index}>
+                    <StyledTagWord key={"View2" + index}>
+                        <InsideTagView key={"View3" + index}>
+                            <RemoveButton key={"remove" + index}
                                 onPress={() => {
                                     deleteTag(index)
                                 }}
+                                activeOpacity={0.8}
+                                underlayColor='transparent'
                             >
-                                <RemoveTagImage source={Xbutton} />
+                                <RemoveTagImage key={"img" + index} source={Xbutton} />
                             </RemoveButton>
                             <TagText key={index + title}>
                                 {title}
@@ -181,17 +239,21 @@ function TagZone(props: any): JSX.Element {
         <TagContainer>
             <HeaderContainer>
                 <HeaderText>Yes, It's your day : ) </HeaderText>
-                {/* <ButtontoView onPress={() => { navigation.navigate('Diary', { index: key }) }}>
-                    <ViewText >
-                        View
-                    </ViewText></ButtontoView> */}
-                <View style={{ width: '20%', alignItems: 'center' }}>
-                    <ImageButton src={microButton} onPress={() => {
+                <TransitionContainer>
+                <ButtontoView onPress={() => { navigation.navigate('Diary', { index: key })}}
+                activeOpacity={0.8}>
+                    <Icon name="eye" size={25} color="white"/></ButtontoView>
+                <MicButton onPress={() => {
+                        navigation.navigate('TagRecording', { index: key })
+                    }} >
+                    <IconBtn name="microphone" size={25} color="white" />
+                    {/* <ImageButton src={microButton} onPress={() => {
                         navigation.navigate('TagRecording', { index: key })
                     }}
                         style={{ justifyContent: 'center' }}
-                    />
-                </View>
+                    /> */}
+                </MicButton>
+                </TransitionContainer>
             </HeaderContainer>
             {tagZoneContent}
         </TagContainer>

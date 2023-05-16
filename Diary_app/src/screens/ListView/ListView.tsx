@@ -67,7 +67,7 @@ type ItemData = {
 };
 const DATA: ItemData[] = [
     {
-        id: "0", date: "4/21/2023", tags: ["Determine", "ItIsPossible", "HardTimes", "NeverGiveUp"],
+        id: "0", date: "4/21/2023", tags: ["Determine", "ItIsPossible", "HardTimes", "NeverGiveUp", "ListenToMyVoice"],
         isPhoto: false, isQuote: false, isDiary: false
     },
     {
@@ -87,9 +87,9 @@ const texts = ["Determine", "ItIsPossible", "HardTimes", "NeverGiveUp", "ListenT
 
 const ListView = ({ navigation, route }: any) => {
     // This is rendering callback function. It shows every item view.
-    const renderItem = ({ item }: { item: ItemData }) => {
+    const renderItem = ({ item, index }: { item: ItemData, index: number }) => {
         console.log('Viewitem', item);
-        return <ViewItem item={item} />;
+        return <ViewItem item={item} key={index} />;
     };
     const [searchQuery, setSearchQuery] = useState<string>("");
     const [masterData, setMasterData] = useState<ItemData[]>(DATA);

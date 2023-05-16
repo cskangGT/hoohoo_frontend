@@ -6,7 +6,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Image } from 'react-native';
 import styled from 'styled-components';
 import { TouchableHighlight } from 'react-native';
-import { countEx, enableDeleteEx, setCountEx, setEnableDeleteEx } from '../DiaryDetail';
+
+// import { enableDeleteEx, setEnableDeleteEx } from '../DiaryDetail';
 import ImageButton from '../../../components/common/ImageButton';
 import { PERMISSIONS } from 'react-native-permissions';
 import { check, request, RESULTS } from 'react-native-permissions';
@@ -74,14 +75,14 @@ function PhotoZone(props: any): JSX.Element {
         saveToPhotos: true,
         mediaType: 'photo'
     }
-
+    const [enableDelete, setEnableDelete] = useState<boolean>(false);
     const [photo, setPhoto] = useState<string[]>([])
     const [photoContent, setPhotoContent] = useState<JSX.Element[]>()
 
-    const count = countEx
-    const setCount = setCountEx
-    const enableDelete = enableDeleteEx
-    const setEnableDelete = setEnableDeleteEx
+    // const count = countEx
+    // const setCount = setCountEx
+    // const enableDelete = enableDeleteEx
+    // const setEnableDelete = setEnableDeleteEx
     useEffect(() => {
         setEnableDelete(enableDelete)
         setPhoto(photo)
@@ -98,7 +99,7 @@ function PhotoZone(props: any): JSX.Element {
                     if (result.assets !== undefined && result.assets[0].uri !== undefined) {
                         photo.push(result.assets[0].uri)
                         setPhoto(photo)
-                        setCount(count + 1)
+                        // setCount(count + 1)
                         setPhotoCount(photoCount + 1)
                         // increaseCount()
                         setEnableDelete(false)
@@ -113,7 +114,7 @@ function PhotoZone(props: any): JSX.Element {
                     if (result.assets !== undefined && result.assets[0].uri !== undefined) {
                         photo.push(result.assets[0].uri)
                         setPhoto(photo)
-                        setCount(count + 1)
+                        // setCount(count + 1)
                         setPhotoCount(photoCount + 1)
                         // increaseCount()
                         setEnableDelete(false)
@@ -132,7 +133,7 @@ function PhotoZone(props: any): JSX.Element {
         if (result.assets !== undefined && result.assets[0].uri !== undefined) {
             photo.push(result.assets[0].uri)
             setPhoto(photo)
-            setCount(count + 1)
+            // setCount(count + 1)
             setPhotoCount(photoCount + 1)
             // increaseCount()
             setEnableDelete(false)
@@ -146,7 +147,7 @@ function PhotoZone(props: any): JSX.Element {
             // if (enableDelete)
             delete photo[index]
             setPhoto(photo)
-            setCount(count - 1)
+            // setCount(count - 1)
             setPhotoCount(photoCount - 1)
             // decreaseCount()
             updatePhotoContent()
@@ -180,7 +181,7 @@ function PhotoZone(props: any): JSX.Element {
                         key={index + 'xview'}
                         style={{ position: 'absolute', right: 0 }}>
                         {
-                            enableDeleteEx &&
+                            enableDelete &&
                             //must componentize this. (duplicate code in diaryedit)
                             <ImageButton
                                 src={Xbutton}
@@ -312,10 +313,9 @@ function PhotoZone(props: any): JSX.Element {
                     ref={scrollViewRef}
                     scrollEventThrottle={photoWidth}
                     pagingEnabled={true}
-                    onScroll={handleScroll} horizontal={true} showsHorizontalScrollIndicator={false}>
-                    {
-                        photoContent
-                    }
+                    onScroll={handleScroll} horizontal={true}
+                    showsHorizontalScrollIndicator={false}>
+                    {photoContent}
 
                     {pictureAdd}
 

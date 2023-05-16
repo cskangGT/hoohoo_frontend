@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { ScrollView, Image } from 'react-native';
 import { TextInput } from 'react-native';
-import { countEx, setCountEx, enableDeleteEx, setEnableDeleteEx, stackComponentEx, setStackComponentEx } from '../DiaryDetail';
+// import { countEx } from '../DiaryDetail';
 import PhotoZone, { openCameraEx, openGalleryEx } from './PhotoZone';
 import NoteZone, { setWriteDiaryEx, writeDiaryEx } from './NoteZone';
 import { TouchableHighlight } from 'react-native-gesture-handler';
@@ -51,12 +51,14 @@ const StyledTextInput = styled(TextInput)`
 export let showPlusButtonEx: any;
 interface Props {
     style?: {};
+    stack: any[];
+    count: number;
+    setCount: (any: number) => any;
 }
 function FunctionComponents(props: Props): JSX.Element {
-    const enableDelete = enableDeleteEx
-    const setEnableDelete = setEnableDeleteEx
-
-    const button_size = 20
+    // const enableDelete = enableDeleteEx
+    // const setEnableDelete = setEnableDeleteEx
+    const { style, stack, count, setCount } = props;
     const start_x = 0
     const start_y = 0;
     //camera 
@@ -150,7 +152,7 @@ function FunctionComponents(props: Props): JSX.Element {
     const animatedStyle2 = setTransform(animation2.x, animation2.y)
     const animatedStyle3 = setTransform(animation3.x, animation3.y)
 
-    const [showPlusButton, setShowPlusButton] = useState<boolean>(!writeDiaryEx && !enableDelete)
+    const [showPlusButton, setShowPlusButton] = useState<boolean>(!writeDiaryEx)
     const updateShowPlus = (tf: boolean) => {
         setShowPlusButton(tf)
     }
@@ -167,7 +169,7 @@ function FunctionComponents(props: Props): JSX.Element {
                     </Text>
                 </TouchableOpacity>
             } */}
-            {((!writeDiaryEx && !enableDelete) || showPlusButton) &&
+            {((!writeDiaryEx) || showPlusButton) &&
                 <StyledCircleButton
                     activeOpacity={0.8}
                     onPress={() => {
@@ -178,8 +180,6 @@ function FunctionComponents(props: Props): JSX.Element {
                             animationReset();
                             setTimeout(() => setVisible(!visible), 300)
                         }
-
-
                     }}>
 
                     <Image source={PLUS} style={{ height: 30, width: 30, borderRadius: 5 }} />
@@ -195,9 +195,11 @@ function FunctionComponents(props: Props): JSX.Element {
                                 <TouchableOpacity
                                     onPress={() => {
                                         animationReset();
-                                        stackComponentEx.push(<PhotoZone />)
-                                        setStackComponentEx(stackComponentEx)
-                                        setCountEx(countEx + 1)
+                                        if (stack !== undefined) {
+                                            stack.push(<PhotoZone key={count} />)
+                                        }
+                                        // setStackComponentEx(stackComponentEx)
+                                        setCount(count + 1)
                                         // openCameraEx();
                                         setVisible(false)
                                     }}>
@@ -209,9 +211,11 @@ function FunctionComponents(props: Props): JSX.Element {
                             }, animatedStyle2]}>
                                 <TouchableOpacity onPress={() => {
                                     animationReset();
-                                    stackComponentEx.push(<PhotoZone />)
-                                    setStackComponentEx(stackComponentEx)
-                                    setCountEx(countEx + 1);
+                                    if (stack !== undefined) {
+                                        stack.push(<PhotoZone key={count} />)
+                                    }
+                                    // setStackComponentEx(stackComponentEx)
+                                    setCount(count + 1);
                                     // openGalleryEx();
                                     setVisible(false)
                                 }}>
@@ -224,11 +228,12 @@ function FunctionComponents(props: Props): JSX.Element {
                             }, animatedStyle3]}>
                                 <TouchableOpacity onPress={() => {
                                     animationReset();
-                                    stackComponentEx.push(<NoteZone />)
-                                    setStackComponentEx(stackComponentEx)
-                                    setCountEx(countEx + 1)
+                                    if (stack !== undefined) {
+                                        stack.push(<NoteZone key={count} />)
+                                    }
+                                    // setStackComponentEx(stackComponentEx)
+                                    setCount(count + 1)
                                     // setWriteDiaryEx(true) 
-
                                     setVisible(false)
                                 }}>
                                     <Image source={icon_note} key='note' style={{ height: 30, width: 30, borderRadius: 5 }} />

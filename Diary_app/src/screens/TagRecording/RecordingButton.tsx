@@ -1,17 +1,21 @@
 import Voice from '@react-native-voice/voice';
 import CustomButton from '../../components/common/Button';
 import React, { useEffect, useRef, useState } from 'react'
-
+import styled from 'styled-components';
 import { TouchableHighlight, Text, View, ToastAndroid, Image } from 'react-native';
 const microButton = require('../../assets/microphone.png');
-
+const Mic = styled(Image)`
+    width: 50px; 
+    height: 50px;
+    align-items: center;
+`;
 
 function RecordingButton(props: any): JSX.Element {
     const [pitch, setPitch] = useState('');
     const [error, setError] = useState('');
     const [end, setEnd] = useState('');
     const [started, setStarted] = useState('');
-    const [results, setResults] = useState([]);
+    const [results, setResults] = useState<any>([]);
     const [partialResults, setPartialResults] = useState([]);
     const onSpeechStart = (e: any) => {
         //Invoked when .start() is called without error
@@ -38,7 +42,7 @@ function RecordingButton(props: any): JSX.Element {
         //console.log('onSpeechPartialResults: ', e);
         console.log("e_partial results:", e);
 
-        setPartialResults(e.value);
+        // setPartialResults(e.value);
     };
 
     const onSpeechVolumeChanged = (e: any) => {
@@ -52,7 +56,7 @@ function RecordingButton(props: any): JSX.Element {
         Voice.onSpeechEnd = onSpeechEnd;
         Voice.onSpeechError = onSpeechError;
         Voice.onSpeechResults = onSpeechResults;
-        Voice.onSpeechPartialResults = onSpeechPartialResults;
+        // Voice.onSpeechPartialResults = onSpeechPartialResults;
         Voice.onSpeechVolumeChanged = onSpeechVolumeChanged;
 
         return () => {
@@ -61,7 +65,50 @@ function RecordingButton(props: any): JSX.Element {
         };
     }, []);
 
+    const cap = 300
+    const [capacity, setCapacity] = useState<number>(cap)
+    const limit = 30
+    let resultArr: string[] = []
+    // add user Speech to user input states
+    function convertResult(results: string[]): void {
+        console.log("results", results);
+        let result: string = results[results.length - 1]
 
+        if (result !== undefined && result.length < limit && capacity - result.length >= 0) {
+
+            result = result.charAt(0).toUpperCase().concat(result.substring(1, result.length))
+            for (let i = 0; i < result.length; i++) {
+                let curr = result.charAt(i)
+                if (curr == ' ') {
+                    let next = result.charAt(i + 1).toUpperCase()
+                    result = result.substring(0, i).concat(next + result.substring(i + 2, result.length))
+                    console.log("next:", next, "result :", result)
+                }
+            }
+            props.addInputs(result)
+            setCapacity(capacity - result.length)
+        } else if (result !== undefined && result.length >= limit) {
+            ToastAndroid.show('Max limit exceeded:\nLength of a tag must be less than ' + limit, ToastAndroid.SHORT);
+        } else if (result !== undefined && capacity - result.length < 0) {
+            ToastAndroid.show('Max capacity exceeded:\nYou have recorded more than ' + cap + ' letters', ToastAndroid.SHORT);
+        }
+    }
+
+    const onSpeechResults = (e: any) => {
+        //Invoked when SpeechRecognizer is finished recognizing
+        //console.log('onSpeechResults: ', e);
+
+        setTimeout(() => {
+            destroyRecognizer();
+            resultArr.push(e.value[0])
+            console.log("e:", resultArr);
+
+        }, 2000)
+        setTimeout(() => {
+            convertResult(resultArr)
+            resultArr = []
+        }, 3000)
+    };
     const startRecognizing = async () => {
         //Starts listening for speech for a specific locale
         if (started != 'on') {
@@ -123,40 +170,8 @@ function RecordingButton(props: any): JSX.Element {
             console.error(e);
         }
     };
-    const onSpeechResults = (e: any) => {
-        //Invoked when SpeechRecognizer is finished recognizing
-        //console.log('onSpeechResults: ', e);
-        console.log("e:", e);
-        setResults(e.value);
-        destroyRecognizer();
-    };
-    const cap = 300
-    const [capacity, setCapacity] = useState<number>(cap)
-    const limit = 30
-    // add user Speech to user input states
-    useEffect(() => {
-        console.log("results", results);
-        let result: string = results[0]
 
-        if (result !== undefined && result.length < limit && capacity - result.length >= 0) {
 
-            result = result.charAt(0).toUpperCase().concat(result.substring(1, result.length))
-            for (let i = 0; i < result.length; i++) {
-                let curr = result.charAt(i)
-                if (curr == ' ') {
-                    let next = result.charAt(i + 1).toUpperCase()
-                    result = result.substring(0, i).concat(next + result.substring(i + 2, result.length))
-                    console.log("next:", next, "result :", result)
-                }
-            }
-            props.addInputs(result)
-            setCapacity(capacity - result.length)
-        } else if (result !== undefined && result.length >= limit) {
-            ToastAndroid.show('Max limit exceeded:\nLength of a tag must be less than ' + limit, ToastAndroid.SHORT);
-        } else if (result !== undefined && capacity - result.length < 0) {
-            ToastAndroid.show('Max capacity exceeded:\nYou have recorded more than ' + cap + ' letters', ToastAndroid.SHORT);
-        }
-    }, [results]);
 
 
     return (
@@ -168,8 +183,10 @@ function RecordingButton(props: any): JSX.Element {
 
                     }}
                     onPress={destroyRecognizer}
+                    activeOpacity={0.7}
+                    underlayColor='transparent'
                 >
-                    <Image source={microButton} style={{ width: 50, height: 50, alignItems: 'center' }} />
+                    <Mic source={microButton} />
                 </TouchableHighlight>)
                     :
                     (<TouchableHighlight
@@ -177,8 +194,10 @@ function RecordingButton(props: any): JSX.Element {
 
                         }}
                         onPress={startRecognizing}
+                        activeOpacity={0.7}
+                        underlayColor='transparent'
                     >
-                        <Image source={microButton} style={{ width: 50, height: 50, alignItems: 'center' }} />
+                        <Mic source={microButton} />
                     </TouchableHighlight>)
             }
 

@@ -1,55 +1,60 @@
 import React, { useEffect, useRef, useState } from 'react'
 
-import { View, Text, TouchableHighlight, TextInput, TouchableOpacity, Keyboard, Switch, Dimensions, Image } from "react-native";
+import { View, Text, TouchableHighlight, TextInput, Keyboard, Animated, Dimensions, Image,ImageBackground, SafeAreaView } from "react-native";
 import styled from 'styled-components';
 import msg from '../../data/msg.json';
 import WordContainer from './Containers/WordContainer';
 import UserTextInput from './Containers/UserTextInput';
 import RecordingButton from './RecordingButton';
 import CustomButton from '../../components/common/Button';
-import ImageBackground from '../../components/common/ImageBackground';
+import ImageButton from '../../components/common/ImageButton';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
+// import ImageBackground from '../../components/common/ImageBackground';
 const Xbutton = require('../../assets/remove.png');
-
-
+const Background = require('../../assets/tagRecordingBg.png');
+const tb = require('../../assets/circleButton.png');
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 const Container = styled(ImageBackground)`
     width : 100% ;
     height: 100% ;
+
 `;
 const ButtonContainer = styled(View)`
-    top:5%;
-    position: absolute;
-    align-items: center;
-    width:100%;
+    top:2%;
+    /* position: absolute;
     margin-left:70%;
-    margin-right:5%;
+    margin-right:5%; */
+    align-items: flex-end;
     
+    width:100%;
     
 `;
 const TagContainers = styled(View)`
-    position: absolute;
-    top:18%;
+    /* position: absolute;
+    top:18%; */
+    top:3%;
     width: 100%;
     /* border-width: 2px;
     border-color: violet; */
-    height:25%;
+    height:37%;
     
 `;
 const InputTextContainer = styled(View)`
     /* margin-top: 90%; */
-    top:50%;
-    position: absolute;
-    width:100%;
-    /* border-width: 2px; */
-    height:auto;
-    /* border-color: blue; */
     
+    /* position: absolute; */
+    width:100%;
+    
+    height:auto;
+    /* border-color: blue;
+    border-width: 2px; */
 `;
 const SwitchContainer = styled(View)`
     /* top: 110%; */
-    top:30%;
+    top:20%;
     margin-left: 5%;
     /* position: absolute; */
     /* border-width: 2px;
@@ -58,12 +63,24 @@ const SwitchContainer = styled(View)`
 const RecordingContainer = styled(View)`
     /* border-width: 1px; */
     width:100%;
-    
+    top: ${windowHeight * 0.05}px;
+     /* border-width: 2px;
+    border-color: red; */
     /* top: 1000%; */
     /* top:2000%; */
-    position: absolute;
+    /* position: absolute; */
 `;
-
+const MicContainer = styled(View)`
+  /* top: 70%; 
+  position: absolute; */
+  /* border-width: 2px;
+    border-color: green; */
+    top:10%;
+  width: 100%;
+`;
+const Transition = styled(ImageButton)`
+    
+`;
 // const StyledTagWord = styled(View)`
 //     border-width: 1px;
 //     border-color: gray;
@@ -73,7 +90,7 @@ const RecordingContainer = styled(View)`
 //     opacity:1;
 //     margin: 5px;
 // `;
-// const InsideTagView = styled(View)`
+// const InsideTagView = styled(View)`r
 //     flex-direction: row;
 // `;
 // const RemoveTagImage = styled(Image)`
@@ -86,14 +103,14 @@ const StyledTagWord = styled(View)`
   border-color: gray;
   border-radius: 50px;
   padding: 5px;
-  background-color: rgb(71, 71, 70);
-  opacity: 1;
-  margin-vertical: 5px; /* 수정: margin 속성을 marginVertical과 marginHorizontal로 분리 */
-  margin-horizontal: 5px;
+  background-color: rgb(119, 119, 114);
+  opacity: 0.75;
+  margin: 5px;
 `;
 
 const InsideTagView = styled(View)`
   flex-direction: row;
+  align-items: center;
 `;
 
 const RemoveTagImage = styled(Image)`
@@ -110,16 +127,21 @@ const RemoveButton = styled(TouchableHighlight)`
     height: 15px;
     margin-right: 5px;
 `;
+const WordView = styled(View)`
+  width: 100%;
+  /* position: absolute; */
+    /* top: 43%; */
+    top:5%;
+`;
 
-const tags_group = ["Determine", "ItIsPossible", "HardTimes", "NeverGiveUp", "ListenToMyVoice"]
+const tags_group = ["Determine", "ItIsPossible", "HardTimes", "ListenToMyVoice", "NeverGiveUp"]
 
 function TagRecording({ navigation, route }: any): JSX.Element {
-
     function ModeContentContainer(props: any): JSX.Element {
         return (
-            <View style={{ width: '100%', position: 'absolute', top: '43 %' }}>
+            <WordView >
                 {props.content}
-            </View>)
+            </WordView>)
     }
     // tags
     const [inputs, setInputs] = useState<string[]>([])
@@ -129,7 +151,17 @@ function TagRecording({ navigation, route }: any): JSX.Element {
     const [recordedContentHolder, setRecordedContentHolder] = useState<JSX.Element[]>()
     const [size, setSize] = useState<number>(tags_group.length)
     const [isEditable, setIsEditable] = useState<boolean>(false);
+    
+    const [animation, setAnimation] = useState<boolean>(false);
+    const fadeAnim = useRef(new Animated.Value(0)).current;
 
+    useEffect(() => {
+        Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 1000,
+        useNativeDriver: true,
+        }).start();
+    }, []);
     const DeleteContent = (index: number, words: string[], setWords: React.Dispatch<React.SetStateAction<string[]>>, setWordContent: React.Dispatch<React.SetStateAction<JSX.Element[] | undefined>>, curr_size?: number) => {
         delete words[index];
         setWords(words);
@@ -150,27 +182,31 @@ function TagRecording({ navigation, route }: any): JSX.Element {
 
     //create tags on the modecontents?
     const createContent = (words: string[], setWords: React.Dispatch<React.SetStateAction<string[]>>, setWordContent: React.Dispatch<React.SetStateAction<JSX.Element[] | undefined>>, editable?: boolean, curr_size?: number) => {
-        const renderItem = ({ item, index }: any) => (
-            <StyledTagWord>
-                <InsideTagView>
-                    <RemoveButton onPress={() => DeleteContent(index, words, setWords, setWordContent, curr_size)}>
-                        <RemoveTagImage source={Xbutton} />
-                    </RemoveButton>
-                    <TagText>{item}</TagText>
-                </InsideTagView>
-            </StyledTagWord>
-        );
+        // const renderItem = ({ item, index }: any) => (
+        //     <StyledTagWord>
+        //         <InsideTagView>
+        //             <RemoveButton onPress={() => DeleteContent(index, words, setWords, setWordContent, curr_size)}
+        //                 activeOpacity={0.8}
+        //                 underlayColor='transparent'>
+        //                 <RemoveTagImage source={Xbutton} />
+        //             </RemoveButton>
+        //             <TagText>{item}</TagText>
+        //         </InsideTagView>
+        //     </StyledTagWord>
+        // );
         let contentHolder = (
 
             words.map((word: string, index: number) => (
-                <View>
-                    <StyledTagWord >
-                        <InsideTagView>
-                            <RemoveButton
+                <View key={"View" + index}>
+                    <StyledTagWord key={"View2" + index}>
+                        <InsideTagView key={"View3" + index}>
+                            <RemoveButton key={"button" + index}
                                 onPress={() => {
                                     DeleteContent(index, words, setWords, setWordContent, curr_size)
-                                }}>
-                                <RemoveTagImage source={Xbutton} />
+                                }}
+                                activeOpacity={0.8}
+                                underlayColor='transparent'>
+                                <RemoveTagImage key={"img" + index} source={Xbutton} />
                             </RemoveButton>
                             <TagText key={index + word}>
                                 {word}
@@ -289,15 +325,15 @@ function TagRecording({ navigation, route }: any): JSX.Element {
                     focusOnInput={props.focusOnInput}
                     size={props.size}
                 ></UserTextInput>
-                <SwitchContainer>
-                    {/* <Text>
+                {/* <SwitchContainer>
+                     <Text>
                         Record mode
-                    </Text> */}
+                    </Text> 
                     <Switch
                         onValueChange={props.switchMode}
                         value={props.currTypeButton === "Type Mode" ? true : false}
                     />
-                </SwitchContainer>
+                </SwitchContainer> */}
             </InputTextContainer>
         )
     }
@@ -331,7 +367,9 @@ function TagRecording({ navigation, route }: any): JSX.Element {
         setModeContent(ModeContentHolder)
     }
     return (
-        <Container>
+        <SafeAreaView style={{backgroundColor:'black'}}>
+        <Container source={Background}>
+            <Animated.View style={{opacity: fadeAnim}}>
             <ButtonContainer>
                 <CustomButton title="Save" onPress={() => {
                     navigation.navigate('Diary')
@@ -350,15 +388,23 @@ function TagRecording({ navigation, route }: any): JSX.Element {
             {/* The speech mode has Type mode button, text input for cursor blinking only, and record button at the bottom. */}
 
             {currTypeButton === "Type Mode" && (
-                <View style={{ top: '70%', position: 'absolute', width: '100 %' }}>
+                
+                <MicContainer>
                     {/* <View style={{}}>
                         <WordContainer content={InputContentHolder as JSX.Element[]} ></WordContainer>
                     </View> */}
-                    <RecordingContainer style={{ top: windowHeight * 0.1 }}>
+                    <RecordingContainer>
                         <RecordingButton addInputs={addInputs}></RecordingButton>
                     </RecordingContainer>
-                </View>
-            )}
+                    <Transition src={tb} onPress={()=>{}} 
+                    imageStyle={{marginTop: windowHeight * 0.15,
+                    alignSelf: 'center'}}/>
+                </MicContainer>
+
+            )
+
+            
+            }
 
             {/* {
                 currTypeButton === "Speech Mode" &&
@@ -366,8 +412,9 @@ function TagRecording({ navigation, route }: any): JSX.Element {
                     <WordContainer content={InputContentHolder as JSX.Element[]}></WordContainer>
                 </View>
             } */}
-
+    </Animated.View>
         </Container >
+        </SafeAreaView>
     )
 }
 
