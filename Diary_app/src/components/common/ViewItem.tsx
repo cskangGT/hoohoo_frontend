@@ -10,7 +10,7 @@ const diary = require('../../assets/Text.png');
 const ItemContainer = styled(View)`
     margin-top: 10px;
     
-    background-color: #413b3b;
+    background-color: #646464;
     border-radius: 15px;
     
     opacity: 0.7;
@@ -96,7 +96,7 @@ const ViewItem = (prop: Props) => {
     }
     console.log('item', item);
     return (
-        <ItemContainer style={{ borderColor: color }} >
+        <ItemContainer style={{ borderColor: color }}  >
             <CardContainer>
             <FlexRow>
                 <TouchableOpacity onPress={() => {
@@ -122,7 +122,7 @@ const ViewItem = (prop: Props) => {
                 {
                     item.tags.map((tag: string, index: number) => {
                         
-                        return <Tag key={index} text={tag} style={{  }} textStyle={{ fontSize:15, color: "white", fontFamily: 'Poppins-Regular' }} />
+                        return <Tag key={index} text={tag} style={{  }} textStyle={{ fontSize:13, color: "white", fontFamily: 'Poppins-Regular' }} />
                     })
                 }
             </TagArea>

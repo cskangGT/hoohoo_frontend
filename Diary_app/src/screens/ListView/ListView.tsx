@@ -8,7 +8,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
 
 
-const bg = require('../../assets/Background.png');
+const bg = require('../../assets/ListView_bg.png');
 
 const BgContainer = styled(ImageBackground)`
     width: 100%;
@@ -32,7 +32,7 @@ const SearchBar = styled(TextInput)`
     padding-bottom: 5px;
     margin-left: 7%;
     margin-right: 7%;
-    padding-left: 12px;
+    padding-left: 7px;
     opacity: 0.8;
 `;
 
@@ -120,7 +120,7 @@ const ListView = ({ navigation, route }: any) => {
                 <SearchBar
                     onChangeText={handleSearch}
                     placeholderTextColor="#dfdfdf"
-                    style={{color:'white', fontSize:17}}
+                    style={{color:'white', fontSize:14}}
                     value={searchQuery}
                     placeholder="Search by tags"
                 />
