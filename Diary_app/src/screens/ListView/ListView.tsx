@@ -1,35 +1,23 @@
 
 import React, { useState } from 'react'
 import { TouchableHighlight, TouchableOpacity, View, FlatList, TextInput, ImageBackground, Text, StatusBar, Platform } from 'react-native';
-import {  } from 'react-native-gesture-handler';
 import styled from 'styled-components';
 import ViewItem from '../../components/common/ViewItem';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 const bg = require('../../assets/ListView_bg.png');
 
 const BgContainer = styled(ImageBackground)`
-
+    flex:1;
 `;
 const SearchArea = styled(View)`
+    flex:0.04;
     margin-top:6%;
     margin-bottom: 2%;
 `;
-const NavContainer = styled(View)`
-    border-color: red;
-    border-width: 1px;
-    /* width: 94%; */
-    align-items: flex-end;
-    /* padding-top: 3%; */
-    /* margin-right: 3%;
-    margin-left: 3%; */
-    /* height:8%; */
-    
-`;
-const SearchBar = styled(TextInput)`
 
+const SearchBar = styled(TextInput)`
     border-bottom-width: 2px;
     border-bottom-color: white;
     padding-bottom: 5px;
@@ -40,35 +28,46 @@ const SearchBar = styled(TextInput)`
 `;
 
 const Container = styled(View)`
-
-    border-color: white;
-    border-width: 1px;
+    flex:0.83;
+    /* border-color: white;
+    border-width: 1px; */
     flex-direction: row;
     width: 95%;
     margin-left: 2.5%;
     margin-right: 2.5%;
-    height: 83%;
+    /* height: 83%; */
     padding: 5px;
     padding-top: -5px;
     background-color: transparent;
     border-radius: 30px;
 `;
+const NavContainer = styled(View)`
+    /* border-color: red;
+    border-width: 1px; */
+    flex:0.13;
+    /* flex-wrap: wrap-reverse; */
+    /* width: 94%; */
+    /* padding-top: 3%; */
+    /* margin-right: 3%;
+    margin-left: 3%; */
+    /* height:8%; */
+    justify-content:flex-end;
+    align-items: flex-end;
+`;
 const ButtontoMonth = styled(TouchableOpacity)`
-border-color: blue;
-    border-width: 1px;
+    width:25%;
+    bottom:4%;
+    right: 6%;
+    /* border-color: blue;
+    border-width: 1px; */
     border-radius: 10px;
-    /* padding:5px; */
-    
-    
-
     flex-direction: row;
-    justify-content: center;
+    padding: 3px;
     align-items: center;
+    justify-content: center;
 `;
 const ButtonText = styled(Text)`
-border-color: purple;
-    border-width: 1px;
-    color: white;
+    color: #fcf5f5;
     font-size: 15px;
 `;
 type ItemData = {
@@ -147,7 +146,7 @@ const ListView = ({ navigation, route }: any) => {
                     navigation.navigate('MonthlyView');
                 }}>
                     <ButtonText>Calendar </ButtonText>
-                    <Icon name="arrow-forward-ios" color={'white'}/>
+                    <Icon name="arrow-forward-ios" color={'#fcf5f5'}/>
                 </ButtontoMonth>
             </NavContainer>
             </SafeAreaView>

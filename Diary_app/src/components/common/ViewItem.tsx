@@ -3,16 +3,11 @@ import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import styled from 'styled-components';
 import { useNavigation } from '@react-navigation/native';
 import Tag from '../common/Tag';
-
-
-const photo = require('../../assets/gallery.png');
-const diary = require('../../assets/Text.png');
+import Icon from 'react-native-vector-icons/Ionicons';
 const ItemContainer = styled(View)`
     margin-top: 10px;
-    
     background-color: #646464;
     border-radius: 15px;
-    
     opacity: 0.7;
 `;
 const CardContainer = styled(View)`
@@ -25,6 +20,9 @@ const CardContainer = styled(View)`
     border-left-width: 1px;
 `;
 const FlexRow = styled(View)`
+/* border-color: white;
+border-width:1px; */
+    flex:0.16;
     flex-direction: row;
     display: flex;
     justify-content: space-between;
@@ -44,12 +42,15 @@ const Date = styled(Text)`
 //     margin-right: 10px;
 // `;
 const TagArea = styled(ScrollView)`
-
-    margin-left: 10px;
-    margin-right: 10px;
+    flex: 0.84;
+    /* margin-left: 5px;
+    margin-right: 5px; */
+    margin-right:5px;
     flex-direction: row;
 `;
-
+const InfoButton = styled(TouchableOpacity)`
+    padding: 2.5px;
+`;
 type ItemData = {
     id: string;
     date: string;
@@ -100,12 +101,7 @@ const ViewItem = (prop: Props) => {
         <ItemContainer style={{ borderColor: color }}  >
             <CardContainer>
             <FlexRow>
-                <TouchableOpacity onPress={() => {
-                    console.log("item.id", item.id);
-                    navigation.navigate("DiaryDetail", { index: item.id })
-                }}>
                 <Date> {dateStringFormat(item.date)} </Date>
-                </TouchableOpacity>
                 {/* <IconContainer>
                     {
                         item.isPhoto && <MyIcon source={photo} style={{ marginTop: 5, marginRight: 5 }} imageStyle={{ width: 25, height: 25 }} />
@@ -122,15 +118,18 @@ const ViewItem = (prop: Props) => {
 
                 {
                     item.tags.map((tag: string, index: number) => {
-                        
                         return <Tag key={index} text={tag} style={{  }} textStyle={{ fontSize:13, color: "white", fontFamily: 'Poppins-Regular' }} />
                     })
                 }
             </TagArea>
+            <InfoButton onPress={() => {
+                    console.log("item.id", item.id);
+                    navigation.navigate("DiaryDetail", { index: item.id })
+                }} activeOpacity={0.6}>
+            <Icon name="information-circle-outline" size={20} color='white' />
+            </InfoButton>
             </CardContainer>
         </ItemContainer>
-
     );
-
 }
 export default ViewItem;
