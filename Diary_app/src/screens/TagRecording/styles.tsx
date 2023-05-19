@@ -107,7 +107,7 @@ export const TagComponent = styled(View)`
     padding-left: 1%;
     padding-right: 2%;
 
-    background-color: #BCBCBC;
+    background-color: #808080;
     opacity: 0.75;
     margin: 5px;
     align-items: center;
@@ -117,6 +117,7 @@ export const TagComponent = styled(View)`
 //set tag text color white
 export const TagText = styled(Text)`
     color: white;
+    margin-left:2px;
 `;
 //the X button container
 export const RemoveButton = styled(TouchableHighlight)`
@@ -124,8 +125,8 @@ export const RemoveButton = styled(TouchableHighlight)`
     height: 18px;
     border-radius: 30px;
     overflow: hidden;
-    margin: 2px;
-    background-color:#cccccc;
+    margin: 3%;
+    background-color:#808080;
 `;
 
 //the image of X button
