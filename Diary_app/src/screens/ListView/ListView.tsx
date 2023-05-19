@@ -67,35 +67,39 @@ type ItemData = {
 };
 const DATA: ItemData[] = [
     {
-        id: "0", date: "2/10/2022", tags: ["Jisan", "Lunch", "react", "computer"],
+        id: "0", date: "4/21/2023", tags: ["Determine", "ItIsPossible", "HardTimes", "NeverGiveUp", "ListenToMyVoice"],
         isPhoto: false, isQuote: false, isDiary: false
     },
     {
-        id: "1", date: "2/15/2022", tags: ["homework", "Dinner", "Graphic Card", "Longterm"],
-        isPhoto: false, isQuote: true, isDiary: false
-    },
-    {
-        id: "2", date: "1/10/2023", tags: ["Taehoon", "Lunch", "expo", "computer"],
+        id: "1", date: "4/15/2023", tags: ["Homework", "TryHard", "ILoveThis", "Longterm"],
         isPhoto: true, isQuote: true, isDiary: false
     },
     {
-        id: "3", date: "5/13/2022", tags: ["Jisan", "Dinner", "Graphic Card", "samsung"],
+        id: "2", date: "4/11/2023", tags: ["Pizza", "Lunch", "GirlFriend", "Expo"],
+        isPhoto: true, isQuote: true, isDiary: true
+    },
+    {
+        id: "3", date: "4/10/2023", tags: ["NeverGiveUp", "Dinner", "BeBrave", "Samsung"],
         isPhoto: false, isQuote: true, isDiary: true
     }
 ];
-
+const texts = ["Determine", "ItIsPossible", "HardTimes", "NeverGiveUp", "ListenToMyVoice"];
 
 const ListView = ({ navigation, route }: any) => {
     // This is rendering callback function. It shows every item view.
-    const renderItem = ({ item }: { item: ItemData }) => {
+    const renderItem = ({ item, index }: { item: ItemData, index: number }) => {
         console.log('Viewitem', item);
-        return <ViewItem item={item} />;
+        return <ViewItem item={item} key={index} />;
     };
     const [searchQuery, setSearchQuery] = useState<string>("");
     const [masterData, setMasterData] = useState<ItemData[]>(DATA);
     const [filteredData, setFilteredData] = useState<ItemData[]>(DATA);
     const [list, setList] = useState<JSX.Element>(<FlatList data={DATA} renderItem={renderItem}
         keyExtractor={(item) => item.id} />);
+
+
+
+
     const handleSearch = (text: string) => {
         setSearchQuery(text);
         console.log('query', text);

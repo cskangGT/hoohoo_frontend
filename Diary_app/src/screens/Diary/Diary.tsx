@@ -87,10 +87,12 @@ const FadeInOutText = (props: any) => {
                         fontSize: 25,
                         fontFamily: 'Comfortaa-Regular'
 
+
                     }}>
                     {props.text}
                 </Text>
             }
+
 
 
         </Animated.View>
@@ -98,10 +100,10 @@ const FadeInOutText = (props: any) => {
 };
 
 const HiddenTag = (props: any) => {
-    
+
     let gif = require('./droplet.gif')
-    let gifSize = WIDTH/2 + props.text.length * 5
-    let adjust = WIDTH/15 //used to adjust the location of droplet on a word.
+    let gifSize = WIDTH / 2 + props.text.length * 5
+    let adjust = WIDTH / 15 //used to adjust the location of droplet on a word.
     const droplet = (props.droplet || props.showAll) ? (<View>
         <GIF
             source={gif}
@@ -114,7 +116,7 @@ const HiddenTag = (props: any) => {
         />
     </View>) : (<View></View>)
 
-    let left = props.index % 2 == 0 ? -WIDTH/3 + props.text.length * 5 : WIDTH/3 - props.text.length * 5
+    let left = props.index % 2 == 0 ? -WIDTH / 3 + props.text.length * 5 : WIDTH / 3 - props.text.length * 5
     return (
         <View style={{
             // width: 400,
@@ -170,14 +172,13 @@ function Diary(): JSX.Element {
     const text5: string = data[index].content[4]
     const text6: string = data[index].content[5]
     const text7: string = data[index].content[6]
-
-    const texts = [text1, text2, text3, text4, text5, text6, text7]
-
+    // const texts = [text1, text2, text3, text4, text5, text6, text7]
+    const texts = ["Determine", "ItIsPossible", "HardTimes", "NeverGiveUp", "ListenToMyVoice"];
     const [tagContent, setTagContent] = useState<JSX.Element[]>([]);
 
     const [showAll, setShowAll] = useState<boolean>(false)
     useEffect(() => {
-        let delay = (count == -1) ? 0 : 4000
+        let delay = (count == -1) ? 0 : 100
         const interval = setInterval(() => {
             if (count < texts.length) {
                 let updatedContent: JSX.Element[] = [];

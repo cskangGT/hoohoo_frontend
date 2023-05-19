@@ -1,4 +1,4 @@
-import { View, Text, Dimensions, Image, Animated } from 'react-native';
+import { View, Text, Dimensions, Image, Animated, SafeAreaView } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import CustomButton from '../../components/common/Button';
