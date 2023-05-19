@@ -18,10 +18,10 @@ export const ScrollableView = styled(ScrollView)`
     flex:1;
 `
 export const contentContainer = {
-    flexGrow:1
+    flexGrow: 1
 }
-export const flexOne = {flex:1}
-export const whiteFont = {color:'white', fontSize:17}
+export const flexOne = { flex: 1 }
+export const whiteFont = { color: 'white', fontSize: 17 }
 //contains List and Save buttons 
 export const NavButton = styled(CustomButton)`
     padding: 10px;
@@ -137,4 +137,20 @@ export const RemoveTagImage = styled(Image)`
 export const WordView = styled(View)`
     flex:1;
 `;
+
+//the background water spread image
+export const TransparentView = styled(View)`
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    position: absolute;
+`
+
+//opacity 0.3
+export const OpacityView = styled(View)`
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    opacity: 0.3;
+`
 

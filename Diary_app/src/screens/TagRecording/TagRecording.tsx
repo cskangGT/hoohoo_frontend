@@ -1,34 +1,28 @@
 import React, { useEffect, useRef, useState } from 'react'
 
-import { View, Text, TouchableHighlight, TextInput, Keyboard, Animated, Dimensions, Image, ImageBackground, SafeAreaView, ScrollView, KeyboardAvoidingView, NativeSyntheticEvent, TextInputChangeEventData, TextInputSubmitEditingEventData, Easing, } from "react-native";
+import { Animated, KeyboardAvoidingView, } from "react-native";
 import msg from '../../data/msg.json';
 import WordContainer from './Containers/WordContainer';
 import UserTextInput from './Containers/UserTextInput';
 import RecordingButton from './RecordingButton';
 import {
     ButtonContainer, Container,
-    MicContainer, MicContainerContainer, NavButton, RemoveButton,
+    MicContainer, MicContainerContainer, NavButton, OpacityView, RemoveButton,
     RemoveTagImage, SafeArea, ScrollableView, TagComponent, TagContainers,
-    TagText, Transition, WordView, contentContainer, flexOne, whiteFont
+    TagText, Transition, TransparentView, WordView, contentContainer, flexOne, whiteFont
 } from './styles';
 import FadeInFadeOutComponent from './Containers/FadeInFadeOutComponent';
 
 // import ImageBackground from '../../components/common/ImageBackground';
 const Xbutton = require('../../assets/remove.png');
 const Background = require('../../assets/tagRecordingBg.png');
-const WaterSpread1 = require('../../assets/WaterSpread2.png')
-const WaterSpread2 = require('../../assets/WaterSpread1.png')
+const WaterSpread1 = require('../../assets/WaterSpread1.png')
+const WaterSpread2 = require('../../assets/WaterSpread2.png')
 
 const tags_group = ["Determine", "ItIsPossible",
     "ListenToMyVoice", "NeverGiveUp", "LetItGo", "CantTakeMyEyesOffYou"]
 
 function TagRecording({ navigation, route }: any): JSX.Element {
-    function TextInputContainer(props: any): JSX.Element {
-        return (
-            <WordView>
-                {props.content}
-            </WordView>)
-    }
     // tags
     const [inputs, setInputs] = useState<string[]>([])
     const [recordedInputs, setRecordedInputs] = useState<string[]>(tags_group)
@@ -83,10 +77,8 @@ function TagRecording({ navigation, route }: any): JSX.Element {
     const fadeInAndOutAnim2 = useRef(new Animated.Value(0)).current;
     //initially enter to text mode.
     const [isTextMode, setIsTextMode] = useState<boolean>(true)
-    // const [isFading, setIsFading] = useState<boolean>(true);
-    // const [isFading2, setIsFading2] = useState<boolean>(false);
     const [isFirstVisit, setIsFirstVisit] = useState<boolean>(true)
-    //executed when new input added.
+    //fade in fade out the textinput and other buttons when mode changed
     useEffect(() => {
         if (isFirstVisit) {
             Animated.timing(fadeAnim, { //fade in 
@@ -94,7 +86,7 @@ function TagRecording({ navigation, route }: any): JSX.Element {
                 duration: 1000,
                 delay: 0,
                 useNativeDriver: true,
-            }).start(()=>{
+            }).start(() => {
                 setIsFirstVisit(false)
             })
         } else {
@@ -103,24 +95,21 @@ function TagRecording({ navigation, route }: any): JSX.Element {
                 duration: 1000,
                 delay: 0,
                 useNativeDriver: true,
-            }).start(() => { 
+            }).start(() => {
                 Animated.timing(fadeAnim, {//fade in
                     toValue: 1,
                     duration: 1500,
-                    delay: 1000,
+                    delay: 2000,
                     useNativeDriver: true,
                 }).start()
             });
         }
-
         createContent(recordedInputs, setRecordedInputs, setRecordedContentHolder, isEditable)
     }, [fadeAnim, isTextMode]);
 
+    //executed when the mode change button clicked
     function fadeInFadeOut() {
         fadeAnim.setValue(1);
-        // setIsFading(true);
-
-        // setIsFading(!isFading);
         if (!isTextMode) {
             fadeInAndOutAnim.setValue(1);
             fadeInAndOutAnim2.setValue(1);
@@ -129,55 +118,43 @@ function TagRecording({ navigation, route }: any): JSX.Element {
             fadeInAndOutAnim2.setValue(0);
         }
     }
+
+    //used to determine whether display the mode change button or not 
     const [isTyping, setIsTyping] = useState<boolean>(false);
     return (
         <Container source={Background}>
             <SafeArea>
-
-                <View style={{
-                    width: '100%',
-                    height: '100%',
-                    backgroundColor: 'transparent',
-                    position: 'absolute'
-                }}>
-                    <View style={{
-                        width: '100%',
-                        height: '80%',
-                        marginTop: "40%",
-                        left: "-20%",
-                        opacity: 0.3
-                    }}>
+                <TransparentView>
+                    <OpacityView>
                         <FadeInFadeOutComponent
                             source={WaterSpread1}
                             fadeInAndOutAnim={fadeInAndOutAnim}
                             duration={1000}
-                            delay={(isTextMode)?3500:0}
+                            delay={(isTextMode) ? 2500 : 0}
                             isTextMode={isTextMode}
+                            height='80%'
+                            top='20%'
+                            left='-20%'
                         />
-                    </View >
-                    <View style={{
-                        width: '100%',
-                        height: '80%',
-                        top: "10%",
-                        marginLeft: "40%",
-                        position: 'absolute',
-                        opacity: 0.3
-                    }}>
+                    </OpacityView >
+                    <OpacityView>
                         <FadeInFadeOutComponent
                             source={WaterSpread2}
                             fadeInAndOutAnim={fadeInAndOutAnim2}
-                            duration={2000}
-                            delay={(isTextMode)?1500:3500}
+                            duration={3000}
+                            delay={(isTextMode) ? 500 : 2500}
                             isTextMode={isTextMode}
+                            height='80%'
+                            top='10%'
+                            left='40%'
                         />
-                    </View>
-                </View>
+                    </OpacityView>
+                </TransparentView>
                 <Animated.View
                     style={{
                         opacity: fadeAnim,
                         flex: 1,
                     }}>
-
                     <ScrollableView contentContainerStyle={contentContainer}>
                         <KeyboardAvoidingView style={flexOne}>
                             <ButtonContainer>
@@ -207,7 +184,6 @@ function TagRecording({ navigation, route }: any): JSX.Element {
                                     addInputs={addInputs} />
                             </MicContainerContainer>
                         }
-
                     </ScrollableView>
                 </Animated.View>
             </SafeArea>

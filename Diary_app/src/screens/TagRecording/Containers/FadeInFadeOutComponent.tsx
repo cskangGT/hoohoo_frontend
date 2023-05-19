@@ -7,7 +7,7 @@ function FadeInFadeOutComponent(props: any): JSX.Element {
             duration: props.duration,
             useNativeDriver: true,
         }).start(() => {
-            
+            //do not delete this although we dont do anything
         });
     } else {
         Animated.timing(props.fadeInAndOutAnim, { //fade out 
@@ -15,21 +15,20 @@ function FadeInFadeOutComponent(props: any): JSX.Element {
             duration: props.duration,
             delay: props.delay,
             useNativeDriver: true,
-        }).start(()=>{
-            // console.log("fade out done")
+        }).start(() => {
+            //do not delete this although we dont do anything
         });
     }
     return (
         <Animated.View style={{
             opacity: props.fadeInAndOutAnim,
-            width: '100%',
-            height: '100%',
-            position: 'absolute',
         }}>
             <Image
                 style={{
-                    width: '100%',
-                    height: '100%'
+                    height: props.height,
+
+                    top: props.top,
+                    left: props.left,
                 }}
                 source={props.source}
             />
