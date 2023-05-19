@@ -2,13 +2,13 @@ import Voice from '@react-native-voice/voice';
 import CustomButton from '../../components/common/Button';
 import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components';
-import { TouchableHighlight, Text, View, ToastAndroid, Image } from 'react-native';
-const microButton = require('../../assets/microphone.png');
-const Mic = styled(Image)`
-    width: 50px; 
-    height: 50px;
-    align-items: center;
-`;
+import { TouchableHighlight, Text, View, ToastAndroid, Image, TouchableOpacity, Animated, Easing } from 'react-native';
+import { ChangeModeButton, Mic, MicContainer } from './styles';
+const micButton = require('../../assets/microphone.png');
+const circileButton = require('../../../src/assets/circleButton.png');
+const waterSpread1 = require('../../../src/assets/WaterSpread1.png');
+const waterSpread2 = require('../../../src/assets/WaterSpread2.png');
+
 
 function RecordingButton(props: any): JSX.Element {
     const [pitch, setPitch] = useState('');
@@ -35,8 +35,6 @@ function RecordingButton(props: any): JSX.Element {
         //console.log('onSpeechError: ', e);
         setError(JSON.stringify(e.error));
     };
-
-
     const onSpeechPartialResults = (e: any) => {
         //Invoked when any results are computed
         //console.log('onSpeechPartialResults: ', e);
@@ -73,16 +71,14 @@ function RecordingButton(props: any): JSX.Element {
     function convertResult(results: string[]): void {
         console.log("results", results);
         let result: string = results[results.length - 1]
-
         if (result !== undefined && result.length < limit && capacity - result.length >= 0) {
-
             result = result.charAt(0).toUpperCase().concat(result.substring(1, result.length))
             for (let i = 0; i < result.length; i++) {
                 let curr = result.charAt(i)
                 if (curr == ' ') {
                     let next = result.charAt(i + 1).toUpperCase()
                     result = result.substring(0, i).concat(next + result.substring(i + 2, result.length))
-                    console.log("next:", next, "result :", result)
+                    // console.log("next:", next, "result :", result)
                 }
             }
             props.addInputs(result)
@@ -93,16 +89,12 @@ function RecordingButton(props: any): JSX.Element {
             ToastAndroid.show('Max capacity exceeded:\nYou have recorded more than ' + cap + ' letters', ToastAndroid.SHORT);
         }
     }
-
     const onSpeechResults = (e: any) => {
         //Invoked when SpeechRecognizer is finished recognizing
-        //console.log('onSpeechResults: ', e);
-
         setTimeout(() => {
             destroyRecognizer();
             resultArr.push(e.value[0])
             console.log("e:", resultArr);
-
         }, 2000)
         setTimeout(() => {
             convertResult(resultArr)
@@ -114,7 +106,6 @@ function RecordingButton(props: any): JSX.Element {
         if (started != 'on') {
             try {
                 console.log("Start Recognizing");
-
                 await Voice.start('en-US');
                 setPitch('');
                 setError('');
@@ -122,27 +113,23 @@ function RecordingButton(props: any): JSX.Element {
                 setResults([]);
                 setPartialResults([]);
                 setEnd('');
-
             } catch (e) {
                 //eslint-disable-next-line
                 console.error(e);
             }
         }
     };
-
     const stopRecognizing = async () => {
         //Stops listening for speech
         try {
             setStarted('');
             setEnd('');
             await Voice.stop();
-
         } catch (e) {
             //eslint-disable-next-line
             console.error(e);
         }
     };
-
     const cancelRecognizing = async () => {
         // Cancels the speech recognition
         try {
@@ -152,7 +139,6 @@ function RecordingButton(props: any): JSX.Element {
             console.error(e);
         }
     };
-
     const destroyRecognizer = async () => {
         //Destroys the current SpeechRecognizer instance
         try {
@@ -164,30 +150,81 @@ function RecordingButton(props: any): JSX.Element {
             setResults([]);
             setPartialResults([]);
             setEnd('');
-
         } catch (e) {
             //eslint-disable-next-line
             console.error(e);
         }
     };
 
-
-
+    function changeMode() {
+        props.setIsTextMode(!props.isTextMode);
+        props.fadeInFadeOut();
+    }
 
     return (
-        <View style={{ justifyContent: 'center', alignSelf: 'center' }}>
-            {/* operate STT  */}
+        <MicContainer>
+            {/* <FadeInOutText text={"tq"} /> */}
+            {props.isTextMode && //text mode only displays the mode change double circle button
+                <TouchableOpacity onPress={changeMode}>
+                    <ChangeModeButton source={circileButton} />
+                </TouchableOpacity>
+            }
             {
-                started ? (<TouchableHighlight
-                    style={{
+                !props.isTextMode && //speech mode displays the mic button and text mode button
+                <View>
+                    <View
+                        style={{
+                            flex: 1, justifyContent: 'flex-start',
+                        }}
+                    >
+                        <TouchableOpacity
+                            onPress={startRecognizing}
+                            style={{
+                                width: 50,
+                                height: 50,
+                                borderRadius: 50,
+                                backgroundColor: 'gray',
+                                justifyContent: 'center',
+                                alignSelf: 'center',
+                                // borderColor:'red',
+                                // borderWidth:1
 
-                    }}
-                    onPress={destroyRecognizer}
-                    activeOpacity={0.7}
-                    underlayColor='transparent'
-                >
-                    <Mic source={microButton} />
-                </TouchableHighlight>)
+                            }}>
+                            {/* <Mic source={micButton} /> */}
+                            <Text
+                                style={{
+                                    color: 'white',
+                                    textAlign: 'center'
+                                }}
+                            >MIC</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <TouchableOpacity
+                        style={{ flex: 1, justifyContent: 'center' }}
+                        onPress={changeMode}>
+                        <Text style={{
+                            color: 'gray'
+                        }}>
+                            Text Mode
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+            }
+        </MicContainer>
+    )
+}
+export default RecordingButton
+
+{/* <View style={{ justifyContent: 'center', alignSelf: 'center' }}>
+            {
+                started ?
+                    (<TouchableHighlight
+                        onPress={destroyRecognizer}
+                        activeOpacity={0.7}
+                        underlayColor='transparent'
+                    >
+                        <Mic source={microButton} />
+                    </TouchableHighlight>)
                     :
                     (<TouchableHighlight
                         style={{
@@ -201,7 +238,4 @@ function RecordingButton(props: any): JSX.Element {
                     </TouchableHighlight>)
             }
 
-        </View>
-    )
-}
-export default RecordingButton
+        </View> */}
