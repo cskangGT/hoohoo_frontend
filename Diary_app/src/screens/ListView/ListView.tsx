@@ -6,10 +6,13 @@ import ViewItem from '../../components/common/ViewItem';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
-const bg = require('../../assets/ListView_bg.png');
-
+const bg = require('../../assets/DiaryEditPage/revised.png');
+const shape = require('../../assets/DiaryEditPage/shape.png');
 const BgContainer = styled(ImageBackground)`
     flex:1;
+`;
+const Shape = styled(ImageBackground)`
+  flex:1;
 `;
 const SearchArea = styled(View)`
     flex:0.04;
@@ -125,7 +128,8 @@ const ListView = ({ navigation, route }: any) => {
 
     return (
         
-        <BgContainer source={bg} resizeMode='cover' style={{flex:1}}>
+        <BgContainer source={bg} resizeMode='cover' style={{flex:1}} blurRadius={5}>
+            <Shape source={shape} resizeMode='cover' >
             <SafeAreaView style={{flex: 1}}>
             <SearchArea>
                 <SearchBar
@@ -150,6 +154,7 @@ const ListView = ({ navigation, route }: any) => {
                 </ButtontoMonth>
             </NavContainer>
             </SafeAreaView>
+            </Shape>
         </BgContainer>
         
     )

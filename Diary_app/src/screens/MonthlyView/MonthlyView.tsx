@@ -1,19 +1,26 @@
 import styled from 'styled-components';
 import React from 'react'
-import { View, ImageBackground, Text, TouchableOpacity } from 'react-native'
+import { View, ImageBackground, Text, TouchableOpacity, Platform } from 'react-native'
 import Calendar from './Calendar';
 import CustomButton from '../../components/common/Button';
 import { useState } from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-const night = require('../../assets/DiaryEditPage/Background.png');
+const night = require('../../assets/DiaryEditPage/option4.jpg');
+const shape = require('../../assets/DiaryEditPage/shape.png');
 const Background = styled(ImageBackground)`
     width: 100%;
     height: 100%;
+    opacity: 1;
+    flex:1;
+`;
+const Shape = styled(ImageBackground)`
+  flex:1;
 `;
 const ContentContainer = styled(View)`
     width : 100%;
     height: 100%;
-    top : 20%;
+    margin-top: 20%;
 `;
 const Grid = styled(View)`
     flex: 1;
@@ -124,11 +131,14 @@ const MonthlyView = ({ navigation }: any) => {
     // design 적용 방식 수정, date를 어떻게 넣어줄건지 고민
     // 실질적인 디자인 고민, 추가적인 기능 생각
 
-    return (<Background source={night}>
+    return (<View style={{backgroundColor: 'black', flex:1}} >
+        <Shape source={shape} resizeMode='cover'>
+        <SafeAreaView >
+        <View>
         <CustomButton
             title="< Diary List"
             onPress={() => navigation.navigate('ListView')}
-            style={{ marginLeft: 10, marginRight: 0, top: '4%' }}
+            style={{ marginLeft: 10, marginRight: 0 }}
             backgroundColor='transparent'
             width="25%"
             textStyle={{ color: "white" }}
@@ -137,8 +147,9 @@ const MonthlyView = ({ navigation }: any) => {
         <ContentContainer>
             <Calendar />
         </ContentContainer>
-
-
-    </Background>);
+        </View>
+        </SafeAreaView>
+        </Shape>
+    </View>);
 }
 export default MonthlyView
