@@ -30,7 +30,6 @@ const SearchContainer = styled(View)`
 `;
 
 const Row = styled(View)`
-    column-count: 7;
     column-width: 13%;
     flex-direction: row;
     justify-content: space-around;
