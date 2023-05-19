@@ -120,7 +120,7 @@ const CalendarModal = (props: Props) => {
             <Modal isVisible={isModalVisible} onBackdropPress={toggleModal}
                 animationIn="fadeInUp" animationOut="fadeOutDown">
                 <ModalContainer>
-                    <ModalHeader >
+                    <ModalHeader>
                         <CustomButton title={"<"} onPress={() => onSelectYear(-1)} textStyle={{ color: "white" }} />
                         <YearInput
                             keyboardType="numeric"

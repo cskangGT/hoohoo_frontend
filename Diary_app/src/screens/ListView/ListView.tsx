@@ -1,61 +1,74 @@
 
 import React, { useState } from 'react'
-import { View, FlatList, TextInput, ImageBackground, Text } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableHighlight, TouchableOpacity, View, FlatList, TextInput, ImageBackground, Text, StatusBar, Platform } from 'react-native';
 import styled from 'styled-components';
 import ViewItem from '../../components/common/ViewItem';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
-const bg = require('../../assets/Background.png');
-const SafeAreaView = styled(ImageBackground)`
-    
-    /* margin-top: 100px; // 헤더로부터 100px아래부터 백그라운드 시작 */
-    width: 100%;
-    height:100%;
+const bg = require('../../assets/ListView_bg.png');
+
+const BgContainer = styled(ImageBackground)`
+    flex:1;
 `;
 const SearchArea = styled(View)`
-    top:7%;
-    height: 15%;
+    flex:0.04;
+    margin-top:6%;
+    margin-bottom: 2%;
 `;
+
 const SearchBar = styled(TextInput)`
-    height: 30%;
-    border-radius: 13px;
-    background-color: white;
-    
-    margin-left: 5%;
-    margin-right: 5%;
-    padding-left: 12px;
-    opacity: 0.9;
+    border-bottom-width: 2px;
+    border-bottom-color: white;
+    padding-bottom: 5px;
+    margin-left: 7%;
+    margin-right: 7%;
+    padding-left: 7px;
+    opacity: 0.8;
 `;
 
 const Container = styled(View)`
-
+    flex:0.83;
+    /* border-color: white;
+    border-width: 1px; */
     flex-direction: row;
     width: 95%;
     margin-left: 2.5%;
     margin-right: 2.5%;
-    height: 80%;
+    /* height: 83%; */
     padding: 5px;
     padding-top: -5px;
-    background-color: transparent ;
+    background-color: transparent;
     border-radius: 30px;
 `;
 const NavContainer = styled(View)`
-
-    top:6%;
-    width: 84%;
+    /* border-color: red;
+    border-width: 1px; */
+    flex:0.13;
+    /* flex-wrap: wrap-reverse; */
+    /* width: 94%; */
+    /* padding-top: 3%; */
+    /* margin-right: 3%;
+    margin-left: 3%; */
+    /* height:8%; */
+    justify-content:flex-end;
     align-items: flex-end;
-    margin-right:8%;
-    margin-left: 8%;
 `;
 const ButtontoMonth = styled(TouchableOpacity)`
-    border-width: 1px;
-    border-color: white;
+    width:25%;
+    bottom:4%;
+    right: 6%;
+    /* border-color: blue;
+    border-width: 1px; */
     border-radius: 10px;
-    padding:5px;
+    flex-direction: row;
+    padding: 3px;
+    align-items: center;
+    justify-content: center;
 `;
 const ButtonText = styled(Text)`
-    color: white;
-    font-size:15px;
+    color: #fcf5f5;
+    font-size: 15px;
 `;
 type ItemData = {
     id: string;
@@ -87,17 +100,16 @@ const texts = ["Determine", "ItIsPossible", "HardTimes", "NeverGiveUp", "ListenT
 
 const ListView = ({ navigation, route }: any) => {
     // This is rendering callback function. It shows every item view.
+    
     const renderItem = ({ item, index }: { item: ItemData, index: number }) => {
         console.log('Viewitem', item);
-        return <ViewItem item={item} key={index} />;
+        return (<ViewItem item={item} key={index} />);
     };
     const [searchQuery, setSearchQuery] = useState<string>("");
     const [masterData, setMasterData] = useState<ItemData[]>(DATA);
     const [filteredData, setFilteredData] = useState<ItemData[]>(DATA);
     const [list, setList] = useState<JSX.Element>(<FlatList data={DATA} renderItem={renderItem}
         keyExtractor={(item) => item.id} />);
-
-
 
 
     const handleSearch = (text: string) => {
@@ -112,18 +124,14 @@ const ListView = ({ navigation, route }: any) => {
     };
 
     return (
-        <SafeAreaView source={bg}>
-            <NavContainer>
-                <ButtontoMonth onPress={() => {
-                    console.log("nav");
-                    navigation.navigate('MonthlyView')
-                }}>
-                    <ButtonText>Monthly</ButtonText>
-                </ButtontoMonth>
-            </NavContainer>
+        
+        <BgContainer source={bg} resizeMode='cover' style={{flex:1}}>
+            <SafeAreaView style={{flex: 1}}>
             <SearchArea>
                 <SearchBar
                     onChangeText={handleSearch}
+                    placeholderTextColor="#dfdfdf"
+                    style={{color:'white', fontSize:14}}
                     value={searchQuery}
                     placeholder="Search by tags"
                 />
@@ -132,8 +140,18 @@ const ListView = ({ navigation, route }: any) => {
             <Container>
                 {list}
             </Container>
-
-        </SafeAreaView>
+            <NavContainer>
+                <ButtontoMonth onPress={() => {
+                    console.log("pressed");
+                    navigation.navigate('MonthlyView');
+                }}>
+                    <ButtonText>Calendar </ButtonText>
+                    <Icon name="arrow-forward-ios" color={'#fcf5f5'}/>
+                </ButtontoMonth>
+            </NavContainer>
+            </SafeAreaView>
+        </BgContainer>
+        
     )
 };
 
