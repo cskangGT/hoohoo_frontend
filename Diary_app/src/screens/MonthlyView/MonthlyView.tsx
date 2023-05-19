@@ -43,9 +43,9 @@ const ContentContainer = styled(View)`
 // `;
 const ButtonContainer = styled(View)`
   position: absolute;
-  bottom:7%;
-  right:6%;
-  width:100%;
+  bottom: 2%;
+  right: 6%;
+  width: 100%;
   align-items: flex-end;
 `;
 const ButtontoList = styled(TouchableOpacity)`
@@ -155,8 +155,9 @@ const MonthlyView = ({ navigation }: any) => {
     // 실질적인 디자인 고민, 추가적인 기능 생각
 
     return (<View style={{backgroundColor: 'black', flex:1}} >
-        <Shape source={shape} resizeMode='cover'>
         <SafeAreaView  style={{flex:1}}>
+        <Shape source={shape} resizeMode='cover'>
+        
         <ContentContainer>
             <Calendar />
         </ContentContainer>
@@ -177,8 +178,9 @@ const MonthlyView = ({ navigation }: any) => {
             textStyle={{ color: "white" }}
         /> */}
         </ButtonContainer>
-        </SafeAreaView>
+        
         </Shape>
+        </SafeAreaView>
     </View>);
 }
 export default MonthlyView

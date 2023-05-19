@@ -311,7 +311,7 @@ const Calendar = () => {
                 </DateText>);
             } else {
                 if (item == -1) {
-                    return (<Blank key={colIndex}><Text>{item}</Text></Blank>)
+                    return (<Blank key={colIndex}><Text>  </Text></Blank>)
                 }
                 return (
 
