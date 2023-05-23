@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-const shape = require('../../assets/DiaryEditPage/shape.png');
+// const shape = require('../../assets/shape.png');
 const Background = styled(ImageBackground)`
     width: 100%;
     height: 100%;
