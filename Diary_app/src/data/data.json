@@ -1,78 +1,259 @@
-{
-  "entries": [
-    {
-      "id":0,
-      "date": "2023-03-16",
-      "diary": ["I went to Karaoke with Song, and we were drunk so much.", "AHhhhahahh"],
-      "tags": ["Song", "Karaoke", "drink"],
-      "photo": [[]]
+[
+  {
+    "id": 0,
+    "date": "2023-03-16",
+    "diary": [
+      "I went to Karaoke with Song, and we were drunk so much.",
+      "AHhhhahahh"
+    ],
+    "tags": [
+      "Song",
+      "Karaoke",
+      "drink",
+      "Ezpz",
+      "Simple",
+      "Yies",
+      "Oops",
+      "Yoooooooooooo"
+    ],
+    "photo": [
+      []
+    ]
+  },
+  {
+    "id": 1,
+    "date": "2023-03-17",
+    "diary": [
+      "While taking graduation photo, I met ex-girldfrend at stair. It was so awkard.",
+      [
+        "sdfkasdklfnwkl"
+      ]
+    ],
+    "tags": [
+      "graduation photo",
+      "stair",
+      "ex"
+    ],
+    "photo": [
+      [
+        {
+          "url": "https://example.com/image3.jpg"
+        },
+        {
+          "url": "https://example.com/image1.jpg"
+        }
+      ],
+      [
+        {
+          "url": "https://example.com/image3.jpg"
+        }
+      ]
+    ]
+  },
+  {
+    "id": 2,
+    "date": "2023-03-18",
+    "diary": [
+      ""
+    ],
+    "tags": [
+      "Jisan",
+      "test",
+      "calculation"
+    ],
+    "photo": [
+      [
+        {
+          "url": "https://example.com/image1.jpg"
+        }
+      ]
+    ]
+  },
+  {
+    "id": 3,
+    "date": "2023-04-01",
+    "diary": [
+      ""
+    ],
+    "tags": [
+      "Lunch",
+      "heavy rain",
+      "April Fools day"
+    ],
+    "photo": [
+      [
+        {
+          "url": "https://example.com/audio1.mp3"
+        },
+        {
+          "url": "https://example.com/image1.jpg"
+        }
+      ]
+    ]
+  },
+  {
+    "id": 4,
+    "date": "2023-04-02",
+    "diary": [
+      "I was so annoyed for ML assignment, so I "
+    ],
+    "tags": [
+      "machine learning assignment",
+      "workout"
+    ],
+    "photo": [
+      {
+        "url": "https://example.com/audio1.mp3"
+      },
+      {
+        "url": "https://example.com/image1.jpg"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "date": "2023-04-03",
+    "diary": [
+      ""
+    ],
+    "tags": [
+      "GT",
+      "Tennis"
+    ],
+    "photo": [
+      [
+        {
+          "url": "https://example.com/audio1.mp3"
+        },
+        {
+          "url": "https://example.com/image1.jpg"
+        }
+      ]
+    ]
+  },
+  {
+    "id": 6,
+    "date": "2023-04-06",
+    "diary": "",
+    "tags": [
+      "Swimming",
+      "sauna"
+    ],
+    "photo": [
+      [
+        {
+          "url": "https://example.com/audio1.mp3"
+        },
+        {
+          "url": "https://example.com/image1.jpg"
+        }
+      ]
+    ]
+  },
+  {
+    "id": 7,
+    "date": "2023-04-07",
+    "diary": "",
+    "tags": [
+      "study",
+      "library"
+    ],
+    "photo": [
+      [
+        {
+          "url": "https://example.com/audio1.mp3"
+        },
+        {
+          "url": "https://example.com/image1.jpg"
+        }
+      ]
+    ]
+  },
+  {
+    "id": 8,
+    "date": "2023-04-08",
+    "diary": [
+      ""
+    ],
+    "tags": [
+      "test",
+      "algorithm"
+    ],
+    "photo": [
+      [
+        {
+          "url": "https://example.com/audio1.mp3"
+        },
+        {
+          "url": "https://example.com/image1.jpg"
+        }
+      ]
+    ]
+  },
+  {
+    "id": 9,
+    "date": "2023-04-09",
+    "diary": [
+      "I got new Iphone."
+    ],
+    "tags": [
+      "new Iphone",
+      "Lenox "
+    ],
+    "photo": [
+      [
+        {
+          "url": "https://example.com/audio1.mp3"
+        },
+        {
+          "url": "https://example.com/image1.jpg"
+        }
+      ]
+    ]
+  },
+  {
+    "id": 10,
+    "date": "2023-04-11",
+    "diary": [
+      "Our team has an interview in CreateX."
+    ],
+    "tags": [
+      "CreateX",
+      "Accepted"
+    ],
+    "photo": [
+      [
+        {
+          "url": "https://example.com/audio1.mp3"
+        },
+        {
+          "url": "https://example.com/image1.jpg"
+        }
+      ]
+    ]
+  },
+  {
+    "id": 11,
+    "date": "04/19/2023",
+    "diary": {
+      "0": "I ate dinner at panda express",
+      "1": "My friend missed Korea."
     },
-    {
-      "id":1,
-      "date": "2023-03-17",
-      "diary": ["While taking graduation photo, I met ex-girldfrend at stair. It was so awkard.", ["sdfkasdklfnwkl"]],
-      "tags": ["graduation photo", "stair", "ex"],
-      "photo":[[{"url":"https://example.com/image3.jpg"},{"url":"https://example.com/image1.jpg"}], [{"url":"https://example.com/image3.jpg"}]]
-    },{
-      "id":2,
-      "date": "2023-03-18",
-      "diary": [""],
-      "tags": ["Jisan", "test", "calculation"],
-      "photo":[[ {"url":"https://example.com/image1.jpg"}]]
-    },{
-      "id":3,
-      "date": "2023-04-01",
-      "diary": [""],
-      "tags": ["Lunch", "heavy rain", "April Fools day"],
-      "photo":[[{"url":"https://example.com/audio1.mp3"}, {"url":"https://example.com/image1.jpg"}]]
-    },{
-      "id":4,
-      "date": "2023-04-02",
-      "diary": ["I was so annoyed for ML assignment, so I "],
-      "tags": ["machine learning assignment", "workout"],
-      "photo":[{"url":"https://example.com/audio1.mp3"}, {"url":"https://example.com/image1.jpg"}]
-    },{
-      "id":5,
-      "date": "2023-04-03",
-      "diary": [""],
-      "tags": ["GT", "Tennis"],
-      "photo":[[{"url":"https://example.com/audio1.mp3"}, {"url":"https://example.com/image1.jpg"}]]
-    },{
-      "id":6,
-      "date": "2023-04-06",
-      "diary": "",
-      "tags": ["Swimming", "sauna"],
-      "photo":[[{"url":"https://example.com/audio1.mp3"}, {"url":"https://example.com/image1.jpg"}]]
-    },{
-      "id":7,
-      "date": "2023-04-07",
-      "diary": "",
-      "tags": ["study", "library"],
-      "photo":[[{"url":"https://example.com/audio1.mp3"}, {"url":"https://example.com/image1.jpg"}]]
-    },{
-      "id":8,
-      "date": "2023-04-08",
-      "diary": [""],
-      "tags": ["test", "algorithm"],
-      "photo":[[{"url":"https://example.com/audio1.mp3"}, {"url":"https://example.com/image1.jpg"}]]
-    },{
-      "id":9,
-      "date": "2023-04-09",
-      "diary": ["I got new Iphone."],
-      "tags": ["new Iphone", "Lenox "],
-      "photo":[[{"url":"https://example.com/audio1.mp3"}, {"url":"https://example.com/image1.jpg"}]]
-    },{
-      "id":10,
-      "date": "2023-04-11",
-      "diary": ["Our team has an interview in CreateX."],
-      "tags": ["CreateX", "Accepted"],
-      "photo":[[{"url":"https://example.com/audio1.mp3"}, {"url":"https://example.com/image1.jpg"}]]
-    },{
-      "id":11,
-      "date": "04/19/2023",
-      "diary": {"0":"I ate dinner at panda express", "1":"My friend missed Korea."},
-      "tags": ["Dinner", "friends","Panda Express", "Korea"],
-      "photo":[[{"url":"https://example.com/audio1.mp3"}, {"url":"https://example.com/image1.jpg"}]]
-    }
-  ]
-}
+    "tags": [
+      "Dinner",
+      "friends",
+      "Panda Express",
+      "Korea"
+    ],
+    "photo": [
+      [
+        {
+          "url": "https://example.com/audio1.mp3"
+        },
+        {
+          "url": "https://example.com/image1.jpg"
+        }
+      ]
+    ]
+  }
+]

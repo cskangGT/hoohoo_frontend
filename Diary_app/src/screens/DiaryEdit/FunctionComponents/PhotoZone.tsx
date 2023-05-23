@@ -192,7 +192,8 @@ function PhotoZone(props: any): JSX.Element {
                                     width: 20,
                                     height: 20,
                                 }}
-                                imagestyle={{ width: 20, height: 20 }} />
+                                imageStyle={{ width: 20, height: 20 }}
+                                 />
 
 
                         }
@@ -204,7 +205,6 @@ function PhotoZone(props: any): JSX.Element {
         setPhotoContent(contentHolder)
 
         let newDDD: JSX.Element[] = []
-        console.log("count", photoCount)
         for (let i = 0; i < photoCount; i++) {
             newDDD.push(
                 <View>

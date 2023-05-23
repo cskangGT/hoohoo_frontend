@@ -200,7 +200,7 @@ function FunctionComponents(props: Props): JSX.Element {
                                         }
                                         // setStackComponentEx(stackComponentEx)
                                         setCount(count + 1)
-                                        // openCameraEx();
+                                        openCameraEx();
                                         setVisible(false)
                                     }}>
                                     <Image source={icon_camera} key='camera' style={{ height: 30, width: 30, borderRadius: 5 }} />
@@ -233,7 +233,7 @@ function FunctionComponents(props: Props): JSX.Element {
                                     }
                                     // setStackComponentEx(stackComponentEx)
                                     setCount(count + 1)
-                                    // setWriteDiaryEx(true) 
+                                    setWriteDiaryEx(true) 
                                     setVisible(false)
                                 }}>
                                     <Image source={icon_note} key='note' style={{ height: 30, width: 30, borderRadius: 5 }} />

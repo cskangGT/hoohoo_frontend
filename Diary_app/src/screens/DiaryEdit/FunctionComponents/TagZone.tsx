@@ -1,15 +1,11 @@
 import { View, Text, Image, TouchableHighlight, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { enableDeleteEx, setEnableDeleteEx } from '../DiaryDetail';
 import ImageButton from '../../../components/common/ImageButton';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { ScrollView } from 'react-native-gesture-handler';
-
 const Xbutton = require('../../../assets/DiaryEditPage/remove.png');
-const microButton = require('../../../assets/DiaryEditPage/microphone.png');
-
 const TagContainer = styled(View)`
     flex-direction: row;
     flex-wrap: wrap;
@@ -240,7 +236,7 @@ function TagZone(props: any): JSX.Element {
     return (
         <TagContainer>
             <HeaderContainer>
-                <HeaderText>Yes, It's your day : ) </HeaderText>
+                {/* <HeaderText>Yes, It's your day : ) </HeaderText> */}
                 <TransitionContainer>
                 <ButtontoView onPress={() => { navigation.navigate('Diary', { index: key })}}
                 activeOpacity={0.8}>

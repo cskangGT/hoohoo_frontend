@@ -1,570 +1,340 @@
-import { View, Text, Dimensions, TouchableOpacity, FlatList, ScrollView, TextInput, Image } from 'react-native';
+import { View, ScrollView, ImageBackground, Text, Dimensions, TouchableOpacity, FlatList, TextInput, Image, Button, TouchableWithoutFeedback, Platform, PermissionsAndroid } from 'react-native';
 import React, { useState, useEffect, useRef } from 'react';
-import { ImageBackground } from 'react-native';
 import styled from 'styled-components';
-import FunctionComponents, { showPlusButtonEx } from './FunctionComponents/FunctionComponents';
-import { updatePhotoContentEx } from './FunctionComponents/PhotoZone';
-import diaryData from '../../data/diaryData.json'
-import TagZone, { updateTagContentEx } from './FunctionComponents/TagZone';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import ImageButton from '../../components/common/ImageButton';
 import { useNavigation } from '@react-navigation/native';
-import sample from '../../data/data.json';
-
+import { SafeArea, SmallIconContainer, StyledBackgroundView, IndividualTagContainer, TagZoneContainer, TagZoneFirstRow, TagText, TagZoneSecondRow, VerticalList, RemoveIconContainer, RemoveIcon, FooterContainer, FABTheme, FabContainer, DateContainer, NextButtonContainer, FabStyle } from './styles';
+import data from '../../data/data.json'
+// import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-paper/src/components/Icon'
 const background = require('../../assets/DiaryEditPage/Background.png');
-const arrow_ListView = require('../../assets/DiaryEditPage/arrow_right.png');
-// const arrow_tagPage = require('../../assets/DiaryEditPage/arrow_left.png');
-const screenWidth: number = Dimensions.get('window').width;
-const screenHeight: number = Dimensions.get('window').height;
-// const StyledTagWord = styled(TouchableOpacity)`
-//     border-width: 1px;
-//     border-color: gray;
-//     border-radius: 50px;
-//     padding: 10px;
-//     background-color: #666666;
-//     margin: 5px;
-// `;
-const StyledHorizontallyAlignedItems = styled(View)`
-    flex-direction: column;
-    justify-content: center;
-    padding-left: 2.5%;
-    padding-right: 2.5%;
-`;
-const StyledBackgroundView = styled(ImageBackground)`
-    width: ${screenWidth}px;
-    height:${screenHeight}px;
-`;
-const StyledCircleButton = styled(TouchableOpacity)`
-    border-width: 1px;
-    border-radius: 5px;
-    background-color: #FF2511;
-    width: auto;
-`;
-
-const FooterContainer = styled(View)`
-    flex-direction: row;
-    position: absolute; // Set position to absolute
-    justify-content: space-between;
-    align-self: baseline;
-    /* align-items: center; */
-    /* border-color: white;
-    border-width:1px; */
-    /* align-items: center; */
-    width: 95%;
-    height:30px;
-    bottom: 4%; // Position the component 10 units from the bottom
-    left: 2.5%;
-    right: 2.5%;
-    /* padding-top: 30; */
-`;
-const TextDateContainer = styled(View)`
-    padding:5px;
-    align-self: flex-end;
-    /* margin-left:35%; */
-    /* align-self: center; */
-    background-color: #3a3535;
-    opacity: 0.4;
-    border-radius: 10px;
-`;
-const TextDate = styled(Text)`
-    color: white;
-    font-family: 'Comfortaa-Regular';
-`;
-const Placeholder = styled(Text)`
-    color : grey;
-    justify-content: center;
-    text-align: center;
-    font-family: 'Comfortaa-Regular';
-`;
-const ContainerTransition = styled(View)`
-    align-self: flex-end;
-    margin-bottom: 5px;
-    /* border-color: white;
-    border-width: 1px; */
-`;
-type ItemData = {
-    id: string;
-    date: string;
-    tags: string[];
-    isPhoto: boolean;
-    isQuote: boolean;
-    isDiary: boolean;
-};
-const DATA: ItemData[] = [
-    {
-        id: "0", date: "4/21/2023", tags: ["Determine", "ItIsPossible", "HardTimes", "NeverGiveUp", "ListenToMyVoice"],
-        isPhoto: false, isQuote: false, isDiary: false
-    },
-    {
-        id: "1", date: "4/15/2023", tags: ["Homework", "TryHard", "ILoveThis", "Longterm"],
-        isPhoto: true, isQuote: true, isDiary: false
-    },
-    {
-        id: "2", date: "4/11/2023", tags: ["Pizza", "Lunch", "GirlFriend", "Expo"],
-        isPhoto: true, isQuote: true, isDiary: true
-    },
-    {
-        id: "3", date: "4/10/2023", tags: ["NeverGiveUp", "Dinner", "BeBrave", "Samsung"],
-        isPhoto: false, isQuote: true, isDiary: true
-    },
-    {
-        id: "-1", date: "F", tags: [], isPhoto: false, isQuote: false, isDiary: false
-    }
-];
-type ItemProps = { title: string, index: number };
-const texts = ["Determine", "ItIsPossible", "HardTimes", "NeverGiveUp", "ListenToMyVoice"];
-const TZContainer = styled(View)`
-`;
-const EmptyHolder = styled(View)`
-  height: 100%;
-`;
-//things to be used in other files 
-export let countEx: number;
-export let setCountEx: React.Dispatch<React.SetStateAction<number>>;
-export let stackComponentEx: JSX.Element[];
-export let setStackComponentEx: React.Dispatch<React.SetStateAction<JSX.Element[]>>;
-export let enableDeleteEx: boolean;
-export let setEnableDeleteEx: React.Dispatch<React.SetStateAction<boolean>>;
+import { FAB, Portal, PaperProvider, DefaultTheme, IconButton } from 'react-native-paper';
+import DiaryDate from './DiaryDate';
+import Swiper from 'react-native-swiper'
+import TagContainer from './Containers/TagContainer';
+import { CameraOptions, launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import { PERMISSIONS, RESULTS, request } from 'react-native-permissions';
 
 function DiaryEdit(route: any): JSX.Element {
-    // const jsonId = route.route.params.id
-    let index: string = route.route.params.index
-    console.log("what", parseInt(index));
-    let datestring: string;
+    const navigation = useNavigation();
+    let index: number = parseInt(route.route.params.index)
+    let date: string;
     if (index === undefined) {
-        index = "4"
+        index = 4
         let today = new Date()
         let y = today.getFullYear()
         let m = today.getMonth() + 1
         let d = today.getDate()
-        datestring = m + "/" + d + "/" + y
-        console.log("datestring", datestring);
+        date = m + "/" + d + "/" + y
     } else {
-        datestring = DATA[parseInt(index)].date
+        date = data[index].date
     }
+    //is the FAB open or not
+    const [isOpen, setIsOpen] = useState<boolean>(false)
 
-    const navigation = useNavigation();
+    //attach: notes & photos
+    const [attach, setAttach] = useState<JSX.Element[]>([])
+    const [attachContent, setAttachContent] = useState<JSX.Element>(renderAttach);
 
-    const data = diaryData.data
-    const data2 = sample.entries[11]
-    const [date, setDate] = useState(new Date());
-    if (DATA[parseInt(index)].tags === undefined) {
-        console.log("first", DATA[parseInt(index)].tags);
+    const [deletable, setDeletable] = useState<boolean>(false)
+    //update attachment content with current attachment sources
+    function renderAttach() {
+        const isTouchableWithoutFeedback = (element: JSX.Element): element is JSX.Element & { type: typeof TouchableWithoutFeedback } => {
+            return element.type === TouchableWithoutFeedback;
+        };
 
+        let tagList = attach.map((attached, index) => (
+            <View
+                // activeOpacity={1}
+                // onLongPress={() => { console.log("hahahah") }}
+                key={"attached" + index}
+                style={{
+                    width: '100%',
+                    height: isTouchableWithoutFeedback(attached) ? undefined : 300,
+                    borderRadius: isTouchableWithoutFeedback(attached) ? 15 : 25,
+                    overflow: 'hidden',
+                    alignItems: 'center',
+                    // backgroundColor: isTouchableWithoutFeedback(attached) ? 'rgba(71, 71, 70,0.4)' : undefined,
+                    backgroundColor: isTouchableWithoutFeedback(attached) ? 'rgba(71, 71, 70,0.4)' : 'transparent',
+                    padding: isTouchableWithoutFeedback(attached) ? '1%' : undefined,
+                    marginTop: '1%',
+                    marginBottom: '1%',
+                    justifyContent: 'center',
+                    alignSelf: 'center',
+                }}
+            >
+                {deletable &&
+                    <View style={{
+                        width: '10%',
+                        height: '10%',
+                        // borderColor:'yellow',
+                        // borderWidth:1,
+                        position: 'absolute',
+                        zIndex: 1,
+                        right: '2%',
+                        top: '2%',
+                    }}>
+                        <IconButton
+                            icon="close"
+                            size={20}
+                            iconColor='white'
+                            style={{
+                                // alignSelf: 'flex-end',
+                                backgroundColor: 'gray'
+                            }}
+                            onPress={() => {
+                                let copy = [...attach]
+                                copy.splice(index, 1)
+                                setAttach(copy)
+                            }}
+                        />
+                    </View>
+                }
+                {attached}
+            </View>
+        ))
+        return (
+            <VerticalList>
+                {tagList}
+            </VerticalList>
+        )
     }
-    const [content, setContent] = useState<string[]>(DATA[parseInt(index)].tags === undefined ? [] : DATA[parseInt(index)].tags)
-    const [count, setCount] = useState<number>(0)
-    // this is including tag components
-    const [enableDelete, setEnableDelete] = useState<boolean>(false)
-    const [stackComponent, setStackComponent] = useState<JSX.Element[]>([]);
-    //things to be exported
-    countEx = count
-    setCountEx = setCount
-    stackComponentEx = stackComponent
-    setStackComponentEx = setStackComponent
-    // const jsonDate = data[index].date;
-    const months: string[] = ["January", "Febrary", "March", "April", "May",
-        "June", "July", "August", "September", "October", "November", "December"];
-
-
-
-    const dateStringFormat = (dateStr: string) => {
-        // let dateStr: string = date.toLocaleDateString()
-        let day: string = dateStr.split("/")[1];
-        let month: string = months[parseInt(dateStr.split("/")[0]) - 1];
-        let year: string = dateStr.split("/")[2];
-        let dateFormat: string = day + " " + month + " " + year;
-        return dateFormat
-    }
-    let dateFormat: string = dateStringFormat(datestring)
     useEffect(() => {
-        dateFormat = dateStringFormat(datestring)
-    }, [date]);
-
-    const initStackComponent = () => {
-
+        setAttachContent(renderAttach());
+        if (attach.length == 0) {
+            setDeletable(false)
+        }
+    }, [attach, deletable])
+    //use to blur when its complement is pressed.
+    const inputRef = useRef<TextInput>(null);
+    const removeFocus = () => {
+        if (inputRef.current) {
+            inputRef.current.blur();
+        }
+    };
+    function addNote() {
+        let copy = [...attach]
+        copy.push(
+            <TouchableWithoutFeedback onPress={removeFocus}>
+                <TouchableOpacity
+                    style={{
+                        borderColor: 'red',
+                        borderWidth: 1,
+                        padding:'3%'
+                    }}
+                    onLongPress={() => { console.log("haha") }}
+                >
+                    <TextInput
+                        ref={inputRef}
+                        multiline={true}
+                        style={{
+                            width: '100%',
+                            color: 'white',
+                            borderColor: 'blue',
+                            borderWidth: 1
+                        }}
+                        placeholder='Add Note'
+                        placeholderTextColor={'white'}
+                        onFocus={() => { setIsTyping(true) }}
+                        onBlur={() => { setIsTyping(false) }}
+                    />
+                </TouchableOpacity>
+            </TouchableWithoutFeedback >
+        )
+        setAttach(copy)
     }
-    // stack the components one by one
+    let options: CameraOptions = {
+        saveToPhotos: true,
+        mediaType: 'photo'
+    }
+    async function openCamera() {
+        if (Platform.OS === 'android') {
+            const granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.CAMERA,
+            );
+            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                const result = await launchCamera(options)
+                if (result.assets !== undefined && result.assets[0].uri !== undefined) {
+                    let newImage = result.assets[0].uri
+                    addPhoto(newImage)
+                }
+            }
+        } else if (Platform.OS === 'ios') {
 
+            const granted = await request(PERMISSIONS.IOS.CAMERA)
+            if (granted === RESULTS.GRANTED) {
+                const result = await launchCamera(options)
+                if (result.assets !== undefined && result.assets[0].uri !== undefined) {
+                    let newImage = result.assets[0].uri
+                    addPhoto(newImage)
+                }
+            }
+        }
+    }
+    async function openGallery() {
+        const result = await launchImageLibrary(options)
+        if (result.assets !== undefined && result.assets[0].uri !== undefined) {
+            let newImage = result.assets[0].uri
+            addPhoto(newImage)
+        }
+    }
 
-    // organize data.json file 
-    // useEffect(() => {
-    //     // date , input format is MM/DD/YYYY
-    //     dateFormat = dateStringFormat(data2.date)
-    //     // data2.diary check and push the components
-    //     if (data2.diary() !== 0) {
-    //         for (let i : number = 0; i < data2.diary; i++) {
-    //             stackComponent.push(<NoteZone />);
-    //         }
-    //         setStackComponent(stackComponent);
-    //     }
-    //     //
+    function addPhoto(newImage: string) {
+        // let newImage = result.assets[0].uri
+        let copy = [...attach]
+        copy.push(
+            <Swiper
+                loop={false}
+            >
+                <TouchableOpacity
+                    onLongPress={() => { setDeletable(true); }}
+                    activeOpacity={1}
+                    style={{
+                        flex: 1
+                    }}
+                >
+                    <Image source={{ uri: newImage }} key={index + 'img'}
+                        style={{
+                            flex: 1,
+                        }} />
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={{
+                        flex: 1
+                    }}
+                    activeOpacity={1}
+                    onLongPress={() => { console.log("hi") }}
+                >
+                    <Image source={{ uri: newImage }} key={index + 'img'}
+                        style={{
+                            flex: 1,
+                        }} />
+                </TouchableOpacity>
+                <Image source={{ uri: newImage }} key={index + 'img'}
+                    style={{
+                        flex: 1
+                    }} />
+            </Swiper>
+        )
+        setAttach(copy)
+        scrollToBottom()
+    }
+    //when typing, remove the bottom buttons
+    const [isTyping, setIsTyping] = useState<boolean>(false)
 
-    // }, [])
-
-
-
-    useEffect(() => {
-        console.log("count", stackComponent.length);
-
-        if (enableDelete && stackComponent.length == 0) {
-            setEnableDelete(false);
-            showPlusButtonEx(true);
-        } // end delete mode, show plus button
-        setStackComponent(stackComponentEx)
-        updateTagContentEx();
-
-        if (updatePhotoContentEx !== undefined)
-            updatePhotoContentEx();
-        setContent(DATA[parseInt(index)].tags)
-
-    }, [enableDelete, stackComponent, index, content]);
-
+    //when new component box is attached, scroll down to  the bottom.
+    const scrollViewRef = useRef<ScrollView>(null);
+    const scrollToBottom = () => {
+        if (scrollViewRef.current) {
+            scrollViewRef.current.scrollToEnd({ animated: true });
+        }
+    };
     return (
         <StyledBackgroundView source={background}>
-            <SafeAreaView style={{flex:1}}>
-            <TagZone content={DATA[parseInt(index)].tags} index={index} />
-            {/* <View style={{ top: '5 %', width:'100%', height:'100%' }}> */}
-            {
-                stackComponent.length === 0 ?
-                    <TZContainer>
-                        <EmptyHolder style={{ height: '100 %' }}>
-                            <Placeholder style={{ top: '20 %' }}>
-                                Press + to add components
-                            </Placeholder>
-                        </EmptyHolder>
-                    </TZContainer> :
-                    <ScrollView style={{ maxHeight: '60%' }}>
-                        <StyledHorizontallyAlignedItems>
-                            {
-                                stackComponent.map((component, index) => (
-                                    <View key={index}>
-                                        {component}
-                                    </View>
-                                ))
-                            }
-                        </StyledHorizontallyAlignedItems>
+            <SafeArea>
+                <TagContainer index={index} />
+                <View style={{
+                    overflow: 'hidden',
+                    flex: 1,
+                    borderRadius: 25,
+                    // padding: '2%'
+                }}>
+                    <ScrollView
+
+                        ref={scrollViewRef}
+                        alwaysBounceHorizontal={false}
+                        alwaysBounceVertical={false}
+                        bounces={false} //ios
+                        overScrollMode="never"//android
+                        style={{
+                            flex: 0.8,
+                            // borderRadius:25,
+                            // overflow:'hidden'
+                        }}>
+                        {attachContent}
                     </ScrollView>
-            }
-            <FooterContainer>
-                <View>
-                    {/* <ImageButton src={arrow_tagPage} onPress={() => { navigation.navigate('Diary') }} /> */}
-                    <FunctionComponents style={{
-                        width: '100%',
-                    
-                        // alignSelf: 'center',
-                        // justifyContent: 'center',
-                    }}
-                        stack={stackComponent} count={count} setCount={setCount} />
-
                 </View>
-                <TextDateContainer><TextDate>{dateFormat}</TextDate></TextDateContainer>
-                <ContainerTransition>
-                    <ImageButton style={{width:20, height:20}} src={arrow_ListView} onPress={() => {
-                        navigation.navigate('ListView')
-                    }} />
-                </ContainerTransition>
-            </FooterContainer>
-
-
-            {enableDelete &&
-                <TouchableOpacity style={{ borderRadius: 5 }} onPress={() => { setEnableDelete(false); }}>
-                    <Text style={{
-                        color: 'white'
-                    }}>
-                        Done
-                    </Text>
-                </TouchableOpacity>
-            }
-            {/* </View> */}</SafeAreaView>
-        </StyledBackgroundView>
+                {/* not display when typing */}
+                {((!isTyping && !deletable) || attach.length == 0) &&
+                    <FooterContainer >
+                        <PaperProvider theme={FABTheme}>
+                            <FabContainer>
+                                <FabStyle
+                                    backdropColor='transparent'
+                                    open={isOpen}
+                                    visible
+                                    icon={isOpen ? 'minus' : 'plus'}
+                                    actions={[
+                                        {
+                                            icon: 'note',
+                                            onPress: () => { addNote(); scrollToBottom(); }
+                                        },
+                                        {
+                                            icon: 'camera',
+                                            onPress: () => { openCamera(); }
+                                        },
+                                        {
+                                            icon: 'folder-image',
+                                            onPress: () => { openGallery(); }
+                                        },
+                                    ]}
+                                    onStateChange={() => { setIsOpen(!isOpen) }}
+                                    onPress={() => {
+                                        if (isOpen) {
+                                            // do something if the speed dial is open
+                                        }
+                                    }}
+                                />
+                            </FabContainer>
+                        </PaperProvider>
+                        <DateContainer>
+                            <DiaryDate date={date} />
+                        </DateContainer>
+                        <NextButtonContainer>
+                            <IconButton
+                                icon={"chevron-right"}
+                                size={50}
+                                iconColor='white'
+                                onPress={() => { navigation.navigate('ListView') }}
+                                style={{
+                                    margin: 0,
+                                    padding: 0,
+                                    // borderColor:'red',
+                                    // borderWidth:1,
+                                    backgroundColor: 'gray',
+                                    alignItems: 'center'
+                                }}
+                            />
+                        </NextButtonContainer>
+                    </FooterContainer>
+                }
+                {(deletable && attach.length != 0) &&
+                    <TouchableOpacity
+                        style={{
+                            justifyContent: 'center',
+                            alignSelf: 'center'
+                        }}
+                        onPress={() => {
+                            setDeletable(false)
+                        }}
+                    >
+                        <Text
+                            style={{
+                                color: 'white',
+                                fontSize: 25,
+                                borderColor: 'gray',
+                                borderWidth: 1,
+                                borderRadius: 10,
+                                padding: '2%',
+                                backgroundColor: 'gray'
+                            }}
+                        >
+                            Done
+                        </Text>
+                    </TouchableOpacity>
+                }
+            </SafeArea>
+        </StyledBackgroundView >
 
     );
 };
 export default DiaryEdit;
-
-// import { View, Text, Dimensions, TouchableOpacity, FlatList, ScrollView, TextInput, Image } from 'react-native';
-// import React, { useState, useEffect, useRef } from 'react';
-// import { ImageBackground } from 'react-native';
-// import styled from 'styled-components';
-// import FunctionComponents, { showPlusButtonEx } from './FunctionComponents/FunctionComponents';
-// import { updatePhotoContentEx } from './FunctionComponents/PhotoZone';
-// import diaryData from '../../data/diaryData.json'
-// import TagZone, { updateTagContentEx } from './FunctionComponents/TagZone';
-
-// import ImageButton from '../../components/common/ImageButton';
-// import { useNavigation } from '@react-navigation/native';
-// import sample from '../../data/data.json';
-
-// const background = require('../../assets/DiaryEditPage/Background.png');
-// const arrow_ListView = require('../../assets/DiaryEditPage/arrow_right.png');
-// const arrow_tagPage = require('../../assets/DiaryEditPage/arrow_left.png');
-// const screenWidth: number = Dimensions.get('window').width;
-// const screenHeight: number = Dimensions.get('window').height;
-// const StyledTagWord = styled(TouchableOpacity)`
-//     border-width: 1px;
-//     border-color: gray;
-//     border-radius: 50px;
-//     padding: 10px;
-//     background-color: #666666;
-//     margin: 5px;
-// `;
-// const StyledHorizontallyAlignedItems = styled(View)`
-//     flex-direction: column;
-//     justify-content: center;
-//     padding-left: 2.5%;
-//     padding-right: 2.5%;
-// `;
-// const StyledBackgroundView = styled(ImageBackground)`
-//     width: ${screenWidth}px;
-//     height:${screenHeight}px;
-// `;
-// const StyledCircleButton = styled(TouchableOpacity)`
-//     border-width: 1px;
-//     border-radius: 5px;
-//     background-color: #FF2511;
-//     width: auto;
-// `;
-
-// const FooterContainer = styled(View)`
-//     flex-direction: row;
-//     position: absolute; // Set position to absolute
-//     justify-content: space-between;
-//     align-self: baseline;
-    
-//     /* align-items: center; */
-//     width: 95%;
-//     bottom: 4%; // Position the component 10 units from the bottom
-//     left: 2.5%;
-//     right: 2.5%;
-//     /* padding-top: 30; */
-// `;
-// const TextDateContainer = styled(View)`
-//     padding:5px;
-//     align-self: flex-end;
-//     /* margin-left:35%; */
-//     /* align-self: center; */
-//     background-color: #3a3535;
-//     opacity: 0.4;
-//     border-radius: 10px;
-// `;
-// const TextDate = styled(Text)`
-//     color: white;
-//     font-family: 'Comfortaa-Regular';
-// `;
-// const Placeholder = styled(Text)`
-//     color : grey;
-//     justify-content: center;
-//     text-align: center;
-//     font-family: 'Comfortaa-Regular';
-// `;
-// const ContainerTransition = styled(View)`
-    
-//     align-self: flex-end;
-//     /* border-color: white;
-//     border-width: 1px; */
-// `;
-// type ItemData = {
-//     id: string;
-//     date: string;
-//     tags: string[];
-//     isPhoto: boolean;
-//     isQuote: boolean;
-//     isDiary: boolean;
-// };
-// const DATA: ItemData[] = [
-//     {
-//         id: "0", date: "4/21/2023", tags: ["Determine", "ItIsPossible", "HardTimes", "NeverGiveUp", "ListenToMyVoice"],
-//         isPhoto: false, isQuote: false, isDiary: false
-//     },
-//     {
-//         id: "1", date: "4/15/2023", tags: ["Homework", "TryHard", "ILoveThis", "Longterm"],
-//         isPhoto: true, isQuote: true, isDiary: false
-//     },
-//     {
-//         id: "2", date: "4/11/2023", tags: ["Pizza", "Lunch", "GirlFriend", "Expo"],
-//         isPhoto: true, isQuote: true, isDiary: true
-//     },
-//     {
-//         id: "3", date: "4/10/2023", tags: ["NeverGiveUp", "Dinner", "BeBrave", "Samsung"],
-//         isPhoto: false, isQuote: true, isDiary: true
-//     },
-//     {
-//         id: "-1", date: "F", tags: [], isPhoto: false, isQuote: false, isDiary: false
-//     }
-// ];
-// type ItemProps = { title: string, index: number };
-// const texts = ["Determine", "ItIsPossible", "HardTimes", "NeverGiveUp", "ListenToMyVoice"];
-// const TZContainer = styled(View)`
-//   top:4%;
-// `;
-// const EmptyHolder = styled(View)`
-//   height: 100%;
-// `;
-// //things to be used in other files 
-// export let countEx: number;
-// export let setCountEx: React.Dispatch<React.SetStateAction<number>>;
-// export let stackComponentEx: JSX.Element[];
-// export let setStackComponentEx: React.Dispatch<React.SetStateAction<JSX.Element[]>>;
-// export let enableDeleteEx: boolean;
-// export let setEnableDeleteEx: React.Dispatch<React.SetStateAction<boolean>>;
-
-// function DiaryEdit(route: any): JSX.Element {
-//     // const jsonId = route.route.params.id
-//     let index: string = route.route.params.index
-//     console.log("what", parseInt(index));
-//     let datestring: string;
-//     if (index === undefined) {
-//         index = "4"
-//         let today = new Date()
-//         let y = today.getFullYear()
-//         let m = today.getMonth() + 1
-//         let d = today.getDate()
-//         datestring = m + "/" + d + "/" + y
-//         console.log("datestring", datestring);
-
-//     } else {
-//         datestring = DATA[parseInt(index)].date
-//     }
-
-//     const navigation = useNavigation();
-
-//     const data = diaryData.data
-//     const data2 = sample.entries[11]
-//     const [date, setDate] = useState(new Date());
-//     if (DATA[parseInt(index)].tags === undefined) {
-//         console.log("first", DATA[parseInt(index)].tags);
-
-//     }
-//     const [content, setContent] = useState<string[]>(DATA[parseInt(index)].tags === undefined ? [] : DATA[parseInt(index)].tags)
-//     const [count, setCount] = useState<number>(0)
-//     // this is including tag components
-//     const [enableDelete, setEnableDelete] = useState<boolean>(false)
-//     const [stackComponent, setStackComponent] = useState<JSX.Element[]>([]);
-//     //things to be exported
-//     countEx = count
-//     setCountEx = setCount
-//     stackComponentEx = stackComponent
-//     setStackComponentEx = setStackComponent
-//     // const jsonDate = data[index].date;
-//     const months: string[] = ["January", "Febrary", "March", "April", "May",
-//         "June", "July", "August", "September", "October", "November", "December"];
-
-
-
-//     const dateStringFormat = (dateStr: string) => {
-//         // let dateStr: string = date.toLocaleDateString()
-//         let day: string = dateStr.split("/")[1];
-//         let month: string = months[parseInt(dateStr.split("/")[0]) - 1];
-//         let year: string = dateStr.split("/")[2];
-//         let dateFormat: string = day + " " + month + " " + year;
-//         return dateFormat
-//     }
-//     let dateFormat: string = dateStringFormat(datestring)
-//     useEffect(() => {
-//         dateFormat = dateStringFormat(datestring)
-//     }, [date]);
-
-//     const initStackComponent = () => {
-
-//     }
-//     // stack the components one by one
-
-
-//     // organize data.json file 
-//     // useEffect(() => {
-//     //     // date , input format is MM/DD/YYYY
-//     //     dateFormat = dateStringFormat(data2.date)
-//     //     // data2.diary check and push the components
-//     //     if (data2.diary() !== 0) {
-//     //         for (let i : number = 0; i < data2.diary; i++) {
-//     //             stackComponent.push(<NoteZone />);
-//     //         }
-//     //         setStackComponent(stackComponent);
-//     //     }
-//     //     //
-
-//     // }, [])
-
-
-
-//     useEffect(() => {
-//         console.log("count", stackComponent.length);
-
-//         if (enableDelete && stackComponent.length == 0) {
-//             setEnableDelete(false);
-//             showPlusButtonEx(true);
-//         } // end delete mode, show plus button
-//         setStackComponent(stackComponentEx)
-//         updateTagContentEx();
-
-//         if (updatePhotoContentEx !== undefined)
-//             updatePhotoContentEx();
-//         setContent(DATA[parseInt(index)].tags)
-
-//     }, [enableDelete, stackComponent, index, content]);
-
-
-//     return (
-//         <StyledBackgroundView source={background}>
-//             {/* <View style={{ top: '5 %', width:'100%', height:'100%' }}> */}
-//             <TagZone content={DATA[parseInt(index)].tags} />
-//             {
-//                 stackComponent.length === 0 ?
-//                     <TZContainer>
-                        
-//                         <EmptyHolder style={{ height: '100 %' }}>
-
-//                             <Placeholder style={{ top: '20 %' }}>
-//                                 Press + to add components
-//                             </Placeholder>
-//                         </EmptyHolder>
-//                     </TZContainer> :
-//                     <ScrollView style={{ top: '4%', maxHeight: '80%' }}>
-                        
-//                         <StyledHorizontallyAlignedItems>
-//                             {
-//                                 stackComponent.map((component, index) => (
-//                                     <View key={index}>
-//                                         {component}
-//                                     </View>
-//                                 ))
-//                             }
-//                         </StyledHorizontallyAlignedItems>
-//                     </ScrollView>
-//             }
-//             <FooterContainer>
-//                 <View>
-//                     {/* <ImageButton src={arrow_tagPage} onPress={() => { navigation.navigate('Diary') }} /> */}
-//                     <FunctionComponents style={{
-//                         width: '100%'
-//                         // alignSelf: 'center',
-//                         // justifyContent: 'center',
-//                     }}
-//                         stack={stackComponent} count={count} setCount={setCount} />
-
-//                 </View>
-//                 <TextDateContainer><TextDate>{dateFormat}</TextDate></TextDateContainer>
-//                 <ContainerTransition>
-//                     <ImageButton style={{width:15, height:15}} src={arrow_ListView} onPress={() => {
-//                         navigation.navigate('ListView')
-//                     }} />
-//                 </ContainerTransition>
-//             </FooterContainer>
-
-
-//             {enableDelete &&
-//                 <TouchableOpacity style={{ borderRadius: 5 }} onPress={() => { setEnableDelete(false); }}>
-//                     <Text style={{
-//                         color: 'white'
-//                     }}>
-//                         Done
-//                     </Text>
-//                 </TouchableOpacity>
-//             }
-//             {/* </View> */}
-//         </StyledBackgroundView>
-
-//     );
-// };
-// export default DiaryEdit;
