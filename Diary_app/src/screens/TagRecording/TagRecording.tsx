@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 
-import { View, Text, TouchableHighlight, TextInput, Keyboard, Animated, Dimensions, Image,ImageBackground, SafeAreaView } from "react-native";
+import { View, Text, TouchableHighlight, TextInput, Keyboard, Animated, Dimensions, Image,ImageBackground } from "react-native";
 import styled from 'styled-components';
 import msg from '../../data/msg.json';
 import WordContainer from './Containers/WordContainer';
@@ -9,7 +9,7 @@ import RecordingButton from './RecordingButton';
 import CustomButton from '../../components/common/Button';
 import ImageButton from '../../components/common/ImageButton';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
+import {SafeAreaView} from 'react-native-safe-area-context';
 // import ImageBackground from '../../components/common/ImageBackground';
 const Xbutton = require('../../assets/remove.png');
 const Background = require('../../assets/tagRecordingBg.png');
@@ -367,8 +367,9 @@ function TagRecording({ navigation, route }: any): JSX.Element {
         setModeContent(ModeContentHolder)
     }
     return (
-        <SafeAreaView style={{backgroundColor:'black'}}>
+        
         <Container source={Background}>
+            <SafeAreaView style={{flex: 1}}>
             <Animated.View style={{opacity: fadeAnim}}>
             <ButtonContainer>
                 <CustomButton title="Save" onPress={() => {
@@ -413,9 +414,11 @@ function TagRecording({ navigation, route }: any): JSX.Element {
                 </View>
             } */}
     </Animated.View>
+    </SafeAreaView>
         </Container >
-        </SafeAreaView>
+        
     )
+    
 }
 
 export default TagRecording

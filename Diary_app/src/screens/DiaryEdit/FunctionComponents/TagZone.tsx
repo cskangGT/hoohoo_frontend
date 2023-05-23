@@ -5,6 +5,7 @@ import { enableDeleteEx, setEnableDeleteEx } from '../DiaryDetail';
 import ImageButton from '../../../components/common/ImageButton';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const Xbutton = require('../../../assets/DiaryEditPage/remove.png');
 const microButton = require('../../../assets/DiaryEditPage/microphone.png');
@@ -165,6 +166,7 @@ function TagZone(props: any): JSX.Element {
                 </StyledTagWord>
 
             </View>
+            
         )
         )
     )
@@ -255,7 +257,9 @@ function TagZone(props: any): JSX.Element {
                 </MicButton>
                 </TransitionContainer>
             </HeaderContainer>
+            <View>
             {tagZoneContent}
+            </View>
         </TagContainer>
 
     );
