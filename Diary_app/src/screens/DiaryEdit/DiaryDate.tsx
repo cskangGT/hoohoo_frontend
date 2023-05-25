@@ -8,7 +8,7 @@ function DiaryDate(props: any): JSX.Element {
         const date = new Date(input);
         const options: Intl.DateTimeFormatOptions = {
             day: '2-digit',
-            month: 'long',
+            month: 'short',
             year: 'numeric',
         };
         return date.toLocaleDateString('en-GB', options);

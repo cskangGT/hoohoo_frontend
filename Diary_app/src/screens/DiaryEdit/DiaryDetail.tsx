@@ -1,19 +1,21 @@
-import { View, ScrollView, ImageBackground, Text, Dimensions, TouchableOpacity, FlatList, TextInput, Image, Button, TouchableWithoutFeedback, Platform, PermissionsAndroid } from 'react-native';
+import { View, ScrollView, ImageBackground, Text, Dimensions, TouchableOpacity, FlatList, TextInput, Image, Button, TouchableWithoutFeedback, Platform, PermissionsAndroid, Modal } from 'react-native';
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { useNavigation } from '@react-navigation/native';
 import { SafeArea, SmallIconContainer, StyledBackgroundView, IndividualTagContainer, TagZoneContainer, TagZoneFirstRow, TagText, TagZoneSecondRow, VerticalList, RemoveIconContainer, RemoveIcon, FooterContainer, FABTheme, FabContainer, DateContainer, NextButtonContainer, FabStyle } from './styles';
 import data from '../../data/data.json'
-// import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon from 'react-native-paper/src/components/Icon'
-const background = require('../../assets/DiaryEditPage/Background.png');
 import { FAB, Portal, PaperProvider, DefaultTheme, IconButton } from 'react-native-paper';
 import DiaryDate from './DiaryDate';
 import Swiper from 'react-native-swiper'
 import TagContainer from './Containers/TagContainer';
 import { CameraOptions, launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { PERMISSIONS, RESULTS, request } from 'react-native-permissions';
+import TextInputContainer from './Containers/TextInputContainer';
+import AttachContainer from './Containers/AttachContainer';
+import ModalContainer from './Containers/ModalContainer';
 
+const background = require('../../assets/DiaryEditPage/Background.png');
 function DiaryEdit(route: any): JSX.Element {
     const navigation = useNavigation();
     let index: number = parseInt(route.route.params.index)
@@ -31,115 +33,15 @@ function DiaryEdit(route: any): JSX.Element {
     //is the FAB open or not
     const [isOpen, setIsOpen] = useState<boolean>(false)
 
-    //attach: notes & photos
-    const [attach, setAttach] = useState<JSX.Element[]>([])
-    const [attachContent, setAttachContent] = useState<JSX.Element>(renderAttach);
-
-    const [deletable, setDeletable] = useState<boolean>(false)
-    //update attachment content with current attachment sources
-    function renderAttach() {
-        const isTouchableWithoutFeedback = (element: JSX.Element): element is JSX.Element & { type: typeof TouchableWithoutFeedback } => {
-            return element.type === TouchableWithoutFeedback;
-        };
-
-        let tagList = attach.map((attached, index) => (
-            <View
-                // activeOpacity={1}
-                // onLongPress={() => { console.log("hahahah") }}
-                key={"attached" + index}
-                style={{
-                    width: '100%',
-                    height: isTouchableWithoutFeedback(attached) ? undefined : 300,
-                    borderRadius: isTouchableWithoutFeedback(attached) ? 15 : 25,
-                    overflow: 'hidden',
-                    alignItems: 'center',
-                    // backgroundColor: isTouchableWithoutFeedback(attached) ? 'rgba(71, 71, 70,0.4)' : undefined,
-                    backgroundColor: isTouchableWithoutFeedback(attached) ? 'rgba(71, 71, 70,0.4)' : 'transparent',
-                    padding: isTouchableWithoutFeedback(attached) ? '1%' : undefined,
-                    marginTop: '1%',
-                    marginBottom: '1%',
-                    justifyContent: 'center',
-                    alignSelf: 'center',
-                }}
-            >
-                {deletable &&
-                    <View style={{
-                        width: '10%',
-                        height: '10%',
-                        // borderColor:'yellow',
-                        // borderWidth:1,
-                        position: 'absolute',
-                        zIndex: 1,
-                        right: '2%',
-                        top: '2%',
-                    }}>
-                        <IconButton
-                            icon="close"
-                            size={20}
-                            iconColor='white'
-                            style={{
-                                // alignSelf: 'flex-end',
-                                backgroundColor: 'gray'
-                            }}
-                            onPress={() => {
-                                let copy = [...attach]
-                                copy.splice(index, 1)
-                                setAttach(copy)
-                            }}
-                        />
-                    </View>
-                }
-                {attached}
-            </View>
-        ))
-        return (
-            <VerticalList>
-                {tagList}
-            </VerticalList>
-        )
-    }
-    useEffect(() => {
-        setAttachContent(renderAttach());
-        if (attach.length == 0) {
-            setDeletable(false)
-        }
-    }, [attach, deletable])
-    //use to blur when its complement is pressed.
-    const inputRef = useRef<TextInput>(null);
-    const removeFocus = () => {
-        if (inputRef.current) {
-            inputRef.current.blur();
-        }
-    };
+    type NotesOrImgAddressArray = Array<string | string[]>;
+    let attachment: NotesOrImgAddressArray = data[index].attach
+    //state that have data at the json file
+    const [attach, setAttach] = useState<NotesOrImgAddressArray>(attachment);//add img address[].
+    // const [deletable, setDeletable] = useState<boolean>(true)//temporarily true...
+    const [deletable, setDeletable] = useState<boolean>(false)//temporarily true...
     function addNote() {
         let copy = [...attach]
-        copy.push(
-            <TouchableWithoutFeedback onPress={removeFocus}>
-                <TouchableOpacity
-                    style={{
-                        borderColor: 'red',
-                        borderWidth: 1,
-                        padding:'3%'
-                    }}
-                    onLongPress={() => { console.log("haha") }}
-                >
-                    <TextInput
-                        ref={inputRef}
-                        multiline={true}
-                        style={{
-                            width: '100%',
-                            color: 'white',
-                            borderColor: 'blue',
-                            borderWidth: 1
-                        }}
-                        placeholder='Add Note'
-                        placeholderTextColor={'white'}
-                        onFocus={() => { setIsTyping(true) }}
-                        onBlur={() => { setIsTyping(false) }}
-                    />
-                </TouchableOpacity>
-            </TouchableWithoutFeedback >
-        )
+        copy.push("")
         setAttach(copy)
     }
     let options: CameraOptions = {
@@ -177,46 +79,20 @@ function DiaryEdit(route: any): JSX.Element {
             addPhoto(newImage)
         }
     }
-
     function addPhoto(newImage: string) {
-        // let newImage = result.assets[0].uri
+        // data[index].note.push([newImage])
         let copy = [...attach]
+        //need to save current image address in our server. 
         copy.push(
-            <Swiper
-                loop={false}
-            >
-                <TouchableOpacity
-                    onLongPress={() => { setDeletable(true); }}
-                    activeOpacity={1}
-                    style={{
-                        flex: 1
-                    }}
-                >
-                    <Image source={{ uri: newImage }} key={index + 'img'}
-                        style={{
-                            flex: 1,
-                        }} />
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={{
-                        flex: 1
-                    }}
-                    activeOpacity={1}
-                    onLongPress={() => { console.log("hi") }}
-                >
-                    <Image source={{ uri: newImage }} key={index + 'img'}
-                        style={{
-                            flex: 1,
-                        }} />
-                </TouchableOpacity>
-                <Image source={{ uri: newImage }} key={index + 'img'}
-                    style={{
-                        flex: 1
-                    }} />
-            </Swiper>
+            //suppose to work with this code
+            [
+                newImage,
+            ]
         )
         setAttach(copy)
         scrollToBottom()
+
+        // SaveJson(index, copy)
     }
     //when typing, remove the bottom buttons
     const [isTyping, setIsTyping] = useState<boolean>(false)
@@ -228,30 +104,65 @@ function DiaryEdit(route: any): JSX.Element {
             scrollViewRef.current.scrollToEnd({ animated: true });
         }
     };
+    const [attachContent, setAttachContent] = useState<JSX.Element>(
+        <AttachContainer
+            setIsTyping={setIsTyping}
+            scrollViewRef={scrollViewRef}
+            attach={attach}
+            setAttach={setAttach}
+            deletable={deletable}
+            setDeletable={setDeletable}
+        />
+    )
+    useEffect(() => {
+        setAttachContent(
+            <AttachContainer
+                setIsTyping={setIsTyping}
+                scrollViewRef={scrollViewRef}
+                attach={attach}
+                setAttach={setAttach}
+                deletable={deletable}
+                setDeletable={setDeletable}
+            />
+        )
+        if (attach.length == 0) {
+            setDeletable(false)
+        }
+    }, [attach, deletable])
+    const [tags, setTags] = useState<string[]>(data[index].tags)
+    //Used to open/close modal for adding tags
+    const [isModalUp, setIsModalUp] = useState<boolean>(false)
+
+    const [tagContainer, setTagContainer] = useState<JSX.Element>(
+        <TagContainer
+            tags={tags}
+            setTags={setTags}
+            index={index}
+            setIsModalUp={setIsModalUp}
+        />)
+    useEffect(() => {
+        setTagContainer(
+            <TagContainer
+                tags={tags}
+                setTags={setTags}
+                index={index}
+                setIsModalUp={setIsModalUp}
+            />
+        )
+    }, [tags])
+
     return (
         <StyledBackgroundView source={background}>
             <SafeArea>
-                <TagContainer index={index} />
+
+                {tagContainer}
                 <View style={{
                     overflow: 'hidden',
                     flex: 1,
                     borderRadius: 25,
                     // padding: '2%'
                 }}>
-                    <ScrollView
-
-                        ref={scrollViewRef}
-                        alwaysBounceHorizontal={false}
-                        alwaysBounceVertical={false}
-                        bounces={false} //ios
-                        overScrollMode="never"//android
-                        style={{
-                            flex: 0.8,
-                            // borderRadius:25,
-                            // overflow:'hidden'
-                        }}>
-                        {attachContent}
-                    </ScrollView>
+                    {attachContent}
                 </View>
                 {/* not display when typing */}
                 {((!isTyping && !deletable) || attach.length == 0) &&
@@ -332,9 +243,19 @@ function DiaryEdit(route: any): JSX.Element {
                         </Text>
                     </TouchableOpacity>
                 }
-            </SafeArea>
+                {isModalUp &&
+                    <ModalContainer
+                        index={index}
+                        tags={tags}
+                        setTags={setTags}
+                        setIsModalUp={setIsModalUp}
+                    />
+                }
+
+            </SafeArea >
         </StyledBackgroundView >
 
     );
 };
 export default DiaryEdit;
+

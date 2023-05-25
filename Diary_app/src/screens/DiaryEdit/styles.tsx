@@ -1,7 +1,7 @@
 import { Image, Text, ImageBackground, TouchableOpacity, View, ScrollView } from 'react-native'
 import styled from 'styled-components'
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { FAB } from 'react-native-paper';
+import { FAB, IconButton } from 'react-native-paper';
 
 //fill the screen with the background image.
 export const StyledBackgroundView = styled(ImageBackground)`
@@ -32,6 +32,8 @@ export const SafeArea = styled(SafeAreaView)`
 //mic & view icon
 export const SmallIconContainer = styled(TouchableOpacity)`
     padding:2%;
+    align-items:center;
+    justify-content: center;
 `
 //each tag component
 export const IndividualTagContainer = styled(View)`
@@ -160,3 +162,41 @@ export const FABTheme = {
         "backdrop": "rgba(41, 50, 52, 0.4)"
     }
 }
+
+export const FlexOneTouchable = styled(TouchableOpacity)`
+    flex:1
+`
+
+//contains - or camera & gallery at the center of photo.
+export const MiddleButtonContainer = styled(View)`
+    flex: 1;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    justify-content: center;
+    align-items: center
+    width: 100%;
+    height: 100%;
+    z-index: 1
+`
+export const TopRightButtonContainer = styled(View)`
+    position: absolute;
+    width: 10%;
+    height: 10%;
+    z-index: 1;
+    right: 2%;
+    top: 2%;
+`
+
+
+export const GrayIconButton = styled(IconButton)`
+    background-color: gray
+`
+
+export const FullImage = styled(Image)`
+    width: 100%;
+    height: 100%;
+    position: absolute;
+`
