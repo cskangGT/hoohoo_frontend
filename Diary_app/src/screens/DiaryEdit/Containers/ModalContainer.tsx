@@ -70,12 +70,9 @@ function ModalContainer(props: any): JSX.Element {
             <View style={{
                 width: '100%',
                 height: '60%',
-                borderColor: 'red',
-                borderWidth: 1,
                 backgroundColor: '#222222',
-                top: '40%',
-                borderTopLeftRadius: 25,
-                borderTopRightRadius: 25,
+                top: '20%',
+                borderRadius: 25,
                 padding: '5%',
                 bottom: 0,
             }}>
@@ -116,7 +113,10 @@ function ModalContainer(props: any): JSX.Element {
                     onPress={() => {
                         textInputRef.current?.blur();
                     }}>
-                    <View style={{ flex: 1 }}>
+                    <View style={{ 
+                        margin:'3%'
+
+                     }}>
                         <TextInput
                             ref={textInputRef}
                             style={{
