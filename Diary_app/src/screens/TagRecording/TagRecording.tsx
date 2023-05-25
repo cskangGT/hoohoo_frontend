@@ -366,6 +366,7 @@ function TagRecording({ navigation, route }: any): JSX.Element {
         );
         setModeContent(ModeContentHolder)
     }
+    let index = 0 //currently 0 to work with the first data in the json file
     return (
         
         <Container source={Background}>
@@ -373,7 +374,7 @@ function TagRecording({ navigation, route }: any): JSX.Element {
             <Animated.View style={{opacity: fadeAnim}}>
             <ButtonContainer>
                 <CustomButton title="Save" onPress={() => {
-                    navigation.navigate('Diary')
+                   navigation.navigate('Diary', { index: { index } })
                 }} style={{ padding: 10 }} textStyle={{ color: 'white', fontSize: 17 }} />
                 {/* 
                 <CustomButton title={isEditable ? "Cancel" : "Edit"} onPress={() => {

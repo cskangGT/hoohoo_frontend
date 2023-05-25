@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Image, Animated, Text, TouchableOpacity, Easing, Dimensions } from 'react-native';
-import diaryData from '../../data/diaryData.json'
+import data from '../../data/data.json'
 import { useNavigation } from '@react-navigation/native';
 
 import GIF from 'react-native-gif';
@@ -153,8 +153,8 @@ const HiddenTag = (props: any) => {
     )
 }
 
-function Diary(): JSX.Element {
-
+function Diary(route: any): JSX.Element {
+    let index: number = parseInt(route.route.params.index)
 
     // console.log("Dimension", Dimensions.get('window').width,Dimensions.get('window').height)
     const [viewButtons, setViewButtons] = useState<boolean>(false)
@@ -162,34 +162,25 @@ function Diary(): JSX.Element {
 
     const [count, setCount] = useState<number>(-1)
 
-
-    const data = diaryData.data
-    const index = 0
-    const text1: string = data[index].content[0]
-    const text2: string = data[index].content[1]
-    const text3: string = data[index].content[2]
-    const text4: string = data[index].content[3]
-    const text5: string = data[index].content[4]
-    const text6: string = data[index].content[5]
-    const text7: string = data[index].content[6]
+    const [tags, setTags] = useState<string[]>(data[index].tags)
     // const texts = [text1, text2, text3, text4, text5, text6, text7]
-    const texts = ["Determine", "ItIsPossible", "HardTimes", "NeverGiveUp", "ListenToMyVoice"];
+    // const texts = ["Determine", "ItIsPossible", "HardTimes", "NeverGiveUp", "ListenToMyVoice"];
     const [tagContent, setTagContent] = useState<JSX.Element[]>([]);
 
     const [showAll, setShowAll] = useState<boolean>(false)
     useEffect(() => {
         let delay = (count == -1) ? 0 : 100
         const interval = setInterval(() => {
-            if (count < texts.length) {
+            if (count < tags.length) {
                 let updatedContent: JSX.Element[] = [];
-                for (let i = 0; i < texts.length; i++) {
+                for (let i = 0; i < tags.length; i++) {
                     if (count + 1 < i) {
                         break;
                     }
-                    let droplet = ((count + 1) % texts.length == i);
-                    let newshowAll = (count + 1) == texts.length
+                    let droplet = ((count + 1) % tags.length == i);
+                    let newshowAll = (count + 1) == tags.length
                     //do not change the key. if it is i, it won't be displayed at the end
-                    updatedContent.push(<HiddenTag index={i} showAll={newshowAll} droplet={droplet} key={(count + 1) % 5} text={texts[i]} />)
+                    updatedContent.push(<HiddenTag index={i} showAll={newshowAll} droplet={droplet} key={(count + 1) % 5} text={tags[i]} />)
                     setShowAll(newshowAll)
                     if (newshowAll) {
                         setViewButtons(true)
@@ -236,7 +227,7 @@ function Diary(): JSX.Element {
                     <View style={{
                         // alignItems: 'center',
                         flexDirection: 'row', justifyContent: 'center',
-                        padding:'5%'
+                        padding: '5%'
                     }}>
                         <TouchableOpacity
                             style={{
