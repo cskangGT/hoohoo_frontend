@@ -5,8 +5,10 @@ import diaryData from '../../data/diaryData.json'
 import { useNavigation } from '@react-navigation/native';
 
 import GIF from 'react-native-gif';
+
 const next_Detail = require("../../assets/DiaryEditPage/SideButton.png")
 const replay = require("../../assets/replay.png")
+
 // import Sound from 'react-native-sound';
 // import SoundPlayer from 'react-native-sound-player'
 
@@ -54,7 +56,6 @@ const FadeInOutText = (props: any) => {
         } else {
             //if stay, don't fade out and dont even loop
             // const sequence = Animated.sequence([fadeIn]);
-
             Animated.sequence([fadeIn]).start();
         }
     }, []);
@@ -64,6 +65,7 @@ const FadeInOutText = (props: any) => {
         <Animated.View style={{
             opacity: fadeAnim,
         }}>
+            {/* {droplet} */}
             {
                 props.isButton &&
                 <Image
@@ -85,10 +87,14 @@ const FadeInOutText = (props: any) => {
                         fontSize: 25,
                         fontFamily: 'Comfortaa-Regular'
 
+
                     }}>
                     {props.text}
                 </Text>
             }
+
+
+
         </Animated.View>
     );
 };
@@ -150,6 +156,7 @@ const HiddenTag = (props: any) => {
 function Diary(): JSX.Element {
 
 
+    // console.log("Dimension", Dimensions.get('window').width,Dimensions.get('window').height)
     const [viewButtons, setViewButtons] = useState<boolean>(false)
     const navigation = useNavigation();
 
@@ -229,7 +236,7 @@ function Diary(): JSX.Element {
                     <View style={{
                         // alignItems: 'center',
                         flexDirection: 'row', justifyContent: 'center',
-                        padding: '5%'
+                        padding:'5%'
                     }}>
                         <TouchableOpacity
                             style={{
@@ -278,6 +285,25 @@ function Diary(): JSX.Element {
 };
 
 export default Diary;
+
+// const playMusic = () => {
+//     console.log("play it")
+//     const sound = new Sound('rainsound.mp3', Sound.MAIN_BUNDLE, (error) => {
+//         if (error) {
+//             console.log('Failed to load the sound', error);
+//             return;
+//         }
+//     });
+//     console.log("soundosund", sound)
+//     sound.play((success) => {
+//         if (success) {
+//             console.log('successfully finished playing');
+//         } else {
+//             console.log('playback failed due to audio decoding errors');
+//         }
+//     });
+//     sound.setVolume(1);
+// };
 
 // const [position1, setPosition1] = useState<Animated.Value>(new Animated.Value(0));
 // const [position2, setPosition2] = useState<Animated.Value>(new Animated.Value(0));

@@ -2195,6 +2195,10 @@
   "integrity" "sha512-1PqFoKuXTSzMHwGMAr+REdYJBQAbe9xrww3ecZR0FsHcD1K+vGS/rxuAriL4rsI6+p69sZQjDzpEVAbDQcjSwA=="
   "resolved" "https://registry.npmjs.org/@types/react-native-vector-icons/-/react-native-vector-icons-6.4.13.tgz"
   "version" "6.4.13"
+"@types/react-native@^0.70":
+  "integrity" "sha512-FobPtzoNPNHugBKMfzs4Li0Q9ei4tgU8SI1M5Ayg7+t5/+noCm2sknI8uwij22wMkcHcefv8RFx4q28nNVJtCQ=="
+  "resolved" "https://registry.npmjs.org/@types/react-native/-/react-native-0.70.11.tgz"
+  "version" "0.70.11"
   dependencies:
     "@types/react" "*"
     "@types/react-native" "^0.70"
