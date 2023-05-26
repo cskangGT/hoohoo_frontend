@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 
-import { Animated, KeyboardAvoidingView, } from "react-native";
-import msg from '../../data/msg.json';
+import { Animated, Text, TouchableOpacity,KeyboardAvoidingView, ToastAndroid, View, } from "react-native";
 import WordContainer from './Containers/WordContainer';
 import UserTextInput from './Containers/UserTextInput';
 import RecordingButton from './RecordingButton';
@@ -12,6 +11,8 @@ import {
     TagText, Transition, TransparentView, WordView, contentContainer, flexOne, whiteFont
 } from './styles';
 import FadeInFadeOutComponent from './Containers/FadeInFadeOutComponent';
+import data from '../../data/data.json'
+import Toast from 'react-native-simple-toast';
 
 // import ImageBackground from '../../components/common/ImageBackground';
 const Xbutton = require('../../assets/remove.png');
@@ -19,15 +20,43 @@ const Background = require('../../assets/tagRecordingBg.png');
 const WaterSpread1 = require('../../assets/WaterSpread1.png')
 const WaterSpread2 = require('../../assets/WaterSpread2.png')
 
-const tags_group = ["Determine", "ItIsPossible",
-    "ListenToMyVoice", "NeverGiveUp", "LetItGo", "CantTakeMyEyesOffYou"]
-
 function TagRecording({ navigation, route }: any): JSX.Element {
-    // tags
+    const index = parseInt(route.params.index)
+    const tags: string[] = data[index].tags
+    // user typed input
     const [inputs, setInputs] = useState<string[]>([])
-    const [recordedInputs, setRecordedInputs] = useState<string[]>(tags_group)
+    const [recordedInputs, setRecordedInputs] = useState<string[]>(tags)
+
     const [recordedContentHolder, setRecordedContentHolder] = useState<JSX.Element[]>()
     const [isEditable, setIsEditable] = useState<boolean>(false);
+
+    //Instagram regulation
+    //capacity of total number of characters
+    const [capacity, setCapacity] = useState<number>(300)
+    //max limit length per a tag.
+    const limit = 30
+
+    function checkRegulation(result: string) {
+        if (result !== undefined && result.length < limit && capacity - result.length >= 0) {
+            result = result.charAt(0).toUpperCase().concat(result.substring(1, result.length))
+            for (let i = 0; i < result.length; i++) {
+                let curr = result.charAt(i)
+                if (curr == ' ') {
+                    let next = result.charAt(i + 1).toUpperCase()
+                    result = result.substring(0, i).concat(next + result.substring(i + 2, result.length))
+                    // console.log("next:", next, "result :", result)
+                }
+            }
+            addInputs(result)
+            setCapacity(capacity - result.length)
+        } else if (result !== undefined && result.length >= limit) {
+            // console.log("length err exceed limit", result.length)
+            Toast.show('Max limit exceeded:\nLength of a tag should be less than ' + limit, Toast.SHORT);
+        } else if (result !== undefined && capacity - result.length < 0) {
+            // console.log("length err exceed cap", result.length, capacity)
+            Toast.show('Max capacity exceeded:\nYou have recorded more than ' + capacity + ' letters', Toast.SHORT);
+        }
+    }
     const DeleteContent = (index: number, words: string[], setWords: React.Dispatch<React.SetStateAction<string[]>>, setWordContent: React.Dispatch<React.SetStateAction<JSX.Element[] | undefined>>) => {
         delete words[index];
         setWords(words);
@@ -80,6 +109,8 @@ function TagRecording({ navigation, route }: any): JSX.Element {
     const [isFirstVisit, setIsFirstVisit] = useState<boolean>(true)
     //fade in fade out the textinput and other buttons when mode changed
     useEffect(() => {
+        // ToastAndroid.show('Your Message', ToastAndroid.SHORT);
+
         if (isFirstVisit) {
             Animated.timing(fadeAnim, { //fade in 
                 toValue: 1,
@@ -122,7 +153,13 @@ function TagRecording({ navigation, route }: any): JSX.Element {
     //used to determine whether display the mode change button or not 
     const [isTyping, setIsTyping] = useState<boolean>(false);
     return (
+        
+             
+    
         <Container source={Background}>
+        <View style={{
+            flex:1
+        }}>
             <SafeArea>
                 <TransparentView>
                     <OpacityView>
@@ -170,8 +207,8 @@ function TagRecording({ navigation, route }: any): JSX.Element {
                             </ButtonContainer>
                             <WordContainer content={recordedContentHolder as JSX.Element[]}></WordContainer>
                             <UserTextInput
-                                addInputs={addInputs}
                                 setIsTyping={setIsTyping}
+                                checkRegulation={checkRegulation}
                             />
                         </KeyboardAvoidingView>
                         {
@@ -181,12 +218,14 @@ function TagRecording({ navigation, route }: any): JSX.Element {
                                     fadeInFadeOut={fadeInFadeOut}
                                     isTextMode={isTextMode}
                                     setIsTextMode={setIsTextMode}
-                                    addInputs={addInputs} />
+                                    checkRegulation={checkRegulation}
+                                />
                             </MicContainerContainer>
                         }
                     </ScrollableView>
                 </Animated.View>
             </SafeArea>
+        </View>
         </Container>
     )
 }

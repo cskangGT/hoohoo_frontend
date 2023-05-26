@@ -63,31 +63,14 @@ function RecordingButton(props: any): JSX.Element {
         };
     }, []);
 
-    const cap = 300
-    const [capacity, setCapacity] = useState<number>(cap)
+    const [capacity, setCapacity] = useState<number>(300)
     const limit = 30
     let resultArr: string[] = []
     // add user Speech to user input states
     function convertResult(results: string[]): void {
-        console.log("results", results);
+        // console.log("results", results);
         let result: string = results[results.length - 1]
-        if (result !== undefined && result.length < limit && capacity - result.length >= 0) {
-            result = result.charAt(0).toUpperCase().concat(result.substring(1, result.length))
-            for (let i = 0; i < result.length; i++) {
-                let curr = result.charAt(i)
-                if (curr == ' ') {
-                    let next = result.charAt(i + 1).toUpperCase()
-                    result = result.substring(0, i).concat(next + result.substring(i + 2, result.length))
-                    // console.log("next:", next, "result :", result)
-                }
-            }
-            props.addInputs(result)
-            setCapacity(capacity - result.length)
-        } else if (result !== undefined && result.length >= limit) {
-            ToastAndroid.show('Max limit exceeded:\nLength of a tag must be less than ' + limit, ToastAndroid.SHORT);
-        } else if (result !== undefined && capacity - result.length < 0) {
-            ToastAndroid.show('Max capacity exceeded:\nYou have recorded more than ' + cap + ' letters', ToastAndroid.SHORT);
-        }
+        props.checkRegulation(result)
     }
     const onSpeechResults = (e: any) => {
         //Invoked when SpeechRecognizer is finished recognizing

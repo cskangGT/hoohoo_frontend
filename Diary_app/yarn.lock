@@ -2187,10 +2187,6 @@
   "integrity" "sha512-1PqFoKuXTSzMHwGMAr+REdYJBQAbe9xrww3ecZR0FsHcD1K+vGS/rxuAriL4rsI6+p69sZQjDzpEVAbDQcjSwA=="
   "resolved" "https://registry.npmjs.org/@types/react-native-vector-icons/-/react-native-vector-icons-6.4.13.tgz"
   "version" "6.4.13"
-"@types/react-native@^0.70":
-  "integrity" "sha512-FobPtzoNPNHugBKMfzs4Li0Q9ei4tgU8SI1M5Ayg7+t5/+noCm2sknI8uwij22wMkcHcefv8RFx4q28nNVJtCQ=="
-  "resolved" "https://registry.npmjs.org/@types/react-native/-/react-native-0.70.11.tgz"
-  "version" "0.70.11"
   dependencies:
     "@types/react" "*"
     "@types/react-native" "^0.70"
@@ -7102,6 +7098,11 @@
     "react-freeze" "^1.0.0"
     "warn-once" "^0.1.0"
 
+"react-native-simple-toast@^2.0.0":
+  "integrity" "sha512-x++CvxTLSTv+o5zaC8lv5W37VH0qMDs31wQPV1DH8OMHo1EJ3cMY0Nwblha1lwA9PK1ASuGLvHmumoVFQvnLkg=="
+  "resolved" "https://registry.npmjs.org/react-native-simple-toast/-/react-native-simple-toast-2.0.0.tgz"
+  "version" "2.0.0"
+
 "react-native-sound-player@^0.13.2":
   "integrity" "sha512-m457mjp496sARAED7epYzbhorfiLZ3j6HzJn7zEL9RU+ZJKcans/0gFNUEBvlh31fSDZRliQ2WwE4mJ6836bNg=="
   "resolved" "https://registry.npmjs.org/react-native-sound-player/-/react-native-sound-player-0.13.2.tgz"
@@ -7112,6 +7113,11 @@
   "resolved" "https://registry.npmjs.org/react-native-sound/-/react-native-sound-0.11.2.tgz"
   "version" "0.11.2"
 
+"react-native-toast-message@^2.1.6":
+  "integrity" "sha512-VctXuq20vmRa9AE13acaNZhrLcS3FaBS2zEevS3+vhBsnVZYG0FIlWIis9tVnpnNxUb3ART+BWtwQjzSttXTng=="
+  "resolved" "https://registry.npmjs.org/react-native-toast-message/-/react-native-toast-message-2.1.6.tgz"
+  "version" "2.1.6"
+
 "react-native-vector-icons@^9.2.0":
   "integrity" "sha512-wKYLaFuQST/chH3AJRjmOLoLy3JEs1JR6zMNgTaemFpNoXs0ztRnTxcxFD9xhX7cJe1/zoN5BpQYe7kL0m5yyA=="
   "resolved" "https://registry.npmjs.org/react-native-vector-icons/-/react-native-vector-icons-9.2.0.tgz"
@@ -7120,7 +7126,7 @@
     "prop-types" "^15.7.2"
     "yargs" "^16.1.1"
 
-"react-native@*", "react-native@>= 0.60.2", "react-native@>=0.57", "react-native@>=0.60.0", "react-native@>=0.63.3", "react-native@>=0.65.0", "react-native@>=0.8.0", "react-native@0.71.6":
+"react-native@*", "react-native@>= 0.60.2", "react-native@>=0.57", "react-native@>=0.60.0", "react-native@>=0.63.3", "react-native@>=0.65.0", "react-native@>=0.70.0", "react-native@>=0.8.0", "react-native@0.71.6":
   "integrity" "sha512-gHrDj7qaAaiE41JwaFCh3AtvOqOLuRgZtHKzNiwxakG/wvPAYmG73ECfWHGxjxIx/QT17Hp37Da3ipCei/CayQ=="
   "resolved" "https://registry.npmjs.org/react-native/-/react-native-0.71.6.tgz"
   "version" "0.71.6"

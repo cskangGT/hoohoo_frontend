@@ -8,7 +8,7 @@ import { InputText, InputTextContainer } from '../styles';
 
 //contains user type input. 
 //props contains..
-//addInputs: add current text to recorded tags.
+//checkRegulation: if pass regulation, add current text to recorded tags.
 function UserTextInput(props: any): JSX.Element {
     const [textInput, setTextInput] = useState<string>("")
 
@@ -32,7 +32,8 @@ function UserTextInput(props: any): JSX.Element {
                     }}
                     blurOnSubmit={false}
                     onSubmitEditing={(event: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => {
-                        props.addInputs(event.nativeEvent.text);
+                        
+                        props.checkRegulation(event.nativeEvent.text)
                         setTextInput("");
                     }}
                     autoCapitalize='sentences'
@@ -41,10 +42,8 @@ function UserTextInput(props: any): JSX.Element {
                     placeholderTextColor="#CCCCCC"
                     onFocus={() => {
                         props.setIsTyping(true);
-                        console.log("is typing des:");
                     }}
                     onBlur={()=>{props.setIsTyping(false);
-                        console.log("is blur des:");
                     }}
                 />
             </InputTextContainer>
