@@ -374,7 +374,7 @@ function TagRecording({ navigation, route }: any): JSX.Element {
             <Animated.View style={{opacity: fadeAnim}}>
             <ButtonContainer>
                 <CustomButton title="Save" onPress={() => {
-                   navigation.navigate('Diary', { index: { index } })
+                   navigation.navigate("Diary", { index: index })
                 }} style={{ padding: 10 }} textStyle={{ color: 'white', fontSize: 17 }} />
                 {/* 
                 <CustomButton title={isEditable ? "Cancel" : "Edit"} onPress={() => {

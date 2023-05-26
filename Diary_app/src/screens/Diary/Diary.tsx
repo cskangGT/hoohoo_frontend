@@ -1,370 +1,236 @@
 
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Image, Animated, Text, TouchableOpacity, Easing, Dimensions } from 'react-native';
+import { View,  Animated, Text, Easing } from 'react-native';
 import data from '../../data/data.json'
 import { useNavigation } from '@react-navigation/native';
-
 import GIF from 'react-native-gif';
+import { BackgroundView, FlexOneView, MajorityView, GIFandTextContainer, NextButtonContainer, ReplayPause, MinorityView, IconContainer } from './styles';
+import { IconButton } from 'react-native-paper';
 
-const next_Detail = require("../../assets/DiaryEditPage/SideButton.png")
-const replay = require("../../assets/replay.png")
-
-// import Sound from 'react-native-sound';
-// import SoundPlayer from 'react-native-sound-player'
-
-const WIDTH = Dimensions.get('window').width
-const HEIGHT = Dimensions.get('window').height
-
-function TagContentHolder(props: any): JSX.Element {
-    let contentHolder: JSX.Element = (
-        props.content.map((item: JSX.Element, index: number) => (
-            <View key={index}>
-                {item}
-            </View>
-        ))
-    )
-    return (
-        <View style={{
-            alignItems: 'center', justifyContent: 'center'
-        }}>
-            {contentHolder}
-        </View >
-    )
-}
+const gif = require('./droplet.gif')
 
 const FadeInOutText = (props: any) => {
     const [fadeAnim] = useState(new Animated.Value(0));
-
+    let delayGIF = 2000 // half of delay 
     useEffect(() => {
         const fadeIn = Animated.timing(fadeAnim, {
             toValue: 1,
-            duration: 2000,
+            duration: delayGIF,
             easing: Easing.linear,
             useNativeDriver: true,
         });
         const fadeOut = Animated.timing(fadeAnim, {
             toValue: 0,
-            duration: 2000,
+            duration: delayGIF,
             easing: Easing.linear,
             useNativeDriver: true,
         });
 
-        if (!props.stay || props.continue) {
-            const sequence = Animated.sequence([fadeIn, fadeOut]);
-
-            Animated.loop(sequence).start();
+        // if (!props.stay || props.continue) {
+        const sequence = Animated.sequence([fadeIn, fadeOut]);
+        if (props.isPaused) {
+            Animated.sequence([fadeIn]).start()
         } else {
-            //if stay, don't fade out and dont even loop
-            // const sequence = Animated.sequence([fadeIn]);
-            Animated.sequence([fadeIn]).start();
+            Animated.loop(sequence).start();
         }
-    }, []);
-
+        // } else {
+        //     //if stay, don't fade out and dont even loop
+        //     // const sequence = Animated.sequence([fadeIn]);
+        //     Animated.sequence([fadeIn]).start();
+        // }
+    }, [])
 
     return (
-        <Animated.View style={{
-            opacity: fadeAnim,
-        }}>
-            {/* {droplet} */}
-            {
-                props.isButton &&
-                <Image
-                    style={{
-                        width: 50,
-                        height: 50
-                    }}
-                    source={props.source}
-                />
-            }
-            {
-                !props.isButton &&
-                <Text
-                    numberOfLines={1}
-                    adjustsFontSizeToFit={true}
-                    minimumFontScale={0.1}
-                    style={{
-                        color: 'white',
-                        fontSize: 25,
-                        fontFamily: 'Comfortaa-Regular'
-
-
-                    }}>
-                    {props.text}
-                </Text>
-            }
-
-
-
-        </Animated.View>
-    );
-};
-
-const HiddenTag = (props: any) => {
-
-    let gif = require('./droplet.gif')
-    let gifSize = WIDTH / 2 + props.text.length * 5
-    let adjust = WIDTH / 15 //used to adjust the location of droplet on a word.
-    const droplet = (props.droplet || props.showAll) ? (<View>
-        <GIF
-            source={gif}
+        <Animated.View 
             style={{
-                width: gifSize, height: gifSize, position: 'absolute', top: -gifSize / 2 + adjust, left: -gifSize / 2, right: 0, marginLeft: 'auto', marginRight: 'auto'
-            }}
-            resizeMode="contain"
-            autoPlay={true}
-            loop={false}
-        />
-    </View>) : (<View></View>)
-
-    let left = props.index % 2 == 0 ? -WIDTH / 3 + props.text.length * 5 : WIDTH / 3 - props.text.length * 5
-    return (
-        <View style={{
-            // width: 400,
-            height: '13%',
-
+            opacity: fadeAnim,
+            position: 'absolute',
+            justifyContent: 'center',
+            alignSelf: 'center',
         }}>
-            {(props.droplet || props.showAll) &&
-                <View style={{
-                    flex: 1,
-                    alignItems: 'center',
-                    left: left,
-
-                }}>
-                    <View style={{
-                        position: 'absolute',
-                    }} >
-                        <FadeInOutText
-                            text={props.text}
-                            stay={props.showAll}
-                        >
-                        </FadeInOutText>
-
-                    </View>
-                    <View style={{
-                        position: 'absolute',
-                        borderWidth: 1
-                    }}>
-                        {droplet}
-                    </View>
-                </View>
-            }
-        </View>
-
-    )
-}
-
-function Diary(route: any): JSX.Element {
-    let index: number = parseInt(route.route.params.index)
-
-    // console.log("Dimension", Dimensions.get('window').width,Dimensions.get('window').height)
-    const [viewButtons, setViewButtons] = useState<boolean>(false)
-    const navigation = useNavigation();
-
-    const [count, setCount] = useState<number>(-1)
-
-    const [tags, setTags] = useState<string[]>(data[index].tags)
-    // const texts = [text1, text2, text3, text4, text5, text6, text7]
-    // const texts = ["Determine", "ItIsPossible", "HardTimes", "NeverGiveUp", "ListenToMyVoice"];
-    const [tagContent, setTagContent] = useState<JSX.Element[]>([]);
-
-    const [showAll, setShowAll] = useState<boolean>(false)
-    useEffect(() => {
-        let delay = (count == -1) ? 0 : 100
-        const interval = setInterval(() => {
-            if (count < tags.length) {
-                let updatedContent: JSX.Element[] = [];
-                for (let i = 0; i < tags.length; i++) {
-                    if (count + 1 < i) {
-                        break;
-                    }
-                    let droplet = ((count + 1) % tags.length == i);
-                    let newshowAll = (count + 1) == tags.length
-                    //do not change the key. if it is i, it won't be displayed at the end
-                    updatedContent.push(<HiddenTag index={i} showAll={newshowAll} droplet={droplet} key={(count + 1) % 5} text={tags[i]} />)
-                    setShowAll(newshowAll)
-                    if (newshowAll) {
-                        setViewButtons(true)
-                    }
-
-                }
-                setTagContent(updatedContent)
-                // setCount((count + 1) % 5);
-                setCount(count + 1)
-
-            }
-
-        }, delay); //4000 is proper
-
-        return () => clearInterval(interval);
-    }, [count]);
-
-
-
-    return (
-        <View style={{
-            backgroundColor: 'black',
-            width: '100%',
-            height: '100%'
-        }}>
-            {/* <TouchableOpacity onPress={playMusic}>
-                <Text style={
-                    { color: 'white' }
-                }>Play Music</Text>
-            </TouchableOpacity> */}
-            <View style={{
-                marginTop: '7.5%' //50
-            }}>
-                <TagContentHolder content={tagContent} />
-            </View>
-
-            <View style={{
-                position: 'absolute',
-                bottom: 0,
-                height: '15%', //100
-                alignSelf: 'center'
-            }}>
-                {viewButtons &&
-                    <View style={{
-                        // alignItems: 'center',
-                        flexDirection: 'row', justifyContent: 'center',
-                        padding: '5%'
-                    }}>
-                        <TouchableOpacity
-                            style={{
-                                width: '50%'
-                            }}
-                            onPress={() => { setCount(-1); setViewButtons(false); }}>
-                            <FadeInOutText
-                                style={{
-                                    color: 'white',
-                                }}
-                                // text="Replay"
-                                isButton={true}
-                                source={replay}
-                                stay={true}
-                                continue={true}>
-                            </FadeInOutText>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={{
-                                width: '50%',
-                                flexDirection: 'row',
-                                justifyContent: 'flex-end'
-                            }}
-                            onPress={() => {
-                                navigation.navigate("DiaryDetail", { index: index })
-                            }}>
-                            <FadeInOutText
-                                style={{
-                                    color: 'white',
-                                    alignSelf: 'flex-end'
-                                }}
-                                // text="Continue"
-                                isButton={true}
-                                source={next_Detail}
-                                stay={true}
-                                continue={true}
-                            >
-                            </FadeInOutText>
-                        </TouchableOpacity>
-
-                    </View>
-                }
-            </View>
-        </View >
-    );
-};
-
-export default Diary;
-
-// const playMusic = () => {
-//     console.log("play it")
-//     const sound = new Sound('rainsound.mp3', Sound.MAIN_BUNDLE, (error) => {
-//         if (error) {
-//             console.log('Failed to load the sound', error);
-//             return;
-//         }
-//     });
-//     console.log("soundosund", sound)
-//     sound.play((success) => {
-//         if (success) {
-//             console.log('successfully finished playing');
-//         } else {
-//             console.log('playback failed due to audio decoding errors');
-//         }
-//     });
-//     sound.setVolume(1);
-// };
-
-// const [position1, setPosition1] = useState<Animated.Value>(new Animated.Value(0));
-// const [position2, setPosition2] = useState<Animated.Value>(new Animated.Value(0));
-// const [position3, setPosition3] = useState<Animated.Value>(new Animated.Value(0));
-// const [position4, setPosition4] = useState<Animated.Value>(new Animated.Value(0));
-// const [position5, setPosition5] = useState<Animated.Value>(new Animated.Value(0));
-// const positionList: Animated.Value[] = [position1, position2, position3, position4, position5]
-// const [currIndex, setCurrIndex] = useState<number>(0)
-// let updatedContent: JSX.Element[] = [];
-// for (let i = 0; i < (count + 1) % 5 + 1; i++) {
-//     console.log("ount",count, "i:",i)
-//     let droplet = ((count + 1) % 5 == i);
-//     let showAll = (count + 1) == texts.length
-//     updatedContent.push(<HiddenTag showAll={showAll} droplet={droplet} key={(count + 1) % 5} text={texts[i]} />)
-//     // updatedContent.push(<FadeInOutText text={texts[i]} />)
-// }
-// setTagContent(updatedContent)
-// // setCount((count + 1) % 5);
-// setCount(count+1)
-// useEffect(() => {
-//     if (currIndex == 5) {
-//         // setViewButtons(true)
-//         return
-//     } else {
-//         const newAnimation = Animated.timing(positionList[currIndex], {
-//             toValue: 500,
-//             duration: 1,//500 is good
-//             useNativeDriver: true,
-//         }).start(() => {
-//             setCurrIndex(currIndex + 1)
-//         });
-//     }
-// }, [positionList, currIndex]);
-{/* <Text
+            <Text
                 numberOfLines={1}
                 adjustsFontSizeToFit={true}
                 minimumFontScale={0.1}
                 style={{
-                    color: 'white',
-                    borderRadius: 50,
-                    position: 'absolute',
-                    top: 25,
-                    fontSize: 50,
+                    color: (props.display) ? 'white' : 'black',
+                    fontSize: 25,
+                    fontFamily: 'Comfortaa-Regular',
                 }}>
                 {props.text}
-            </Text> */}
+            </Text>
+        </Animated.View>
+    );
+};
 
-// const [fadeAnim] = useState(new Animated.Value(0));
-// React.useEffect(() => {
+function Diary(route: any): JSX.Element {
+    let index: number = parseInt(route.route.params.index)
+    // const [viewButtons, setViewButtons] = useState<boolean>(false)
+    const navigation = useNavigation();
+    // const [count, setCount] = useState<number>(-1)
+    let numberOfTags: number = data[index].tags.length > 7 ? 7 : data[index].tags.length
+    let allTags = data[index].tags.slice(0, numberOfTags)
+    const [tags, setTags] = useState<string[]>([])
+    const [count, setCount] = useState<number>(0)
+    const [tagContent, setTagContent] = useState<JSX.Element>()
 
+    const [showPauseButton, setShowPauseButton] = useState<boolean>(false)
+    const [isFirstVisit, setIsFirstVisit] = useState(true);
+    const [isPaused, setIsPaused] = useState<boolean>(false)
+    useEffect(() => {
+        /**
+         * set delay based on following conditions
+         * 1. delay = 0 if the user visits Diary Page first time. (prevent useEffect execution)
+         * 2. delay = 0 if every tag has been displayed and it is time to display the first one again. 
+         *  This prevents double rendering process. 
+         * 3. Otherwise delay = X000 milsec.  
+         */
+        let delay = (count == -1 || isFirstVisit) ? 0 : (!isFirstVisit && count == 0) ? 0 : 4000
+        const interval = setInterval(() => {
+            if (count != -1) { //displaying tags 
+                if(isPaused){ //if it was paused but count != -1 which means a opcode for NOT paused,
+                    //(count is set 0 when replay button pressed)
+                    //updated pause state value.
+                    setIsPaused(false)
+                }
+                //displaying tag one by one and all 
+                if (count <= numberOfTags) {
+                    let copy = [...allTags]
+                    copy.slice(0, count)
+                    setTags(copy)
+                    setCount(count + 1)
+                    //when we display all tags, display replay/pause button
+                    if (count == numberOfTags) {
+                        setShowPauseButton(true)
+                    } else if (count == 0) {
+                        setShowPauseButton(false)
+                    }
+                } else {
+                    //if count exceeds the number of tags, reset it  
+                    setCount(0) //reset tags. 
+                    setTags([])
+                }
+            } else {
+                //i forgot what it does
+                // if (!isPaused) {
+                    // let copy = [...allTags]
+                    // setTags(copy)
+                // }
 
-//     Animated.timing(fadeAnim, {
-//         toValue: 1,
-//         duration: 2000,
-//         useNativeDriver: true,
-//     }).start(() => {
-//         //unless it must stay, disappear!
-//         if (!props.stay) {
-//             Animated.timing(fadeAnim, {
-//                 toValue: 0,
-//                 duration: 2000,
-//                 useNativeDriver: true,
-//             }).start();
-//         }
+            }
+        }, delay); //4000 is proper
 
-//     });
-// }, []);
+        return () => clearInterval(interval);
+    }, [count]);
+    useEffect(() => {
+        //if first visit, dont do anything
+        if (isFirstVisit) {
+            setIsFirstVisit(false);
+        } else {
+            if (tags.length == 0) { //not displaying anything. it occurs after displaying all, before display the first one
+                setTagContent(renderTags(-1))
+            } else {
+                if (count == -1) {  //paused, dispalying all
+                    setTagContent(renderTags(numberOfTags))
+                } else { 
+                    //display a single tag or all.
+                    setTagContent(renderTags(count))
+                }
+            }
+        }
 
-{/* <HiddenTag text={text1} position={positionList[0]} />
-            <HiddenTag text={text2} position={positionList[1]} />
-            <HiddenTag text={text3} position={positionList[2]} />
-            <HiddenTag text={text4} position={positionList[3]}  />
-            <HiddenTag text={text5} position={positionList[4]} /> */}
+    }, [tags, isPaused])
+    function renderTags(target: number) {
+        let upToSevenTags = allTags.map((txt, index) => {
+            let display = (index === target) || (target === numberOfTags)
+            return (
+                <View
+                    key={"tagVisible" + index + target + isPaused}
+                    style={{
+                        flex: 0.3,
+                        justifyContent: 'center',
+                        alignSelf: (index % 2 == 0) ? 'flex-start' : 'flex-end',
+                        paddingLeft: (index % 2 == 0) ? '10%' : 0,
+                        paddingRight: (index % 2 == 0) ? 0 : '10%',
+                        marginHorizontal: '20%'
+                    }}>
+                    <GIFandTextContainer
+                        key={"GIFandTxtContainer" + index + target}>
+                        {display &&
+                            <GIF
+                                source={gif}
+                                style={{
+                                    justifyContent: 'center',
+                                    alignSelf: 'center',
+                                    width: 200 + txt.length * 5,
+                                    height: 200 + txt.length * 5,
+                                }}
+                                resizeMode="cover"
+                                autoPlay={true}
+                            />}
+
+                    </GIFandTextContainer>
+                    <FadeInOutText
+                        key={"fadeText" + index + target}
+                        display={display}
+                        text={txt}
+                        isPaused ={isPaused}
+                    />
+                </View>
+            )
+        })
+
+        return (
+            <FlexOneView >
+                {upToSevenTags}
+            </FlexOneView>
+        )
+    }
+
+    return (
+        <BackgroundView >
+            <MajorityView>
+                {/* <TagContentHolder content={tagContent} /> */}
+                {tagContent}
+            </MajorityView>
+            <MinorityView >
+                {
+                    showPauseButton &&
+                    <ReplayPause>
+                        <IconContainer
+                            icon={
+                                (count == -1) ? "replay" : "pause"
+                            }
+                            size={50}
+                            iconColor='white'
+                            onPress={() => {
+                                if (count != -1) { //paused
+                                    setCount(-1)
+                                    setIsPaused(true)
+                                    
+                                } else { //replay
+                                    setCount(0)
+
+                                    // setIsPaused(false)
+                                }
+                            }}
+                        />
+                    </ReplayPause>
+                }
+                <NextButtonContainer>
+                    <IconContainer
+                        icon={"chevron-right"}
+                        size={50}
+                        iconColor='white'
+                        onPress={() => {
+                            navigation.navigate("DiaryDetail", { index: index })
+                        }}
+                    />
+                </NextButtonContainer>
+            </MinorityView>
+
+        </BackgroundView >
+    );
+};
+
+export default Diary;
