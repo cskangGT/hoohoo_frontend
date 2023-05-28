@@ -120,18 +120,25 @@ const ViewItem = (prop: Props) => {
         let day: string = dateStr.split("/")[1];
         let month: string = months[parseInt(dateStr.split("/")[0]) - 1];
         let year: string = dateStr.split("/")[2];
-        let dateFormat: string = month + " " + day ;
+        let dateFormat: string = month + " " + day;
         return dateFormat
     }
+    
     
     const [icon, setIcon] = useState<JSX.Element>(<CheckIcon 
         name={checked? 'check-circle-outline':'checkbox-blank-circle-outline'} 
         size={25} color={'white'} />);
+    
     useEffect(()=> {
         setIcon(<CheckIcon name={checked? 'check-circle-outline':'checkbox-blank-circle-outline'}  size={25} color={'white'} />)
     }, [checked]);
     
-
+    useEffect(()=>{
+        setChecked(false);
+        setDeleteData(false)
+        setAddData(true)
+        setPrevData(null)
+    }, [isSelectable])
     return (
         <Container>
             {isSelectable ?(

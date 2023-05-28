@@ -63,6 +63,7 @@
 		00E356F21AD99517003FC87E /* Diary_appTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Diary_appTests.m; sourceTree = "<group>"; };
 		030337380454414AA9C20188 /* Poppins-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Black.ttf"; path = "../src/assets/fonts/Poppins/Poppins-Black.ttf"; sourceTree = "<group>"; };
 		0C0FABA12A1C3F3D00013627 /* build */ = {isa = PBXFileReference; lastKnownFileType = folder; path = build; sourceTree = "<group>"; };
+		0C18CDAA2A24029800550C17 /* Diary_app.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Diary_app.entitlements; path = Diary_app/Diary_app.entitlements; sourceTree = "<group>"; };
 		0C2E15EF29F0248D007E8CE5 /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = fonts; path = ../src/assets/fonts; sourceTree = "<group>"; };
 		0D4A12D5EF0C49AAB9C30825 /* Poppins-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Medium.ttf"; path = "../src/assets/fonts/Poppins/Poppins-Medium.ttf"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* Diary_app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Diary_app.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -181,6 +182,7 @@
 		13B07FAE1A68108700A75B9A /* Diary_app */ = {
 			isa = PBXGroup;
 			children = (
+				0C18CDAA2A24029800550C17 /* Diary_app.entitlements */,
 				0C2E15EF29F0248D007E8CE5 /* fonts */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
@@ -616,6 +618,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Diary_app/Diary_app.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Diary_app/Info.plist;
@@ -644,6 +647,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Diary_app/Diary_app.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_FILE = Diary_app/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;

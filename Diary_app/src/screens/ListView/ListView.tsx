@@ -1,6 +1,6 @@
 
 import React, { useEffect, useRef, useState } from 'react'
-import { TouchableOpacity, View, FlatList, TextInput, ImageBackground, Image, Text, Platform, PermissionsAndroid } from 'react-native';
+import { TouchableOpacity, View, FlatList, TextInput, ImageBackground, Image, Text, Platform} from 'react-native';
 import styled from 'styled-components';
 import ViewItem from '../../components/common/ViewItem';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -8,7 +8,10 @@ import CheckIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import Share from 'react-native-share';
-
+import Icon2 from 'react-native-vector-icons/Entypo';
+import axios from 'axios';
+import {handleGoogleSignIn, onAppleLogin} from './CloudService';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 // const saveImageAsFile = (imageResource: any) => {
     
@@ -25,16 +28,31 @@ import Share from 'react-native-share';
 // };
 
 const bg = require('../../assets/revised.png');
-const shape = require('../../assets/shape.png');
+const shape = require('../../assets/DiaryEditPage/shape.png');
 const BgContainer = styled(ImageBackground)`
     flex:1;
+`;
+const TopContainer = styled(View)`
+  right:0;
+  flex-direction: row;
+  padding-right:10%;
+  align-items: center;
+
 `;
 const Shape = styled(ImageBackground)`
   flex:1;
 `;
+const HeaderBar = styled(View)`
+  width: 100%;
+  /* border-width: 1px;
+  border-color: white; */
+  flex:0.05;
+  justify-content: flex-end;
+  flex-direction: row;
+`;
 const SearchArea = styled(View)`
     flex:0.04;
-    margin-top:6%;
+    margin-top:1%;
     margin-bottom: 2%;
 `;
 
@@ -64,27 +82,11 @@ const Container = styled(View)`
     background-color: transparent;
     border-radius: 30px;
 `;
-const NavContainer = styled(View)`
-    /* border-color: red;
-    border-width: 1px; */
-    flex:0.13;
-    /* flex-wrap: wrap-reverse; */
-    /* width: 94%; */
-    /* padding-top: 3%; */
-    /* margin-right: 3%;
-    margin-left: 3%; */
-    /* height:8%; */
-    
-    justify-content:flex-end;
-    align-items: flex-end;
-`;
 const ButtontoMonth = styled(TouchableOpacity)`
     position: absolute;
     width: 25%;
     bottom: 2%;
     right: 6%;
-    /* border-color: blue;
-    border-width: 1px; */
     border-radius: 10px;
     flex-direction: row;
     padding: 3px;
@@ -107,9 +109,9 @@ const Done = styled(Text)`
   font-size: 15px;
 `;
 const ShareButton = styled(TouchableOpacity)`
-  position: absolute;
-  bottom: 2%;
-  left: 15%;
+  
+  
+  
   border-radius: 10px;
   padding: 3px;
   
@@ -124,12 +126,11 @@ type ItemData = {
     isQuote: boolean;
     isDiary: boolean;
 };
-// require('../../assets/DiaryEditPage')
 
 const DATA: ItemData[] = [
     {
         id: "0", date: "4/21/2023", tags: ["Determine", "ItIsPossible", "HardTimes", "NeverGiveUp", "ListenToMyVoice"],
-        diary:["Jisan Park is Genius. Moungsung is so smart. but Sung is good."], photo:['file:///../../assets/'],
+        diary:["Jisan Park is Genius. Moungsung is so smart. but Sung is good."], photo:['file:///Users/jisanpark/Hoohoo/hoohoo_frontend/Diary_app/src/assets/tagRecordingBg.png'],
         isPhoto: false, isQuote: false, isDiary: false
     },
     {
@@ -226,8 +227,6 @@ const ListView = ({ navigation, route }: any) => {
               ${exportData
                 .map(
                 (day) => `
-                    
-        
                     <div class="diary">
                       <h2>${dateStringFormat(day.date)}</h2>
                       <div class="tags">
@@ -238,12 +237,10 @@ const ListView = ({ navigation, route }: any) => {
                         ${day.diary.map((entry) => `<p>${entry}</p>`).join(" ")}
                       </div>
                       <div class="photo">
-                      
                     ${day.photo
-                        .map((file) => (file ? `<img src="${file}" style="width: 20%; height:20%" alt="Photo">` : ""))
+                        .map((file :string) => (file ? `<img src="${file}" style="width: 10%; height:10%" alt="Photo">` : ""))
                         .join("")
                     }
-                
                       </div>
                     </div>
                   `
@@ -280,7 +277,10 @@ const ListView = ({ navigation, route }: any) => {
         keyExtractor={(item) => item.id} />);
     },[isSelectable]);
     const toggleItemSelection = (item: ItemData, deleteData: boolean, addData: boolean) => {
-        if (exportData.find(selectedItem => selectedItem.id === item.id)) {
+        if (item === null) {
+          return ;
+        }
+        if ( exportData.find(selectedItem => selectedItem.id === item.id)) {
             setExportData(prevItems => prevItems.filter(i => i.id !== item.id));
         } else {
             setExportData(prevItems => [...prevItems, item]);
@@ -321,13 +321,42 @@ const ListView = ({ navigation, route }: any) => {
         setIsSelectable(bool);
         
     }
-    
+    const done = ()=> {
+      generateCheckBox(false); 
+      setExportData([]);
+
+    }
     return (
         
         <BgContainer source={bg} resizeMode='cover' style={{flex:1}} blurRadius={5}>
-            <SafeAreaView style={{flex: 1}}>
-            <Shape source={shape} resizeMode='cover' >
+            <Shape source={shape} resizeMode='cover' style={{flex: 1}}><SafeAreaView style={{flex: 1}}>
+            
+            
+            <HeaderBar>
+            { isSelectable && <TopContainer>
+            <ShareButton onPress={()=>generateHTML(exportData)}>
+                    <Icon name='ios-share' color={ exportData.length!== 0? 'white' :'black'} size={23} />
+                </ShareButton>
+                {
+                  Platform.OS === 'ios' && <ShareButton onPress={()=>{
+                    // iCloud
+                    onAppleLogin();
+                  }}>
+                  <CheckIcon name='cloud-upload-outline' color={ exportData.length!== 0? 'white' :'black'} size={23} />
+                  </ShareButton>
+                }
+                
+                <ShareButton onPress={()=>{
+                  const acc = handleGoogleSignIn(exportData);
 
+                  
+                  // google Cloud
+                }}>
+                <Icon2 name='google-drive' color={ exportData.length!== 0? 'white' :'black'} size={21} />
+                </ShareButton>
+                </TopContainer>
+                }
+                </HeaderBar>
             <SearchArea>
                 <SearchBar
                     onChangeText={handleSearch}
@@ -341,7 +370,6 @@ const ListView = ({ navigation, route }: any) => {
             <Container>
                 {list}
             </Container>
-            {/* <NavContainer> */}
                 <ButtontoMonth onPress={() => {
                     console.log("pressed");
                     navigation.navigate('MonthlyView');
@@ -350,23 +378,19 @@ const ListView = ({ navigation, route }: any) => {
                     <ButtonText>Calendar </ButtonText>
                     <Icon name="arrow-forward-ios" color={'#fcf5f5'}/>
                 </ButtontoMonth>
-            {/* </NavContainer> */}
 
             {
-                isSelectable? <CheckButton isSelectable={isSelectable} onPress={()=> {
-                    generateCheckBox(false)}} activeOpacity={0.8}>
+                isSelectable? <CheckButton isSelectable={isSelectable} onPress={done} activeOpacity={0.8}>
                 <Done>Done</Done>
             </CheckButton> : <CheckButton isSelectable={isSelectable} onPress={()=> {
                 generateCheckBox(true)}} activeOpacity={0.8}>
                 <CheckIcon name='progress-check' color={'white'} size={25} />
             </CheckButton>
             }
-            {exportData.length!== 0 && <ShareButton onPress={()=>generateHTML(exportData)}>
-                    <Icon name='ios-share' color={'white'} size={25} />
-                </ShareButton>}
             
             
-            </Shape></SafeAreaView>
+            </SafeAreaView>
+            </Shape>
         </BgContainer>
         
     )
