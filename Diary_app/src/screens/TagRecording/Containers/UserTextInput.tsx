@@ -51,27 +51,3 @@ function UserTextInput(props: any): JSX.Element {
     );
 }
 export default UserTextInput
- // <InputText
-        //     //when the textinput is touched, automatically switch to Type mode!
-        //     onFocus={() => {
-        //         if (props.currTypeButton === "Type Mode") {
-        //             props.switchMode()
-        //         }
-        //     }}
-        //     autoCapitalize='sentences'
-        //     autoCorrect={false}
-        //     pointerEvents="none"
-        //     ref={props.focusOnInput}
-        //     onChangeText={(text: string) => {
-        //         // props.onChangeText(text)
-        //         setTypeText(text)
-        //     }
-        //     }
-        //     value={typeText}
-        //     // autoFocus={focus}
-        //     blurOnSubmit={false} //disable dismissing keyboard panel automatically!
-        //     onSubmitEditing={() => {
-        //         props.recordTags(typeText, props.size); //reuse previosuly made function for STT input!
-        //         setTypeText("")
-        //         props.setTextInput("");
-        //     }} />

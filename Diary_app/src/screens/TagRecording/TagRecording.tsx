@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 
-import { Animated, Text, TouchableOpacity,KeyboardAvoidingView, ToastAndroid, View, } from "react-native";
+import { Animated, Text, TouchableOpacity, KeyboardAvoidingView, ToastAndroid, View, } from "react-native";
 import WordContainer from './Containers/WordContainer';
 import UserTextInput from './Containers/UserTextInput';
 import RecordingButton from './RecordingButton';
@@ -32,12 +32,24 @@ function TagRecording({ navigation, route }: any): JSX.Element {
 
     //Instagram regulation
     //capacity of total number of characters
-    const [capacity, setCapacity] = useState<number>(300)
+    const capacity = 10
     //max limit length per a tag.
     const limit = 30
 
+    //decrease capability as many as letters of saved tags.
+    function getCurrentCapability() {
+        let total = capacity
+        for (let i = 0; i < tags.length; i++) {
+            if (tags[i]) {
+                total -= tags[i].length
+            }
+        }
+        return total
+    }
+    const [currentCapability, setCurrentCapability] = useState<number>(getCurrentCapability())
+
     function checkRegulation(result: string) {
-        if (result !== undefined && result.length < limit && capacity - result.length >= 0) {
+        if (result !== undefined && result.length < limit && currentCapability - result.length >= 0) {
             result = result.charAt(0).toUpperCase().concat(result.substring(1, result.length))
             for (let i = 0; i < result.length; i++) {
                 let curr = result.charAt(i)
@@ -48,19 +60,24 @@ function TagRecording({ navigation, route }: any): JSX.Element {
                 }
             }
             addInputs(result)
-            setCapacity(capacity - result.length)
+            // setCurrentCapability(currentCapability - result.length)
         } else if (result !== undefined && result.length >= limit) {
             // console.log("length err exceed limit", result.length)
             Toast.show('Max limit exceeded:\nLength of a tag should be less than ' + limit, Toast.SHORT);
-        } else if (result !== undefined && capacity - result.length < 0) {
+        } else if (result !== undefined && currentCapability - result.length < 0) {
             // console.log("length err exceed cap", result.length, capacity)
             Toast.show('Max capacity exceeded:\nYou have recorded more than ' + capacity + ' letters', Toast.SHORT);
         }
     }
     const DeleteContent = (index: number, words: string[], setWords: React.Dispatch<React.SetStateAction<string[]>>, setWordContent: React.Dispatch<React.SetStateAction<JSX.Element[] | undefined>>) => {
+        let deleted = words[index]
         delete words[index];
+        // let copy = [...words]
+        // copy.splice(index, 1)
         setWords(words);
+        // setCurrentCapability(currentCapability + deleted.length)
         createContent(words, setWords, setWordContent, isEditable);
+        // console.log("after deleted", currentCapability + deleted.length)
     }
     //create tags on the modecontents?
     const createContent = (words: string[], setWords: React.Dispatch<React.SetStateAction<string[]>>, setWordContent: React.Dispatch<React.SetStateAction<JSX.Element[] | undefined>>, editable?: boolean) => {
@@ -81,6 +98,7 @@ function TagRecording({ navigation, route }: any): JSX.Element {
                 </TagComponent>
             )))
         setWordContent(contentHolder)
+        setCurrentCapability(getCurrentCapability())
     }
     const recordTags = (deleted: string) => {
         recordedInputs.push(deleted)
@@ -153,79 +171,74 @@ function TagRecording({ navigation, route }: any): JSX.Element {
     //used to determine whether display the mode change button or not 
     const [isTyping, setIsTyping] = useState<boolean>(false);
     return (
-        
-             
-    
         <Container source={Background}>
-        <View style={{
-            flex:1
-        }}>
-            <SafeArea>
-                <TransparentView>
-                    <OpacityView>
-                        <FadeInFadeOutComponent
-                            source={WaterSpread1}
-                            fadeInAndOutAnim={fadeInAndOutAnim}
-                            duration={1000}
-                            delay={(isTextMode) ? 2500 : 0}
-                            isTextMode={isTextMode}
-                            height='80%'
-                            top='20%'
-                            left='-20%'
-                        />
-                    </OpacityView >
-                    <OpacityView>
-                        <FadeInFadeOutComponent
-                            source={WaterSpread2}
-                            fadeInAndOutAnim={fadeInAndOutAnim2}
-                            duration={3000}
-                            delay={(isTextMode) ? 500 : 2500}
-                            isTextMode={isTextMode}
-                            height='80%'
-                            top='10%'
-                            left='40%'
-                        />
-                    </OpacityView>
-                </TransparentView>
-                <Animated.View
-                    style={{
-                        opacity: fadeAnim,
-                        flex: 1,
-                    }}>
-                    <ScrollableView contentContainerStyle={contentContainer}>
-                        <KeyboardAvoidingView style={flexOne}>
-                            <ButtonContainer>
-                                <NavButton
-                                    title="List" onPress={() => {
-                                        navigation.navigate('ListView')
-                                    }}
-                                    textStyle={whiteFont} />
-                                <NavButton title="Save" onPress={() => {
-                                    navigation.navigate('Diary')
-                                }}
-                                    textStyle={whiteFont} />
-                            </ButtonContainer>
-                            <WordContainer content={recordedContentHolder as JSX.Element[]}></WordContainer>
-                            <UserTextInput
-                                setIsTyping={setIsTyping}
-                                checkRegulation={checkRegulation}
+            <View style={flexOne}>
+                <SafeArea>
+                    <TransparentView>
+                        <OpacityView>
+                            <FadeInFadeOutComponent
+                                source={WaterSpread1}
+                                fadeInAndOutAnim={fadeInAndOutAnim}
+                                duration={1000}
+                                delay={(isTextMode) ? 2500 : 0}
+                                isTextMode={isTextMode}
+                                height='80%'
+                                top='20%'
+                                left='-20%'
                             />
-                        </KeyboardAvoidingView>
-                        {
-                            !isTyping &&
-                            <MicContainerContainer>
-                                <RecordingButton
-                                    fadeInFadeOut={fadeInFadeOut}
-                                    isTextMode={isTextMode}
-                                    setIsTextMode={setIsTextMode}
+                        </OpacityView >
+                        <OpacityView>
+                            <FadeInFadeOutComponent
+                                source={WaterSpread2}
+                                fadeInAndOutAnim={fadeInAndOutAnim2}
+                                duration={3000}
+                                delay={(isTextMode) ? 500 : 2500}
+                                isTextMode={isTextMode}
+                                height='80%'
+                                top='10%'
+                                left='40%'
+                            />
+                        </OpacityView>
+                    </TransparentView>
+                    <Animated.View
+                        style={{
+                            opacity: fadeAnim,
+                            flex: 1,
+                        }}>
+                        <ScrollableView contentContainerStyle={contentContainer}>
+                            <KeyboardAvoidingView style={flexOne}>
+                                <ButtonContainer>
+                                    <NavButton
+                                        title="List" onPress={() => {
+                                            navigation.navigate('ListView')
+                                        }}
+                                        textStyle={whiteFont} />
+                                    <NavButton title="Save" onPress={() => {
+                                        navigation.navigate('Diary')
+                                    }}
+                                        textStyle={whiteFont} />
+                                </ButtonContainer>
+                                <WordContainer content={recordedContentHolder as JSX.Element[]}></WordContainer>
+                                <UserTextInput
+                                    setIsTyping={setIsTyping}
                                     checkRegulation={checkRegulation}
                                 />
-                            </MicContainerContainer>
-                        }
-                    </ScrollableView>
-                </Animated.View>
-            </SafeArea>
-        </View>
+                            </KeyboardAvoidingView>
+                            {
+                                !isTyping &&
+                                <MicContainerContainer>
+                                    <RecordingButton
+                                        fadeInFadeOut={fadeInFadeOut}
+                                        isTextMode={isTextMode}
+                                        setIsTextMode={setIsTextMode}
+                                        checkRegulation={checkRegulation}
+                                    />
+                                </MicContainerContainer>
+                            }
+                        </ScrollableView>
+                    </Animated.View>
+                </SafeArea>
+            </View>
         </Container>
     )
 }
