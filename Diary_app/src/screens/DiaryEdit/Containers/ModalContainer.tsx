@@ -66,7 +66,6 @@ function ModalContainer(props: any): JSX.Element {
     function checkRegulation(result: string) {
         let limit = props.limit
         let capacity = currCapacity
-        console.log("curr cacapity", currCapacity)
         if (result !== undefined && result.length < limit && capacity - result.length >= 0) {
             result = result.charAt(0).toUpperCase().concat(result.substring(1, result.length))
             for (let i = 0; i < result.length; i++) {
@@ -79,7 +78,6 @@ function ModalContainer(props: any): JSX.Element {
             addNewTags(text);
             setText("")
             setCurrCapacity(currCapacity - result.length)
-            console.log("new cacapity", currCapacity - result.length)
         } else if (result !== undefined && result.length >= limit) {
             // console.log("length err exceed limit", result.length)
             Toast.show('Max limit exceeded:\nLength of a tag should be less than ' + limit, Toast.SHORT);
