@@ -75,7 +75,7 @@ function ModalContainer(props: any): JSX.Element {
                     result = result.substring(0, i).concat(next + result.substring(i + 2, result.length))
                 }
             }
-            addNewTags(text);
+            addNewTags(result);
             setText("")
             setCurrCapacity(currCapacity - result.length)
         } else if (result !== undefined && result.length >= limit) {
