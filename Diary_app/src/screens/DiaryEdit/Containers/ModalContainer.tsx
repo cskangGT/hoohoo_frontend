@@ -4,6 +4,7 @@ import { Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View, Moda
 import { IndividualTagContainer, RemoveIconContainer, TagText, TagZoneSecondRow, VerticalList } from "../styles";
 import { useNavigation } from "@react-navigation/native";
 import Icon from 'react-native-paper/src/components/Icon'
+import Toast from 'react-native-simple-toast';
 /**
  * 
  * @param props contains..
@@ -57,11 +58,45 @@ function ModalContainer(props: any): JSX.Element {
             </VerticalList>
         )
     }
+
+    const [currCapacity, setCurrCapacity] = useState<number>(props.currentCapability);
+    // useEffect(()=>{
+    //     setCurrCapacity(props.currentCapability)
+    // }, props.currentCapability)
+    function checkRegulation(result: string) {
+        let limit = props.limit
+        let capacity = currCapacity
+        console.log("curr cacapity", currCapacity)
+        if (result !== undefined && result.length < limit && capacity - result.length >= 0) {
+            result = result.charAt(0).toUpperCase().concat(result.substring(1, result.length))
+            for (let i = 0; i < result.length; i++) {
+                let curr = result.charAt(i)
+                if (curr == ' ') {
+                    let next = result.charAt(i + 1).toUpperCase()
+                    result = result.substring(0, i).concat(next + result.substring(i + 2, result.length))
+                }
+            }
+            addNewTags(text);
+            setText("")
+            setCurrCapacity(currCapacity - result.length)
+            console.log("new cacapity", currCapacity - result.length)
+        } else if (result !== undefined && result.length >= limit) {
+            // console.log("length err exceed limit", result.length)
+            Toast.show('Max limit exceeded:\nLength of a tag should be less than ' + limit, Toast.SHORT);
+        } else if (result !== undefined && capacity - result.length < 0) {
+            // console.log("length err exceed cap", result.length, capacity)
+            Toast.show('Max capacity exceeded:\nYou have recorded more than ' + capacity + ' letters', Toast.SHORT);
+        }
+    }
     const [addedTagsContent, setAddedTagsContent] = useState<JSX.Element>(renderTags)
     useEffect(() => {
         setAddedTagsContent(renderTags);
         scrollToBottom()
     }, [addedTags])
+
+    const [isTyping, setIsTyping] = useState<boolean>(false)
+
+
     return (
         <Modal
             visible={true}
@@ -113,10 +148,10 @@ function ModalContainer(props: any): JSX.Element {
                     onPress={() => {
                         textInputRef.current?.blur();
                     }}>
-                    <View style={{ 
-                        margin:'3%'
+                    <View style={{
+                        margin: '3%'
 
-                     }}>
+                    }}>
                         <TextInput
                             ref={textInputRef}
                             style={{
@@ -136,38 +171,70 @@ function ModalContainer(props: any): JSX.Element {
                             }}
                             onSubmitEditing={() => {
                                 if (text.length !== 0) {
-                                    addNewTags(text);
-                                    setText("")
+                                    checkRegulation(text);
+                                    // addNewTags(text);
+                                    // setText("")
                                 }
                             }}
-                            blurOnSubmit ={false}
+                            blurOnSubmit={false}
+                            onFocus={() => { setIsTyping(true) }}
+                            onBlur={() => { setIsTyping(false) }}
                         />
                     </View>
                 </TouchableWithoutFeedback>
-                <View style={{
-                    flexDirection: 'row',
-                    alignSelf: 'flex-end'
-                }}>
-                    <TouchableOpacity onPress={() => {
-                        props.setIsModalUp(false)
+                {isTyping &&
+                    <View style={{
+                        flexDirection: 'row',
+                        alignSelf: 'flex-end'
                     }}>
-                        <TagText >
-                            Cancel
-                        </TagText>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => {
-                        let copy = [...props.tags]
-                        for (let i = 0; i < addedTags.length; i++) {
-                            copy.push(addedTags[i])
-                        }
-                        props.setTags(copy)
-                        props.setIsModalUp(false)
+                        <TouchableOpacity onPress={() => {
+                            textInputRef.current?.blur();
+                            setIsTyping(false)
+                        }}>
+                            <TagText >
+                                Cancel
+                            </TagText>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => {
+                            if (text.length !== 0) {
+                                checkRegulation(text);
+                                // addNewTags(text);
+                                // setText("")
+                            }
+                        }}>
+                            <TagText>
+                                Add
+                            </TagText>
+                        </TouchableOpacity>
+                    </View>
+                }
+                {!isTyping &&
+                    <View style={{
+                        flexDirection: 'row',
+                        alignSelf: 'flex-end'
                     }}>
-                        <TagText>
-                            Apply
-                        </TagText>
-                    </TouchableOpacity>
-                </View>
+
+                        <TouchableOpacity onPress={() => {
+                            props.setIsModalUp(false)
+                        }}>
+                            <TagText >
+                                Cancel
+                            </TagText>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => {
+                            let copy = [...props.tags]
+                            for (let i = 0; i < addedTags.length; i++) {
+                                copy.push(addedTags[i])
+                            }
+                            props.setTags(copy)
+                            props.setIsModalUp(false)
+                        }}>
+                            <TagText>
+                                Apply
+                            </TagText>
+                        </TouchableOpacity>
+                    </View>
+                }
             </View>
         </Modal>
     )

@@ -2,7 +2,7 @@ import { View, ScrollView, ImageBackground, Text, Dimensions, TouchableOpacity, 
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { useNavigation } from '@react-navigation/native';
-import { SafeArea, SmallIconContainer, StyledBackgroundView, IndividualTagContainer, TagZoneContainer, TagZoneFirstRow, TagText, TagZoneSecondRow, VerticalList, RemoveIconContainer, RemoveIcon, FooterContainer, FABTheme, FabContainer, DateContainer, NextButtonContainer, FabStyle } from './styles';
+import { SafeArea, SmallIconContainer, StyledBackgroundView, IndividualTagContainer, TagZoneContainer, TagZoneFirstRow, TagText, TagZoneSecondRow, VerticalList, RemoveIconContainer, RemoveIcon, FooterContainer, FABTheme, FabContainer, DateContainer, NextButtonContainer, FabStyle, MajorityView, DoneText } from './styles';
 import data from '../../data/data.json'
 import Icon from 'react-native-paper/src/components/Icon'
 import { FAB, Portal, PaperProvider, DefaultTheme, IconButton } from 'react-native-paper';
@@ -19,17 +19,7 @@ const background = require('../../assets/DiaryEditPage/Background.png');
 function DiaryEdit(route: any): JSX.Element {
     const navigation = useNavigation();
     let index: number = parseInt(route.route.params.index)
-    let date: string;
-    if (index === undefined) {
-        index = 4
-        let today = new Date()
-        let y = today.getFullYear()
-        let m = today.getMonth() + 1
-        let d = today.getDate()
-        date = m + "/" + d + "/" + y
-    } else {
-        date = data[index].date
-    }
+    let date = data[index].date
     //is the FAB open or not
     const [isOpen, setIsOpen] = useState<boolean>(false)
 
@@ -129,7 +119,22 @@ function DiaryEdit(route: any): JSX.Element {
             setDeletable(false)
         }
     }, [attach, deletable])
+
+    const capacity = 300 
+    const limit = 30 //per a tag 
     const [tags, setTags] = useState<string[]>(data[index].tags)
+    
+    //decrease capability as many as letters of saved tags.
+    function getCurrentCapability(){
+        let total = capacity
+        for(let i = 0; i < tags.length ; i++){
+          total-= tags[i].length
+        }
+        return total
+    }
+    
+    const [currentCapability, setCurrentCapability] = useState<number>(getCurrentCapability())
+
     //Used to open/close modal for adding tags
     const [isModalUp, setIsModalUp] = useState<boolean>(false)
 
@@ -141,29 +146,27 @@ function DiaryEdit(route: any): JSX.Element {
             setIsModalUp={setIsModalUp}
         />)
     useEffect(() => {
+        setCurrentCapability(getCurrentCapability())
         setTagContainer(
             <TagContainer
                 tags={tags}
                 setTags={setTags}
                 index={index}
                 setIsModalUp={setIsModalUp}
+                currentCapability={currentCapability}
+                
             />
         )
+        //update current capcity. 
     }, [tags])
 
     return (
         <StyledBackgroundView source={background}>
             <SafeArea>
-
                 {tagContainer}
-                <View style={{
-                    overflow: 'hidden',
-                    flex: 1,
-                    borderRadius: 25,
-                    // padding: '2%'
-                }}>
+                <MajorityView >
                     {attachContent}
-                </View>
+                </MajorityView>
                 {/* not display when typing */}
                 {((!isTyping && !deletable) || attach.length == 0) &&
                     <FooterContainer >
@@ -228,19 +231,9 @@ function DiaryEdit(route: any): JSX.Element {
                             setDeletable(false)
                         }}
                     >
-                        <Text
-                            style={{
-                                color: 'white',
-                                fontSize: 25,
-                                borderColor: 'gray',
-                                borderWidth: 1,
-                                borderRadius: 10,
-                                padding: '2%',
-                                backgroundColor: 'gray'
-                            }}
-                        >
+                        <DoneText>
                             Done
-                        </Text>
+                        </DoneText>
                     </TouchableOpacity>
                 }
                 {isModalUp &&
@@ -249,6 +242,8 @@ function DiaryEdit(route: any): JSX.Element {
                         tags={tags}
                         setTags={setTags}
                         setIsModalUp={setIsModalUp}
+                        currentCapability = {currentCapability}
+                        limit = {limit}
                     />
                 }
 

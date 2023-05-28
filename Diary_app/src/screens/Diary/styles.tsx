@@ -1,12 +1,16 @@
-import { Animated, View } from "react-native";
+import { Animated, SafeAreaView, View } from "react-native";
 import { IconButton } from "react-native-paper";
 import styled from "styled-components";
 
 export const BackgroundView = styled(View)`
     flex:1;
     background-color:black
-
 `
+//for Iphone
+export const SafeArea = styled(SafeAreaView)`
+    flex:1;
+`
+
 export const NextButtonContainer = styled(View)`
     flex: 1;
     align-items: flex-end;
@@ -34,11 +38,10 @@ export const FlexOneView = styled(View)`
     flex:1;
 `
 export const MajorityView = styled(View)`
-    flex:0.9;
+    flex:0.95;
 `
 export const MinorityView = styled(View)`
     flex-direction: row;
-    flex: 0.1;
 `
 export const IconContainer = styled(IconButton)`
     margin: 0

@@ -1,10 +1,10 @@
 
 import React, { useState, useEffect } from 'react';
-import { View,  Animated, Text, Easing } from 'react-native';
+import { View, Animated, Text, Easing } from 'react-native';
 import data from '../../data/data.json'
 import { useNavigation } from '@react-navigation/native';
 import GIF from 'react-native-gif';
-import { BackgroundView, FlexOneView, MajorityView, GIFandTextContainer, NextButtonContainer, ReplayPause, MinorityView, IconContainer } from './styles';
+import { BackgroundView, FlexOneView, MajorityView, GIFandTextContainer, NextButtonContainer, ReplayPause, MinorityView, IconContainer, SafeArea } from './styles';
 import { IconButton } from 'react-native-paper';
 
 const gif = require('./droplet.gif')
@@ -41,13 +41,13 @@ const FadeInOutText = (props: any) => {
     }, [])
 
     return (
-        <Animated.View 
+        <Animated.View
             style={{
-            opacity: fadeAnim,
-            position: 'absolute',
-            justifyContent: 'center',
-            alignSelf: 'center',
-        }}>
+                opacity: fadeAnim,
+                position: 'absolute',
+                justifyContent: 'center',
+                alignSelf: 'center',
+            }}>
             <Text
                 numberOfLines={1}
                 adjustsFontSizeToFit={true}
@@ -88,7 +88,7 @@ function Diary(route: any): JSX.Element {
         let delay = (count == -1 || isFirstVisit) ? 0 : (!isFirstVisit && count == 0) ? 0 : 4000
         const interval = setInterval(() => {
             if (count != -1) { //displaying tags 
-                if(isPaused){ //if it was paused but count != -1 which means a opcode for NOT paused,
+                if (isPaused) { //if it was paused but count != -1 which means a opcode for NOT paused,
                     //(count is set 0 when replay button pressed)
                     //updated pause state value.
                     setIsPaused(false)
@@ -113,8 +113,8 @@ function Diary(route: any): JSX.Element {
             } else {
                 //i forgot what it does
                 // if (!isPaused) {
-                    // let copy = [...allTags]
-                    // setTags(copy)
+                // let copy = [...allTags]
+                // setTags(copy)
                 // }
 
             }
@@ -132,7 +132,7 @@ function Diary(route: any): JSX.Element {
             } else {
                 if (count == -1) {  //paused, dispalying all
                     setTagContent(renderTags(numberOfTags))
-                } else { 
+                } else {
                     //display a single tag or all.
                     setTagContent(renderTags(count))
                 }
@@ -174,7 +174,7 @@ function Diary(route: any): JSX.Element {
                         key={"fadeText" + index + target}
                         display={display}
                         text={txt}
-                        isPaused ={isPaused}
+                        isPaused={isPaused}
                     />
                 </View>
             )
@@ -189,46 +189,47 @@ function Diary(route: any): JSX.Element {
 
     return (
         <BackgroundView >
-            <MajorityView>
-                {/* <TagContentHolder content={tagContent} /> */}
-                {tagContent}
-            </MajorityView>
-            <MinorityView >
-                {
-                    showPauseButton &&
-                    <ReplayPause>
+            <SafeArea>
+                <MajorityView>
+                    {/* <TagContentHolder content={tagContent} /> */}
+                    {tagContent}
+                </MajorityView>
+                <MinorityView >
+                    {
+                        showPauseButton &&
+                        <ReplayPause>
+                            <IconContainer
+                                icon={
+                                    (count == -1) ? "replay" : "pause"
+                                }
+                                size={50}
+                                iconColor='white'
+                                onPress={() => {
+                                    if (count != -1) { //paused
+                                        setCount(-1)
+                                        setIsPaused(true)
+
+                                    } else { //replay
+                                        setCount(0)
+
+                                        // setIsPaused(false)
+                                    }
+                                }}
+                            />
+                        </ReplayPause>
+                    }
+                    <NextButtonContainer>
                         <IconContainer
-                            icon={
-                                (count == -1) ? "replay" : "pause"
-                            }
+                            icon={"chevron-right"}
                             size={50}
                             iconColor='white'
                             onPress={() => {
-                                if (count != -1) { //paused
-                                    setCount(-1)
-                                    setIsPaused(true)
-                                    
-                                } else { //replay
-                                    setCount(0)
-
-                                    // setIsPaused(false)
-                                }
+                                navigation.navigate("DiaryDetail", { index: index })
                             }}
                         />
-                    </ReplayPause>
-                }
-                <NextButtonContainer>
-                    <IconContainer
-                        icon={"chevron-right"}
-                        size={50}
-                        iconColor='white'
-                        onPress={() => {
-                            navigation.navigate("DiaryDetail", { index: index })
-                        }}
-                    />
-                </NextButtonContainer>
-            </MinorityView>
-
+                    </NextButtonContainer>
+                </MinorityView>
+            </SafeArea>
         </BackgroundView >
     );
 };

@@ -76,11 +76,15 @@ export const RemoveIcon = styled(Image)`
     width:100%;
     height:100%;
 `
-
+export const MajorityView = styled(View)`
+    flex:0.95;
+    overflow: hidden;
+    border-radius: 25px;
+`
 //contains components at the bottom
 export const FooterContainer = styled(View)`
     flex-direction:row;
-    flex:0.1;
+    // flex:0.1;
 `
 export const FabContainer = styled(View)`
     flex:1;
@@ -98,7 +102,7 @@ export const NextButtonContainer = styled(View)`
     flex: 1;
     align-items: flex-end;
     justify-content: center;
-    
+    padding:2%;
 `
 // border-color:red;
 // border-width:2px;
@@ -199,4 +203,15 @@ export const FullImage = styled(Image)`
     width: 100%;
     height: 100%;
     position: absolute;
+`
+
+export const DoneText = styled(Text)`
+    color: white;
+    font-size: 25px;
+    border-color: gray;
+    border-width: 1px;
+    border-radius: 10px;
+    padding: 2%;
+    background-color: gray;
+
 `
