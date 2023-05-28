@@ -163,9 +163,7 @@ function ModalContainer(props: any): JSX.Element {
                             placeholderTextColor={"gray"}
                             value={text}
                             onChangeText={(txt: string) => {
-                                if (txt.length !== 0) {
-                                    setText(txt)
-                                }
+                                setText(txt)
                             }}
                             onSubmitEditing={() => {
                                 if (text.length !== 0) {
