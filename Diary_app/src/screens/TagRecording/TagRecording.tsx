@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 
-import { Animated, Text, TouchableOpacity, KeyboardAvoidingView, ToastAndroid, View, } from "react-native";
+import { Animated, Text, TouchableOpacity, KeyboardAvoidingView, ToastAndroid, View, Platform, Easing, } from "react-native";
 import WordContainer from './Containers/WordContainer';
 import UserTextInput from './Containers/UserTextInput';
 import RecordingButton from './RecordingButton';
@@ -13,12 +13,58 @@ import {
 import FadeInFadeOutComponent from './Containers/FadeInFadeOutComponent';
 import data from '../../data/data.json'
 import Toast from 'react-native-simple-toast';
+import regulation from '../../data/regulation.json'
 
 // import ImageBackground from '../../components/common/ImageBackground';
 const Xbutton = require('../../assets/remove.png');
 const Background = require('../../assets/tagRecordingBg.png');
 const WaterSpread1 = require('../../assets/WaterSpread1.png')
 const WaterSpread2 = require('../../assets/WaterSpread2.png')
+
+const FadeInOutText = (props: any) => {
+    const [fadeAnim] = useState(new Animated.Value(0));
+    let displayTime = 1500 
+    useEffect(() => {
+        const fadeIn = Animated.timing(fadeAnim, {
+            toValue: 1,
+            duration: displayTime,
+            easing: Easing.linear,
+            useNativeDriver: true,
+        });
+        const fadeOut = Animated.timing(fadeAnim, {
+            toValue: 0,
+            duration: displayTime,
+            easing: Easing.linear,
+            useNativeDriver: true,
+        })
+
+        Animated.sequence([fadeIn, fadeOut]).start(() => {
+            props.setToastVisible(false)
+        })
+    }, [])
+    return (
+        <Animated.View
+            style={{
+                opacity: fadeAnim,
+                position: 'absolute',
+                justifyContent: 'center',
+                alignSelf: 'center',
+                bottom: '10%',
+                backgroundColor:'gray',
+                borderRadius:25,
+                padding:'5%',
+                width:'60%'
+            }}>
+            <Text
+                style={{
+                    color: 'white',
+                    fontSize: 15,
+                }}>
+                {props.text}
+            </Text>
+        </Animated.View>
+    );
+};
 
 function TagRecording({ navigation, route }: any): JSX.Element {
     const index = parseInt(route.params.index)
@@ -32,9 +78,9 @@ function TagRecording({ navigation, route }: any): JSX.Element {
 
     //Instagram regulation
     //capacity of total number of characters
-    const capacity = 10
+    const capacity = regulation.capacity
     //max limit length per a tag.
-    const limit = 30
+    const limit = regulation.limit
 
     //decrease capability as many as letters of saved tags.
     function getCurrentCapability() {
@@ -48,6 +94,14 @@ function TagRecording({ navigation, route }: any): JSX.Element {
     }
     const [currentCapability, setCurrentCapability] = useState<number>(getCurrentCapability())
 
+    const [toastMsg, setToastMsg] = useState<string>("")
+    const [toastMsgContent, setToastMsgContent] = useState<JSX.Element>(<FadeInOutText text="" setToastVisible={setToastVisible} />)
+    const [toastVisible, setToastVisible] = useState<boolean>(false)
+    useEffect(() => {
+        setToastMsgContent(<FadeInOutText text={toastMsg}
+            setToastVisible={setToastVisible}
+        />)
+    }, [toastVisible])
     function checkRegulation(result: string) {
         if (result !== undefined && result.length < limit && currentCapability - result.length >= 0) {
             result = result.charAt(0).toUpperCase().concat(result.substring(1, result.length))
@@ -62,11 +116,13 @@ function TagRecording({ navigation, route }: any): JSX.Element {
             addInputs(result)
             // setCurrentCapability(currentCapability - result.length)
         } else if (result !== undefined && result.length >= limit) {
-            // console.log("length err exceed limit", result.length)
-            Toast.show('Max limit exceeded:\nLength of a tag should be less than ' + limit, Toast.SHORT);
+            setToastMsg('Max capacity exceeded:\nYou have recorded more than ' + capacity + ' letters')
+            setToastVisible(true)
+            // Toast.show('Max limit exceeded:\nLength of a tag should be less than ' + limit, Toast.SHORT);
         } else if (result !== undefined && currentCapability - result.length < 0) {
-            // console.log("length err exceed cap", result.length, capacity)
-            Toast.show('Max capacity exceeded:\nYou have recorded more than ' + capacity + ' letters', Toast.SHORT);
+            setToastVisible(true)
+            setToastMsg('Max capacity exceeded:\nYou have recorded more than ' + capacity + ' letters')
+            // Toast.show('Max capacity exceeded:\nYou have recorded more than ' + capacity + ' letters', Toast.SHORT);
         }
     }
     const DeleteContent = (index: number, words: string[], setWords: React.Dispatch<React.SetStateAction<string[]>>, setWordContent: React.Dispatch<React.SetStateAction<JSX.Element[] | undefined>>) => {
@@ -206,6 +262,7 @@ function TagRecording({ navigation, route }: any): JSX.Element {
                             flex: 1,
                         }}>
                         <ScrollableView contentContainerStyle={contentContainer}>
+
                             <KeyboardAvoidingView style={flexOne}>
                                 <ButtonContainer>
                                     <NavButton
@@ -222,6 +279,8 @@ function TagRecording({ navigation, route }: any): JSX.Element {
                                 <UserTextInput
                                     setIsTyping={setIsTyping}
                                     checkRegulation={checkRegulation}
+                                    currentCapability={currentCapability}
+                                    limit={limit}
                                 />
                             </KeyboardAvoidingView>
                             {
@@ -235,8 +294,14 @@ function TagRecording({ navigation, route }: any): JSX.Element {
                                     />
                                 </MicContainerContainer>
                             }
+                            {
+                                toastVisible &&
+                                 toastMsgContent 
+                            }
+
                         </ScrollableView>
                     </Animated.View>
+
                 </SafeArea>
             </View>
         </Container>

@@ -44,18 +44,20 @@ export const TagContainers = styled(View)`
 //contians text input
 export const InputTextContainer = styled(View)`
     flex:0.4;
-    align-items:center;
+    
    
 `
+// align-items:center;
 //user input
 export const InputText = styled(TextInput)`
-padding:5%;
+    padding:5%;
     font-size: 60px;
     text-align:center;
     border-bottom-color: white;
     border-bottom-width: 2px;
     width: 80%;
     color:white;
+    align-self:center;
 `;
 //this component could be reusable to show text in a box.
 //contains input tags on recorded & STT area
