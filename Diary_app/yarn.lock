@@ -2191,6 +2191,13 @@
   "resolved" "https://registry.npmjs.org/@types/react-native-audio/-/react-native-audio-4.3.4.tgz"
   "version" "4.3.4"
 
+"@types/react-native-toast-native@^0.1.3":
+  "integrity" "sha512-0yNAjAed/h1gEhiz+3390+MEMNsBvsueU1+p3mhupSFZ5KvMt2jCIWbpCrA/rttU3/BRfOQfEDg49W9T9Sd1Cg=="
+  "resolved" "https://registry.npmjs.org/@types/react-native-toast-native/-/react-native-toast-native-0.1.3.tgz"
+  "version" "0.1.3"
+  dependencies:
+    "@types/react-native" "*"
+
 "@types/react-native-vector-icons@^6.4.13":
   "integrity" "sha512-1PqFoKuXTSzMHwGMAr+REdYJBQAbe9xrww3ecZR0FsHcD1K+vGS/rxuAriL4rsI6+p69sZQjDzpEVAbDQcjSwA=="
   "resolved" "https://registry.npmjs.org/@types/react-native-vector-icons/-/react-native-vector-icons-6.4.13.tgz"

@@ -14,7 +14,7 @@ import { PERMISSIONS, RESULTS, request } from 'react-native-permissions';
 import TextInputContainer from './Containers/TextInputContainer';
 import AttachContainer from './Containers/AttachContainer';
 import ModalContainer from './Containers/ModalContainer';
-
+import regulation from '../../data/regulation.json'
 const background = require('../../assets/DiaryEditPage/Background.png');
 function DiaryEdit(route: any): JSX.Element {
     const navigation = useNavigation();
@@ -120,19 +120,19 @@ function DiaryEdit(route: any): JSX.Element {
         }
     }, [attach, deletable])
 
-    const capacity = 300 
-    const limit = 30 //per a tag 
+    const capacity = regulation.capacity
+    const limit = regulation.limit //per a tag 
     const [tags, setTags] = useState<string[]>(data[index].tags)
-    
+
     //decrease capability as many as letters of saved tags.
-    function getCurrentCapability(){
+    function getCurrentCapability() {
         let total = capacity
-        for(let i = 0; i < tags.length ; i++){
-          total-= tags[i].length
+        for (let i = 0; i < tags.length; i++) {
+            total -= tags[i].length
         }
         return total
     }
-    
+
     const [currentCapability, setCurrentCapability] = useState<number>(getCurrentCapability())
 
     //Used to open/close modal for adding tags
@@ -154,7 +154,7 @@ function DiaryEdit(route: any): JSX.Element {
                 index={index}
                 setIsModalUp={setIsModalUp}
                 currentCapability={currentCapability}
-                
+
             />
         )
         //update current capcity. 
@@ -170,7 +170,7 @@ function DiaryEdit(route: any): JSX.Element {
                 {/* not display when typing */}
                 {((!isTyping && !deletable) || attach.length == 0) &&
                     <FooterContainer >
-                        <PaperProvider theme={FABTheme}>
+                        <PaperProvider theme={FABTheme} >
                             <FabContainer>
                                 <FabStyle
                                     backdropColor='transparent'
@@ -204,20 +204,19 @@ function DiaryEdit(route: any): JSX.Element {
                             <DiaryDate date={date} />
                         </DateContainer>
                         <NextButtonContainer>
-                            <IconButton
-                                icon={"chevron-right"}
-                                size={50}
-                                iconColor='white'
-                                onPress={() => { navigation.navigate('ListView') }}
-                                style={{
-                                    margin: 0,
-                                    padding: 0,
-                                    // borderColor:'red',
-                                    // borderWidth:1,
-                                    backgroundColor: 'gray',
-                                    alignItems: 'center'
-                                }}
-                            />
+                                <IconButton
+                                    icon={"chevron-right"}
+                                    size={40}
+                                    iconColor='white'
+                                    onPress={() => { navigation.navigate('ListView') }}
+                                    style={{
+                                        // margin: 0,
+                                        // padding: 0,
+                                        justifyContent: 'flex-start',
+                                        backgroundColor: 'gray',
+                                        alignItems: 'center'
+                                    }}
+                                />
                         </NextButtonContainer>
                     </FooterContainer>
                 }
@@ -242,8 +241,9 @@ function DiaryEdit(route: any): JSX.Element {
                         tags={tags}
                         setTags={setTags}
                         setIsModalUp={setIsModalUp}
-                        currentCapability = {currentCapability}
-                        limit = {limit}
+                        currentCapability={currentCapability}
+                        limit={limit}
+                        capacity={capacity}
                     />
                 }
 

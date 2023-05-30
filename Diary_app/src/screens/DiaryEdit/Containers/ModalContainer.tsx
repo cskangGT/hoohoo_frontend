@@ -4,7 +4,9 @@ import { Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View, Moda
 import { IndividualTagContainer, RemoveIconContainer, TagText, TagZoneSecondRow, VerticalList } from "../styles";
 import { useNavigation } from "@react-navigation/native";
 import Icon from 'react-native-paper/src/components/Icon'
-import Toast from 'react-native-simple-toast';
+import { HelperText } from "react-native-paper";
+// import Toast from 'react-native-simple-toast';
+
 /**
  * 
  * @param props contains..
@@ -80,11 +82,18 @@ function ModalContainer(props: any): JSX.Element {
             setCurrCapacity(currCapacity - result.length)
         } else if (result !== undefined && result.length >= limit) {
             // console.log("length err exceed limit", result.length)
-            Toast.show('Max limit exceeded:\nLength of a tag should be less than ' + limit, Toast.SHORT);
+            // Toast.show('Max limit exceeded:\nLength of a tag should be less than ' + limit, {backgroundColor:'red'});
         } else if (result !== undefined && capacity - result.length < 0) {
             // console.log("length err exceed cap", result.length, capacity)
-            Toast.show('Max capacity exceeded:\nYou have recorded more than ' + capacity + ' letters', Toast.SHORT);
+            // Toast.show('Max capacity exceeded:\nYou have recorded more than ' + capacity + ' letters', {backgroundColor:'red'});
+
         }
+    }
+    const hasLengthError = () => {
+        return ((text !== undefined && text.length >= props.limit))
+    };
+    const hasCapacityError = () => {
+        return (text !== undefined && currCapacity - text.length < 0)
     }
     const [addedTagsContent, setAddedTagsContent] = useState<JSX.Element>(renderTags)
     useEffect(() => {
@@ -102,7 +111,7 @@ function ModalContainer(props: any): JSX.Element {
         >
             <View style={{
                 width: '100%',
-                height: '60%',
+                height: isTyping? '80%' :'60%',
                 backgroundColor: '#222222',
                 top: '20%',
                 borderRadius: 25,
@@ -176,6 +185,33 @@ function ModalContainer(props: any): JSX.Element {
                             onFocus={() => { setIsTyping(true) }}
                             onBlur={() => { setIsTyping(false) }}
                         />
+                        {
+                            hasLengthError() &&
+                            <HelperText
+                                style={{
+                                    color: 'white',
+                                    backgroundColor: 'red'
+                                }}
+                                type="error"
+                                visible={hasLengthError()}
+                            >
+                                {'Max limit exceeded:\nLength of a tag should be less than ' + props.limit}
+                            </HelperText>
+                        }
+                        {
+                            ( hasCapacityError()) &&
+                            <HelperText
+                                style={{
+                                    color: 'white',
+                                    backgroundColor: 'red'
+                                }}
+                                type="error"
+                                visible={hasCapacityError()}
+                            >
+                                {'Max capacity exceeded:\nYou have recorded more than ' + props.capacity + ' letters'}
+                            </HelperText>
+                        }
+
                     </View>
                 </TouchableWithoutFeedback>
                 {isTyping &&

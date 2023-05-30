@@ -48,14 +48,15 @@ function TagContainer(props: any): JSX.Element {
             </VerticalList>
         )
     }
-    let index = props.index
+    let index:number = props.index
+    console.log("index", index)
     //state variable that contains Components 
     const [tagContent, setTagContent] = useState<JSX.Element>(renderTags);
     return (
         <TagZoneContainer>
             <TagZoneFirstRow>
                 <SmallIconContainer onPress={() => {
-                    navigation.navigate('Diary', { index: { index } })
+                    navigation.navigate("Diary", { index:  index  })
                 }}>
                     <Icon source="eye" size={25} color='gray' />
                 </SmallIconContainer>

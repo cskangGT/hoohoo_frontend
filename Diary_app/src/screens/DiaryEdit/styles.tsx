@@ -101,9 +101,11 @@ export const DateContainer = styled(View)`
 export const NextButtonContainer = styled(View)`
     flex: 1;
     align-items: flex-end;
-    justify-content: center;
+    justify-content: flex-start;
     padding:2%;
 `
+// justify-content: flex-start;
+// justify-content: center;
 // border-color:red;
 // border-width:2px;
 // justify-content: center;

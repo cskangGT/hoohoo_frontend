@@ -38,7 +38,7 @@ export const FlexOneView = styled(View)`
     flex:1;
 `
 export const MajorityView = styled(View)`
-    flex:0.95;
+    flex:1;
 `
 export const MinorityView = styled(View)`
     flex-direction: row;
@@ -46,6 +46,5 @@ export const MinorityView = styled(View)`
 export const IconContainer = styled(IconButton)`
     margin: 0
     padding: 0;
-    background-color: gray;
     align-items: center;
 `
