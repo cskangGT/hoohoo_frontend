@@ -7,10 +7,18 @@ import CustomButton from '../../components/common/Button';
 import { useNavigation } from '@react-navigation/native';
 
 // import Button from './../../components/common/Button';
-const star1 = require('../../assets/star1.png');
-const star2 = require('../../assets/star2.png');
-const star3 = require('../../assets/star3.png');
-const star4 = require('../../assets/star4.png');
+const drop1 = require('../../assets/droplet_gem1.png');
+const drop2 = require('../../assets/droplet_gem2.png');
+const drop3 = require('../../assets/droplet_gem3.png');
+const drop4 = require('../../assets/droplet_gem4.png');
+const drop5 = require('../../assets/droplet_gem5.png');
+const drop6 = require('../../assets/droplet_gem6.png');
+const drop7 = require('../../assets/droplet_gem7.png');
+const drop8 = require('../../assets/droplet_gem8.png');
+const drop9 = require('../../assets/droplet_gem9.png');
+const drop10 = require('../../assets/droplet_gem10.png');
+const drop11 = require('../../assets/droplet_gem11.png');
+const drop12 = require('../../assets/droplet_gem12.png');
 const moment = require('moment');
 const SearchContainer = styled(View)`
     /* justify-content: center; */
@@ -22,7 +30,7 @@ const SearchContainer = styled(View)`
 `;
 
 const Row = styled(View)`
-    
+    column-width: 13%;
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
@@ -31,40 +39,51 @@ const Row = styled(View)`
     padding-bottom: 13px;
 `;
 const Blank = styled(View)`
-  flex: 1;
+    width: 14.4%;
     height: 50px;
     background-color: transparent;
-    color : white;
+    
 `;
 
 const Element = styled(TouchableOpacity)`
-    flex: 1;
+    flex:1;
+    
     height: 50px;
     font-weight: bold;
     background-color: transparent;
     color : white;
     /* padding-top: 10px; */
-    /* border-width: 1px;
-    border-color : skyblue; */
+    
+    /* border-color : #ebd987; */
+    /* align-items: center; */
 `;
 const Day = styled(Text)`
-    font-size: 13px;
+/* border-width: 1px;
+    border-color : red; */
+    font-size: 14px;
     text-align: center;
     color : white;
 `;
 const Today = styled(View)`
     border-width: 1px;
+    height: 50px;
     border-color : skyblue;
     border-radius: 5px;
-    height: 100%;
-`
+`;
+const DayContainer = styled(View)`
+    border-radius: 5px;
+    
+`;
 const Star = styled(Image)`
-    width: 20px;
-    margin-left : 15px;
+    width: 14px;
+    height: 22px;
+    margin-top: 5px;
+    align-self: center;
 `;
 
 const DateText = styled(Text)`
     color: white;
+    margin-bottom: 5%;
     font-size: 20px;
     text-align: center;
 
@@ -90,13 +109,13 @@ const DATA: any = [
 
 // global state management required.
 
-const FadeStar = ({ starImage, frequency }: { starImage: any, frequency: number }) => {
+const FadeStar = ({ gemImage, frequency }: { gemImage: any, frequency: number }) => {
     const [opacity] = useState(new Animated.Value(0));
 
     useEffect(() => {
         Animated.loop(
             Animated.sequence([
-                Animated.timing(opacity, { toValue: 1, duration: 10000 / frequency, useNativeDriver: true }),
+                Animated.timing(opacity, { toValue: 0.8, duration: 10000 / frequency, useNativeDriver: true }),
                 Animated.timing(opacity, { toValue: 0, duration: 10000 / frequency, useNativeDriver: true })
             ])
         ).start();
@@ -104,7 +123,7 @@ const FadeStar = ({ starImage, frequency }: { starImage: any, frequency: number 
 
     return (
         <Animated.View style={{ opacity }}>
-            <Star source={starImage} />
+            <Star source={gemImage} />
         </Animated.View>
     );
 };
@@ -115,7 +134,7 @@ const Calendar = () => {
         "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     const weekDays = ["Su", "M", "T", "W", "Th", "F", "Sa"];
     const nDays: number[] = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-    const arr_star = [star1, star2, star3, star4];
+    const arr_star = [drop1, drop2, drop3, drop4, drop5, drop6, drop7, drop8, drop9, drop10, drop11, drop12];
     const [date, setDate] = useState<Date>(new Date());
     const [isTransitioning, setIsTransitioning] = useState(false);
     // const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -231,7 +250,8 @@ const Calendar = () => {
     let selected_dd: number = parseInt(curr_split[2]);
 
     const handlerElement = (item: number) => {
-        let index: number = Math.floor(Math.random() * 4);
+        let index: number = Math.floor(Math.random() * 12);
+        let freq: number = index / 4 + 1;
         // item is day number. year and month is already stored
         // console.log("curr_dd", selected_dd);
         // console.log("date.getMonth()", date.getMonth());
@@ -242,15 +262,15 @@ const Calendar = () => {
                 // console.log("curr_mm", selected_mm);
                 // console.log("curr_yyyy", selected_yyyy);
                 return ( // if in database
-                    <Today >
-                        <Day key={"day" + item}> {item != -1 ? item : ''} </Day>
-                        <FadeStar key={item} starImage={arr_star[index]} frequency={index + 1} />
+                    <Today>
+                        <Day key={"day" + item}>{item != -1 ? item : ''}</Day>
+                        <FadeStar key={item} gemImage={arr_star[index]} frequency={freq} />
                     </Today>);
             } else {
 
                 return ( // if not in database
                     <Today>
-                        <Day key={"day" + item}> {item != -1 ? item : ''} </Day>
+                        <Day key={"day" + item}>{item != -1 ? item : ''}</Day>
                     </Today>);
             }
 
@@ -261,22 +281,22 @@ const Calendar = () => {
                 // console.log("mm", month_text);
                 // console.log("yyyy", y_data);
                 return ( // if in database
-                    <View>
-                        <Day key={"day" + item}> {item != -1 ? item : ''} </Day>
-                        <FadeStar key={item} starImage={arr_star[index]} frequency={index + 1} />
-                    </View>);
+                    <DayContainer>
+                        <Day key={"day" + item}>{item != -1 ? item : ''}</Day>
+                        <FadeStar key={item} gemImage={arr_star[index]} frequency={freq} />
+                    </DayContainer>);
             } else {
 
                 return ( // if not in database
-                    <View>
-                        <Day key={"day" + item}> {item != -1 ? item : ''} </Day>
-                    </View>);
+                    <DayContainer>
+                        <Day key={"day" + item}>{item != -1 ? item : ''}</Day>
+                    </DayContainer>);
             }
         } else {
             return ( // if not in database
-                <View>
-                    <Day key={"day" + item}> {item != -1 ? item : ''} </Day>
-                </View>);
+                <DayContainer>
+                    <Day key={"day" + item}>{item != -1 ? item : ''}</Day>
+                </DayContainer>);
         }
 
 
@@ -290,6 +310,9 @@ const Calendar = () => {
                     {item != -1 ? item : ''}
                 </DateText>);
             } else {
+                if (item == -1) {
+                    return (<Blank key={colIndex}><Text>  </Text></Blank>)
+                }
                 return (
 
                     <Element key={"element" + rowIndex * colIndex + colIndex}

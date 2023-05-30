@@ -6,10 +6,13 @@ import ViewItem from '../../components/common/ViewItem';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
-const bg = require('../../assets/ListView_bg.png');
-
+const bg = require('../../assets/DiaryEditPage/revised.png');
+const shape = require('../../assets/DiaryEditPage/shape.png');
 const BgContainer = styled(ImageBackground)`
     flex:1;
+`;
+const Shape = styled(ImageBackground)`
+  flex:1;
 `;
 const SearchArea = styled(View)`
     flex:0.04;
@@ -51,12 +54,14 @@ const NavContainer = styled(View)`
     /* margin-right: 3%;
     margin-left: 3%; */
     /* height:8%; */
+    
     justify-content:flex-end;
     align-items: flex-end;
 `;
 const ButtontoMonth = styled(TouchableOpacity)`
-    width:25%;
-    bottom:4%;
+    position: absolute;
+    width: 25%;
+    bottom: 2%;
     right: 6%;
     /* border-color: blue;
     border-width: 1px; */
@@ -125,8 +130,10 @@ const ListView = ({ navigation, route }: any) => {
 
     return (
         
-        <BgContainer source={bg} resizeMode='cover' style={{flex:1}}>
+        <BgContainer source={bg} resizeMode='cover' style={{flex:1}} blurRadius={5}>
             <SafeAreaView style={{flex: 1}}>
+            <Shape source={shape} resizeMode='cover' >
+
             <SearchArea>
                 <SearchBar
                     onChangeText={handleSearch}
@@ -140,7 +147,7 @@ const ListView = ({ navigation, route }: any) => {
             <Container>
                 {list}
             </Container>
-            <NavContainer>
+            {/* <NavContainer> */}
                 <ButtontoMonth onPress={() => {
                     console.log("pressed");
                     navigation.navigate('MonthlyView');
@@ -148,8 +155,9 @@ const ListView = ({ navigation, route }: any) => {
                     <ButtonText>Calendar </ButtonText>
                     <Icon name="arrow-forward-ios" color={'#fcf5f5'}/>
                 </ButtontoMonth>
-            </NavContainer>
-            </SafeAreaView>
+            {/* </NavContainer> */}
+            
+            </Shape></SafeAreaView>
         </BgContainer>
         
     )
