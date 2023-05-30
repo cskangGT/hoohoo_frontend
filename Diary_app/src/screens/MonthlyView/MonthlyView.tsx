@@ -1,38 +1,68 @@
 import styled from 'styled-components';
 import React from 'react'
-import { View, ImageBackground, Text, TouchableOpacity } from 'react-native'
+import { View, ImageBackground, Text, TouchableOpacity, Platform } from 'react-native'
 import Calendar from './Calendar';
 import CustomButton from '../../components/common/Button';
 import { useState } from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
-const night = require('../../assets/DiaryEditPage/Background.png');
+const shape = require('../../assets/DiaryEditPage/shape.png');
 const Background = styled(ImageBackground)`
     width: 100%;
     height: 100%;
+    opacity: 1;
+    flex:1;
+`;
+const Shape = styled(ImageBackground)`
+  flex:1;
+  /* border-width: 1px;
+  border-color: white; */
+  
 `;
 const ContentContainer = styled(View)`
     width : 100%;
-    height: 100%;
-    top : 20%;
+    /* border-width: 1px;
+  border-color: white; */
+    margin-top: 20%;
 `;
-const Grid = styled(View)`
-    flex: 1;
-    /* flex-direction: row; */
-    flex-wrap: wrap;
+// const Grid = styled(View)`
+//     flex: 1;
+//     /* flex-direction: row; */
+//     flex-wrap: wrap;
+//     align-items: center;
+//     justify-content: center;
+//     border-color: white;
+//     border-width: 1px;
+// `;
+// const GridItem = styled(Text)`
+//     width: 40%;
+//     text-align: center;
+//     padding: 5px;
+//     color: white;
+// `;
+const ButtonContainer = styled(View)`
+  position: absolute;
+  bottom: 2%;
+  right: 6%;
+  width: 100%;
+  align-items: flex-end;
+`;
+const ButtontoList = styled(TouchableOpacity)`
+    width:15%;
+    border-radius: 10px;
+    flex-direction: row;
+    padding: 3px;
     align-items: center;
     justify-content: center;
-    border-color: white;
-    border-width: 1px;
 `;
-const GridItem = styled(Text)`
-    width: 40%;
-    text-align: center;
-    padding: 5px;
-    color: white;
+const ButtonText = styled(Text)`
+    color: #fcf5f5;
+    font-size: 15px;
 `;
-const SelectorContainer = styled(View)`
-    flex-direction: row;
-`;
+// const SelectorContainer = styled(View)`
+//     flex-direction: row;
+// `;
 const DATA = [
     {
         id: "0", date: "2023-03-10", tags: ["Jisan", "Lunch", "react", "computer"],
@@ -81,64 +111,76 @@ const months = [
 // }
 
 const MonthlyView = ({ navigation }: any) => {
-    const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
-    const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
+    // const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+    // const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
 
-    const onSelectMonth = (index: number) => {
-        setSelectedMonth(index + 1);
-    };
+    // const onSelectMonth = (index: number) => {
+    //     setSelectedMonth(index + 1);
+    // };
 
-    const onSelectYear = (year: number) => {
-        setSelectedYear(year);
-    };
+    // const onSelectYear = (year: number) => {
+    //     setSelectedYear(year);
+    // };
 
-    const renderMonthGrid = () => {
+    // const renderMonthGrid = () => {
 
-        return (
-            <Grid>
-                {months.map((month, index) => (
-                    <TouchableOpacity key={month} onPress={() => onSelectMonth(index)}>
-                        <GridItem> {month} </GridItem>
-                    </TouchableOpacity>
-                ))}
-            </Grid>
-        );
-    };
+    //     return (
+    //         <Grid>
+    //             {months.map((month, index) => (
+    //                 <TouchableOpacity key={month} onPress={() => onSelectMonth(index)}>
+    //                     <GridItem> {month} </GridItem>
+    //                 </TouchableOpacity>
+    //             ))}
+    //         </Grid>
+    //     );
+    // };
 
-    const renderYearGrid = () => {
-        const currentYear: number = new Date().getFullYear();
-        const years = Array.from({ length: 10 }, (_, i) => currentYear - 5 + i);
+    // const renderYearGrid = () => {
+    //     const currentYear: number = new Date().getFullYear();
+    //     const years = Array.from({ length: 10 }, (_, i) => currentYear - 5 + i);
 
-        return (
-            <Grid>
-                {years.map((year) => (
-                    <TouchableOpacity key={year} onPress={() => onSelectYear(year)}>
-                        <GridItem>{String(year)}</GridItem>
-                    </TouchableOpacity>
-                ))}
-            </Grid>
-        );
-    };
+    //     return (
+    //         <Grid>
+    //             {years.map((year) => (
+    //                 <TouchableOpacity key={year} onPress={() => onSelectYear(year)}>
+    //                     <GridItem>{String(year)}</GridItem>
+    //                 </TouchableOpacity>
+    //             ))}
+    //         </Grid>
+    //     );
+    // };
 
 
     // design 적용 방식 수정, date를 어떻게 넣어줄건지 고민
     // 실질적인 디자인 고민, 추가적인 기능 생각
 
-    return (<Background source={night}>
-        <CustomButton
-            title="< Diary List"
-            onPress={() => navigation.navigate('ListView')}
-            style={{ marginLeft: 10, marginRight: 0, top: '4%' }}
-            backgroundColor='transparent'
-            width="25%"
-            textStyle={{ color: "white" }}
-        />
-
+    return (<View style={{backgroundColor: 'black', flex:1}} >
+        <SafeAreaView  style={{flex:1}}>
+        <Shape source={shape} resizeMode='cover'>
+        
         <ContentContainer>
             <Calendar />
         </ContentContainer>
-
-
-    </Background>);
+        <ButtonContainer>
+        <ButtontoList onPress={() => {
+                    console.log("pressed");
+                    navigation.navigate('ListView');
+                }}>
+                    <ButtonText>List </ButtonText>
+                    <Icon name="arrow-forward-ios" color={'#fcf5f5'}/>
+                </ButtontoList>
+        {/* <CustomButton
+            title="List"
+            onPress={() => navigation.navigate('ListView')}
+            style={{ marginLeft: 20, marginRight: 20 }}
+            backgroundColor='transparent'
+            width="25%"
+            textStyle={{ color: "white" }}
+        /> */}
+        </ButtonContainer>
+        
+        </Shape>
+        </SafeAreaView>
+    </View>);
 }
 export default MonthlyView

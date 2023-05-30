@@ -4,9 +4,14 @@ require('@babel/register')({
   // only: [/src/]
 });
 module.exports = {
-  presets: ['module:metro-react-native-babel-preset', 
-  ['@babel/preset-env', { targets: { node: 'current' } }],
+  presets: ['module:metro-react-native-babel-preset',
+    ['@babel/preset-env', { targets: { node: 'current' } }],
     '@babel/preset-typescript'],
   plugins: ["babel-plugin-styled-components",
-  "@babel/plugin-transform-modules-commonjs"]
+    "@babel/plugin-transform-modules-commonjs"],
+  env: {
+    production: {
+      plugins: ['react-native-paper/babel'],
+    },
+  },
 };

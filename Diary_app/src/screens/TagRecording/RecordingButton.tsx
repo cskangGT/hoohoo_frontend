@@ -4,12 +4,10 @@ import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components';
 import { TouchableHighlight, Text, View, ToastAndroid, Image, TouchableOpacity, Animated, Easing } from 'react-native';
 import { ChangeModeButton, Mic, MicContainer } from './styles';
-const micButton = require('../../assets/microphone.png');
+import Icon from 'react-native-vector-icons/Ionicons';
 const circileButton = require('../../../src/assets/circleButton.png');
 const waterSpread1 = require('../../../src/assets/WaterSpread1.png');
 const waterSpread2 = require('../../../src/assets/WaterSpread2.png');
-
-
 function RecordingButton(props: any): JSX.Element {
     const [pitch, setPitch] = useState('');
     const [error, setError] = useState('');
@@ -22,14 +20,12 @@ function RecordingButton(props: any): JSX.Element {
         // console.log('onSpeechStart: ', e);
         setStarted('on');
     };
-
     const onSpeechEnd = (e: any) => {
         //Invoked when SpeechRecognizer stops recognition
         // console.log('onSpeechEnd: ', e);
         setEnd('ended');
         setStarted('');
     };
-
     const onSpeechError = (e: any) => {
         //Invoked when an error occurs.
         //console.log('onSpeechError: ', e);
@@ -42,7 +38,6 @@ function RecordingButton(props: any): JSX.Element {
 
         // setPartialResults(e.value);
     };
-
     const onSpeechVolumeChanged = (e: any) => {
         //Invoked when pitch that is recognized changed
         //console.log('onSpeechVolumeChanged: ', e);
@@ -56,15 +51,13 @@ function RecordingButton(props: any): JSX.Element {
         Voice.onSpeechResults = onSpeechResults;
         // Voice.onSpeechPartialResults = onSpeechPartialResults;
         Voice.onSpeechVolumeChanged = onSpeechVolumeChanged;
-
         return () => {
             //destroy the process after switching the screen
             Voice.destroy().then(Voice.removeAllListeners);
         };
     }, []);
 
-    const [capacity, setCapacity] = useState<number>(300)
-    const limit = 30
+    const [isRecording, setIsRecording] = useState<boolean>(false)
     let resultArr: string[] = []
     // add user Speech to user input states
     function convertResult(results: string[]): void {
@@ -88,6 +81,7 @@ function RecordingButton(props: any): JSX.Element {
         //Starts listening for speech for a specific locale
         if (started != 'on') {
             try {
+                setIsRecording(true)
                 console.log("Start Recognizing");
                 await Voice.start('en-US');
                 setPitch('');
@@ -133,6 +127,7 @@ function RecordingButton(props: any): JSX.Element {
             setResults([]);
             setPartialResults([]);
             setEnd('');
+            setIsRecording(false)
         } catch (e) {
             //eslint-disable-next-line
             console.error(e);
@@ -160,27 +155,38 @@ function RecordingButton(props: any): JSX.Element {
                             flex: 1, justifyContent: 'flex-start',
                         }}
                     >
-                        <TouchableOpacity
-                            onPress={startRecognizing}
-                            style={{
-                                width: 50,
-                                height: 50,
-                                borderRadius: 50,
-                                backgroundColor: 'gray',
-                                justifyContent: 'center',
-                                alignSelf: 'center',
-                                // borderColor:'red',
-                                // borderWidth:1
-
-                            }}>
-                            {/* <Mic source={micButton} /> */}
-                            <Text
-                                style={{
-                                    color: 'white',
-                                    textAlign: 'center'
-                                }}
-                            >MIC</Text>
-                        </TouchableOpacity>
+                        {
+                            isRecording ? // is currently recoridng 
+                                (<TouchableHighlight
+                                    onPress={destroyRecognizer}
+                                    activeOpacity={0.7}
+                                    underlayColor='transparent'
+                                    style={{
+                                        width: 50,
+                                        height: 50,
+                                        borderRadius: 50,
+                                        justifyContent: 'center',
+                                        alignSelf: 'center',
+                                    }}
+                                >
+                                    <Icon name="mic-circle-outline" color={'#fcf5f5'} size={50} />
+                                </TouchableHighlight>)
+                                :
+                                (<TouchableHighlight //currently not recording
+                                    style={{
+                                        width: 50,
+                                        height: 50,
+                                        borderRadius: 50,
+                                        justifyContent: 'center',
+                                        alignSelf: 'center',
+                                    }}
+                                    onPress={startRecognizing}
+                                    activeOpacity={0.7}
+                                    underlayColor='transparent'
+                                >
+                                    <Icon name="mic-circle" color={'#fcf5f5'} size={50} />
+                                </TouchableHighlight>)
+                        }
                     </View>
                     <TouchableOpacity
                         style={{ flex: 1, justifyContent: 'center' }}
@@ -197,28 +203,3 @@ function RecordingButton(props: any): JSX.Element {
     )
 }
 export default RecordingButton
-
-{/* <View style={{ justifyContent: 'center', alignSelf: 'center' }}>
-            {
-                started ?
-                    (<TouchableHighlight
-                        onPress={destroyRecognizer}
-                        activeOpacity={0.7}
-                        underlayColor='transparent'
-                    >
-                        <Mic source={microButton} />
-                    </TouchableHighlight>)
-                    :
-                    (<TouchableHighlight
-                        style={{
-
-                        }}
-                        onPress={startRecognizing}
-                        activeOpacity={0.7}
-                        underlayColor='transparent'
-                    >
-                        <Mic source={microButton} />
-                    </TouchableHighlight>)
-            }
-
-        </View> */}

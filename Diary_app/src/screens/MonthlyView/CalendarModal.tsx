@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput } from 'react-native';
+import { View, TextInput } from 'react-native';
 import Modal from 'react-native-modal';
 
 import styled from 'styled-components';
 import CustomButton from '../../components/common/Button';
-
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 interface Props {
     date: Date;
     onMonthYearChange: (mm: number, yyyy: string) => any;
@@ -15,9 +16,11 @@ const ButtonModal = styled(CustomButton)`
     margin-left:27.5%;
 `;
 const ModalContainer = styled(View)`
-    background-color: #5e5454;
-    height:60%;
-    padding: 20px;
+    background-color: 'rgba(107, 106, 106, 0.5)';
+    
+    height:50%;
+    padding:5%;
+    margin: 5%;
     border-radius: 20px;
     box-shadow: 2px 2px 5px black;
 `;
@@ -31,21 +34,26 @@ const YearInput = styled(TextInput)`
 `;
 const ModalHeader = styled(View)`
     flex-direction: row;
+    border-bottom-color: white;
+    border-bottom-width: 2px;
+    padding:3%;
     width: 100%;
     align-items: center;
     justify-content: space-between;
 `;
 const Months = styled(View)`
+/* border-width:1px;
+border-color: white; */
     flex-direction:row;
     flex-wrap: wrap;
     margin: 5%;
+    height: 80%;
 `;
 const MonthItem = styled(CustomButton)`
     width: 30%;
-    height: 30%;
+    height: 23%;
     margin: 3px;
     align-items: center;
-
 `;
 const CalendarModal = (props: Props) => {
     const { date, onMonthYearChange } = props;
@@ -120,8 +128,10 @@ const CalendarModal = (props: Props) => {
             <Modal isVisible={isModalVisible} onBackdropPress={toggleModal}
                 animationIn="fadeInUp" animationOut="fadeOutDown">
                 <ModalContainer>
-                    <ModalHeader >
-                        <CustomButton title={"<"} onPress={() => onSelectYear(-1)} textStyle={{ color: "white" }} />
+                    <ModalHeader>
+                        <TouchableOpacity onPress={() => onSelectYear(-1)}>
+                            <Icon name="arrow-back-ios" color={'#fcf5f5'} />
+                        </TouchableOpacity>
                         <YearInput
                             keyboardType="numeric"
                             placeholder={String(date.getFullYear())}
@@ -136,7 +146,9 @@ const CalendarModal = (props: Props) => {
                             selectionColor={'rgba(226, 182, 205, 0.8)'}
                             onChangeText={onChangeYear}
                         />
-                        <CustomButton title={">"} onPress={() => onSelectYear(1)} textStyle={{ color: "white" }} />
+                        <TouchableOpacity onPress={() => onSelectYear(1)}>
+                            <Icon name="arrow-forward-ios" color={'#fcf5f5'} />
+                        </TouchableOpacity>
                     </ModalHeader>
                     <Months>
 

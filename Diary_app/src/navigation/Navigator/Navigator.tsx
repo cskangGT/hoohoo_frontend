@@ -1,4 +1,6 @@
 import React from 'react';
+import { StatusBar } from "react-native";
+
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import IntroScreen from '../../screens/IntroScreen/IntroScreen';
@@ -7,6 +9,7 @@ import MonthlyView from '../../screens/MonthlyView/MonthlyView';
 import Diary from '../../screens/Diary/Diary';
 import ListView from '../../screens/ListView/ListView';
 import DiaryEdit from '../../screens/DiaryEdit/DiaryDetail';
+
 const RootStack = createNativeStackNavigator();
 // 각 화면 전환 될 수 있는 기본 틀 제공
 
@@ -15,6 +18,7 @@ const Navigator = () => {
     return (
         // 네비 트리 관리 컴포넌트 
         <NavigationContainer>
+            <StatusBar barStyle="dark-content" />
             {/* 네비게이션 기본 스택 생성 */}
             <RootStack.Navigator initialRouteName="IntroScreen">
                 {/* 스택에 들어갈 화면 컴포넌트들  */}

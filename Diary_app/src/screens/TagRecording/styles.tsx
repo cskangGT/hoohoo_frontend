@@ -21,10 +21,12 @@ export const contentContainer = {
     flexGrow: 1
 }
 export const flexOne = { flex: 1 }
-export const whiteFont = { color: 'white', fontSize: 17 }
+export const whiteFont = { color: 'white', fontSize: 21 }
 //contains List and Save buttons 
 export const NavButton = styled(CustomButton)`
-    padding: 10px;
+    padding: 2%;
+    justify-content: center;
+    align-content:center;
 `
 //set Save and List buttons at the right of the screen.
 export const ButtonContainer = styled(View)`

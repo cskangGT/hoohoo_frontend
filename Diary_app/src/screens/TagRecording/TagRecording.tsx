@@ -12,18 +12,16 @@ import {
 } from './styles';
 import FadeInFadeOutComponent from './Containers/FadeInFadeOutComponent';
 import data from '../../data/data.json'
-import Toast from 'react-native-simple-toast';
 import regulation from '../../data/regulation.json'
-
-// import ImageBackground from '../../components/common/ImageBackground';
-const Xbutton = require('../../assets/remove.png');
+import Icon from 'react-native-paper/src/components/Icon';
+import { IconButton } from 'react-native-paper';
 const Background = require('../../assets/tagRecordingBg.png');
 const WaterSpread1 = require('../../assets/WaterSpread1.png')
 const WaterSpread2 = require('../../assets/WaterSpread2.png')
 
 const FadeInOutText = (props: any) => {
     const [fadeAnim] = useState(new Animated.Value(0));
-    let displayTime = 1500 
+    let displayTime = 1500
     useEffect(() => {
         const fadeIn = Animated.timing(fadeAnim, {
             toValue: 1,
@@ -50,10 +48,10 @@ const FadeInOutText = (props: any) => {
                 justifyContent: 'center',
                 alignSelf: 'center',
                 bottom: '10%',
-                backgroundColor:'gray',
-                borderRadius:25,
-                padding:'5%',
-                width:'60%'
+                backgroundColor: 'gray',
+                borderRadius: 25,
+                padding: '5%',
+                width: '60%'
             }}>
             <Text
                 style={{
@@ -67,12 +65,19 @@ const FadeInOutText = (props: any) => {
 };
 
 function TagRecording({ navigation, route }: any): JSX.Element {
-    const index = parseInt(route.params.index)
-    const tags: string[] = data[index].tags
+    let index: number;
+    if (parseInt(route.params.index) === undefined) {
+        index = 32
+    } else {
+        index = parseInt(route.params.index)
+    }
+    
+    console.log(index);
+    const tags: string[] = index? data[index].tags : []
+    
     // user typed input
     const [inputs, setInputs] = useState<string[]>([])
     const [recordedInputs, setRecordedInputs] = useState<string[]>(tags)
-
     const [recordedContentHolder, setRecordedContentHolder] = useState<JSX.Element[]>()
     const [isEditable, setIsEditable] = useState<boolean>(false);
 
@@ -95,8 +100,8 @@ function TagRecording({ navigation, route }: any): JSX.Element {
     const [currentCapability, setCurrentCapability] = useState<number>(getCurrentCapability())
 
     const [toastMsg, setToastMsg] = useState<string>("")
-    const [toastMsgContent, setToastMsgContent] = useState<JSX.Element>(<FadeInOutText text="" setToastVisible={setToastVisible} />)
     const [toastVisible, setToastVisible] = useState<boolean>(false)
+    const [toastMsgContent, setToastMsgContent] = useState<JSX.Element>(<FadeInOutText text="" setToastVisible={setToastVisible} />)
     useEffect(() => {
         setToastMsgContent(<FadeInOutText text={toastMsg}
             setToastVisible={setToastVisible}
@@ -146,7 +151,8 @@ function TagRecording({ navigation, route }: any): JSX.Element {
                         }}
                         activeOpacity={0.8}
                         underlayColor='transparent'>
-                        <RemoveTagImage key={"img" + index} source={Xbutton} />
+                        {/* <RemoveTagImage key={"img" + index} source={Xbutton} /> */}
+                        <Icon source="close-circle" size={20} color='gray' />
                     </RemoveButton>
                     <TagText key={index + word}>
                         {word}
@@ -181,35 +187,47 @@ function TagRecording({ navigation, route }: any): JSX.Element {
     //initially enter to text mode.
     const [isTextMode, setIsTextMode] = useState<boolean>(true)
     const [isFirstVisit, setIsFirstVisit] = useState<boolean>(true)
+
+    //used to determine whether display the mode change button or not 
+    const [isTyping, setIsTyping] = useState<boolean>(false);
+
+    const [showButton, setShowButton] = useState<boolean>(isTextMode)
     //fade in fade out the textinput and other buttons when mode changed
     useEffect(() => {
-        // ToastAndroid.show('Your Message', ToastAndroid.SHORT);
+        setShowButton(false)
 
+        // ToastAndroid.show('Your Message', ToastAndroid.SHORT);
         if (isFirstVisit) {
             Animated.timing(fadeAnim, { //fade in 
                 toValue: 1,
-                duration: 1000,
+                duration: 500,
                 delay: 0,
                 useNativeDriver: true,
             }).start(() => {
                 setIsFirstVisit(false)
+                setShowButton(true)
+                createContent(recordedInputs, setRecordedInputs, setRecordedContentHolder, isEditable)
             })
         } else {
             Animated.timing(fadeAnim, { //fade out 
                 toValue: 0,
-                duration: 1000,
+                duration: 500,
                 delay: 0,
                 useNativeDriver: true,
             }).start(() => {
+                setShowButton(true)
                 Animated.timing(fadeAnim, {//fade in
                     toValue: 1,
-                    duration: 1500,
-                    delay: 2000,
+                    duration: 500,
+                    delay: 750,
                     useNativeDriver: true,
-                }).start()
+                }).start(() => {
+                    console.log("fade out completed")
+                    createContent(recordedInputs, setRecordedInputs, setRecordedContentHolder, isEditable)
+                })
             });
         }
-        createContent(recordedInputs, setRecordedInputs, setRecordedContentHolder, isEditable)
+
     }, [fadeAnim, isTextMode]);
 
     //executed when the mode change button clicked
@@ -224,8 +242,8 @@ function TagRecording({ navigation, route }: any): JSX.Element {
         }
     }
 
-    //used to determine whether display the mode change button or not 
-    const [isTyping, setIsTyping] = useState<boolean>(false);
+
+
     return (
         <Container source={Background}>
             <View style={flexOne}>
@@ -235,8 +253,8 @@ function TagRecording({ navigation, route }: any): JSX.Element {
                             <FadeInFadeOutComponent
                                 source={WaterSpread1}
                                 fadeInAndOutAnim={fadeInAndOutAnim}
-                                duration={1000}
-                                delay={(isTextMode) ? 2500 : 0}
+                                duration={500}
+                                delay={(isTextMode) ? 1000 : 0}
                                 isTextMode={isTextMode}
                                 height='80%'
                                 top='20%'
@@ -247,8 +265,8 @@ function TagRecording({ navigation, route }: any): JSX.Element {
                             <FadeInFadeOutComponent
                                 source={WaterSpread2}
                                 fadeInAndOutAnim={fadeInAndOutAnim2}
-                                duration={3000}
-                                delay={(isTextMode) ? 500 : 2500}
+                                duration={1000}
+                                delay={(isTextMode) ? 500 : 1500}
                                 isTextMode={isTextMode}
                                 height='80%'
                                 top='10%'
@@ -262,18 +280,36 @@ function TagRecording({ navigation, route }: any): JSX.Element {
                             flex: 1,
                         }}>
                         <ScrollableView contentContainerStyle={contentContainer}>
-
                             <KeyboardAvoidingView style={flexOne}>
                                 <ButtonContainer>
                                     <NavButton
-                                        title="List" onPress={() => {
-                                            navigation.navigate('ListView')
+                                        title="List"
+                                         onPress={() => {
+                                         navigation.navigate('ListView')
                                         }}
-                                        textStyle={whiteFont} />
-                                    <NavButton title="Save" onPress={() => {
-                                        navigation.navigate('Diary')
+                                        textStyle={whiteFont} 
+                                        
+                                        />
+                                    {/* <TouchableOpacity>
+                                        <IconButton
+                                            icon={'format-list-bulleted'}
+                                            iconColor='white'
+                                            size={30}
+                                        />
+                                    </TouchableOpacity> */}
+                                    {/* <NavButton title="Save" onPress={() => {
+                                        navigation.navigate('Diary', { index: index })
                                     }}
-                                        textStyle={whiteFont} />
+                                        textStyle={whiteFont} /> */}
+                                    <TouchableOpacity onPress={() => {
+                                        navigation.navigate('Diary', { index: index })
+                                    }}>
+                                        <IconButton
+                                            icon={'movie-open-play'}
+                                            iconColor='white'
+                                            size={25}
+                                        />
+                                    </TouchableOpacity>
                                 </ButtonContainer>
                                 <WordContainer content={recordedContentHolder as JSX.Element[]}></WordContainer>
                                 <UserTextInput
@@ -283,20 +319,26 @@ function TagRecording({ navigation, route }: any): JSX.Element {
                                     limit={limit}
                                 />
                             </KeyboardAvoidingView>
-                            {
-                                !isTyping &&
+
+                            {!isTyping &&
                                 <MicContainerContainer>
-                                    <RecordingButton
-                                        fadeInFadeOut={fadeInFadeOut}
-                                        isTextMode={isTextMode}
-                                        setIsTextMode={setIsTextMode}
-                                        checkRegulation={checkRegulation}
-                                    />
+                                    {
+                                        (showButton) &&
+
+                                        <RecordingButton
+                                            fadeInFadeOut={fadeInFadeOut}
+                                            isTextMode={isTextMode}
+                                            setIsTextMode={setIsTextMode}
+                                            checkRegulation={checkRegulation}
+                                        />
+
+                                    }
                                 </MicContainerContainer>
                             }
+
                             {
                                 toastVisible &&
-                                 toastMsgContent 
+                                toastMsgContent
                             }
 
                         </ScrollableView>
@@ -306,5 +348,6 @@ function TagRecording({ navigation, route }: any): JSX.Element {
             </View>
         </Container>
     )
+
 }
 export default TagRecording
