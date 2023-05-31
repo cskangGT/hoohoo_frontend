@@ -84,7 +84,6 @@ function Diary(props: any): JSX.Element {
     let index: number;
     let numberOfTags: number;
     if (props.route.params.index === undefined) {
-        console.log()
         index = 12
         numberOfTags = 0
     } else {
@@ -272,7 +271,6 @@ function Diary(props: any): JSX.Element {
                             size={40}
                             iconColor='white'
                             onPress={() => {
-                                console.log(index);
                                 navigation.navigate("DiaryDetail", { index: index })
                             }}
                         />

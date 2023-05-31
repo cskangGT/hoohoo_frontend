@@ -73,7 +73,6 @@ function TagRecording({ navigation, route }: any): JSX.Element {
         index = parseInt(route.params.index)
     }
     
-    console.log(index);
     const tags: string[] = index? data[index].tags : []
     
     // user typed input
@@ -153,7 +152,7 @@ function TagRecording({ navigation, route }: any): JSX.Element {
                         activeOpacity={0.8}
                         underlayColor='transparent'>
                         {/* <RemoveTagImage key={"img" + index} source={Xbutton} /> */}
-                        <Icon source="close-circle" size={20} color='gray' />
+                        <Icon source="close-circle" size={20} color='white' />
                     </RemoveButton>
                     <TagText key={index + word}>
                         {word}
@@ -223,7 +222,6 @@ function TagRecording({ navigation, route }: any): JSX.Element {
                     delay: 750,
                     useNativeDriver: true,
                 }).start(() => {
-                    console.log("fade out completed")
                     createContent(recordedInputs, setRecordedInputs, setRecordedContentHolder, isEditable)
                 })
             });
