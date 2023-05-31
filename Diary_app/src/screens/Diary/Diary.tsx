@@ -82,18 +82,16 @@ function generateRandomOrders(numberOfTags: number) {
 }
 function Diary(props: any): JSX.Element {
     let index: number;
-    if (parseInt(props.route.params.index) === undefined) {
-        index = 32
-    } else {
-        index = parseInt(props.route.params.index)
-    }
-    const navigation = useNavigation();
-    let numberOfTags: number
-    if (index ===32) {
+    let numberOfTags: number;
+    if (props.route.params.index === undefined) {
+        console.log()
+        index = 12
         numberOfTags = 0
     } else {
+        index = parseInt(props.route.params.index)
         numberOfTags=data[index].tags.length > 7 ? 7 : data[index].tags.length
     }
+    const navigation = useNavigation();
     
     
     let allTags = data[index].tags.slice(0, numberOfTags)
@@ -274,6 +272,7 @@ function Diary(props: any): JSX.Element {
                             size={40}
                             iconColor='white'
                             onPress={() => {
+                                console.log(index);
                                 navigation.navigate("DiaryDetail", { index: index })
                             }}
                         />

@@ -66,8 +66,9 @@ const FadeInOutText = (props: any) => {
 
 function TagRecording({ navigation, route }: any): JSX.Element {
     let index: number;
-    if (parseInt(route.params.index) === undefined) {
-        index = 32
+    
+    if (route.params.index === undefined) {
+        index = 12
     } else {
         index = parseInt(route.params.index)
     }

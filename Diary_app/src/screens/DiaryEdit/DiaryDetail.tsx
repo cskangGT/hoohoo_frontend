@@ -13,16 +13,21 @@ import ModalContainer from './Containers/ModalContainer';
 import regulation from '../../data/regulation.json'
 const background = require('../../assets/DiaryEditPage/Background.png');
 function DiaryEdit(route: any): JSX.Element {
-    let date = data[index].date
+    
     let index: number;
-    if (parseInt(route.params.index) === undefined) {
-        index = 32
+    let date;
+    console.log(route.route.params)
+    if (route.route.params.index === undefined || route.route.params.index === 12) {
+        index = 12
+        date = "2025-12-25"
     } else {
-        index = parseInt(route.params.index)
+        index = parseInt(route.route.params.index)
+        date = data[index].date
     }
+    
     const navigation = useNavigation();
     let numberOfTags: number
-    if (index ===32) {
+    if (index ===12) {
         numberOfTags = 0
     } else {
         numberOfTags=data[index].tags.length > 7 ? 7 : data[index].tags.length
