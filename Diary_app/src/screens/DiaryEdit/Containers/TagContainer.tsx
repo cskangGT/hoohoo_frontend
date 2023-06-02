@@ -68,6 +68,7 @@ function TagContainer(props: any): JSX.Element {
                 </SmallIconContainer>
             </TagZoneFirstRow>
             <TagZoneSecondRow
+                keyboardShouldPersistTaps="handled"
                 ref={scrollViewRef}
             >
                 {tagContent}

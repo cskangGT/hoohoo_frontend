@@ -278,7 +278,9 @@ function TagRecording({ navigation, route }: any): JSX.Element {
                             opacity: fadeAnim,
                             flex: 1,
                         }}>
-                        <ScrollableView contentContainerStyle={contentContainer}>
+                        <ScrollableView 
+                        keyboardShouldPersistTaps="handled"
+                        contentContainerStyle={contentContainer}>
                             <KeyboardAvoidingView style={flexOne}>
                                 <ButtonContainer>
                                     <NavButton
