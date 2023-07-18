@@ -6,7 +6,7 @@ import { appleAuth } from '@invertase/react-native-apple-authentication';
 
 GoogleSignin.configure({
     // offlineAccess: true,
-    
+    iosClientId: '969791243790-jio2m5ca9m2rcn3n7kco5ti8dbp14n4u.apps.googleusercontent.com',
     scopes:['https://www.googleapis.com/auth/drive.file'],
         });
 const uploadToGoogleDrive = async (token : any, data : any[]) => {

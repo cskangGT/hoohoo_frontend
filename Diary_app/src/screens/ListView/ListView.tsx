@@ -85,7 +85,7 @@ const Container = styled(View)`
 const ButtontoMonth = styled(TouchableOpacity)`
     position: absolute;
     width: 25%;
-    bottom: 2%;
+    bottom: 4%;
     right: 6%;
     border-radius: 10px;
     flex-direction: row;
@@ -99,7 +99,7 @@ const ButtonText = styled(Text)`
 `;
 const CheckButton = styled(TouchableOpacity)`
   position: absolute;
-  bottom: 2%;
+  bottom: 4%;
   left: ${({isSelectable}: Props)=>(isSelectable? '4%' : '6%')};
   border-radius: 10px;
   padding: 3px;
