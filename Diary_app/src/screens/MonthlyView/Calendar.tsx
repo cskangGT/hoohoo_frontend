@@ -5,7 +5,7 @@ import { PanGestureHandler, State } from 'react-native-gesture-handler';
 import CalendarModal from './CalendarModal';
 import CustomButton from '../../components/common/Button';
 import { useNavigation } from '@react-navigation/native';
-
+import data from '../../data/data.json'
 // import Button from './../../components/common/Button';
 const drop1 = require('../../assets/droplet_gem1.png');
 const drop2 = require('../../assets/droplet_gem2.png');
@@ -88,24 +88,7 @@ const DateText = styled(Text)`
     text-align: center;
 
 `;
-const DATA: any = [
-    {
-        id: "0", date: "4/21/2023", tags: ["Determine", "ItIsPossible", "HardTimes", "NeverGiveUp"],
-        isPhoto: false, isQuote: false, isDiary: false
-    },
-    {
-        id: "1", date: "4/15/2023", tags: ["Homework", "TryHard", "ILoveThis", "Longterm"],
-        isPhoto: true, isQuote: true, isDiary: false
-    },
-    {
-        id: "2", date: "4/11/2023", tags: ["Pizza", "Lunch", "GirlFriend", "Expo"],
-        isPhoto: true, isQuote: true, isDiary: true
-    },
-    {
-        id: "3", date: "4/10/2023", tags: ["NeverGiveUp", "Dinner", "BeBrave", "Samsung"],
-        isPhoto: false, isQuote: true, isDiary: true
-    }
-];
+const DATA: any = data;
 
 // global state management required.
 
@@ -318,8 +301,8 @@ const Calendar = () => {
                     <Element key={"element" + rowIndex * colIndex + colIndex}
                         onPress={() => {
                             if (item != -1) {
-                                let strItem = String(item)
-                                navigation.navigate('DiaryDetail', { index: data_inverse[strItem] })
+                                let strItem :string = String(item)
+                                navigation.navigate('TagRecording', { index: data_inverse[strItem] })
                             }
                         }}>
                         {handlerElement(item)}

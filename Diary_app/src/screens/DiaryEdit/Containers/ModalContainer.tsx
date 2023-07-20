@@ -111,7 +111,7 @@ function ModalContainer(props: any): JSX.Element {
         >
             <View style={{
                 width: '100%',
-                height: isTyping? '80%' :'60%',
+                height: isTyping ? '80%' : '60%',
                 backgroundColor: '#222222',
                 top: '20%',
                 borderRadius: 25,
@@ -147,6 +147,7 @@ function ModalContainer(props: any): JSX.Element {
                     </TouchableOpacity>
                 </View>
                 <TagZoneSecondRow
+                    keyboardShouldPersistTaps="handled"
                     ref={scrollViewRef}
                 >
                     {addedTagsContent}
@@ -199,7 +200,7 @@ function ModalContainer(props: any): JSX.Element {
                             </HelperText>
                         }
                         {
-                            ( hasCapacityError()) &&
+                            (hasCapacityError()) &&
                             <HelperText
                                 style={{
                                     color: 'white',

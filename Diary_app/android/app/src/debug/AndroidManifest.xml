@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATIO    N_POLICY" />
     <application
         android:usesCleartextTraffic="true"
         tools:targetApi="28"
@@ -11,3 +11,4 @@
         <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" android:exported="false" />
     </application>
 </manifest>
+

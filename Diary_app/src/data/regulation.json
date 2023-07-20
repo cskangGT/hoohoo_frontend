@@ -1,4 +1,4 @@
 {
-    "capacity":10,
-    "limit":2
+    "capacity":300,
+    "limit":30
 }

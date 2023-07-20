@@ -1,25 +1,37 @@
-import { View, ScrollView, ImageBackground, Text, Dimensions, TouchableOpacity, FlatList, TextInput, Image, Button, TouchableWithoutFeedback, Platform, PermissionsAndroid, Modal } from 'react-native';
+import { ScrollView,  TouchableOpacity, Platform, PermissionsAndroid, Modal } from 'react-native';
 import React, { useState, useEffect, useRef } from 'react';
-import styled from 'styled-components';
 import { useNavigation } from '@react-navigation/native';
-import { SafeArea, SmallIconContainer, StyledBackgroundView, IndividualTagContainer, TagZoneContainer, TagZoneFirstRow, TagText, TagZoneSecondRow, VerticalList, RemoveIconContainer, RemoveIcon, FooterContainer, FABTheme, FabContainer, DateContainer, NextButtonContainer, FabStyle, MajorityView, DoneText } from './styles';
+import { SafeArea, SmallIconContainer, StyledBackgroundView, FooterContainer, FABTheme, FabContainer, DateContainer, NextButtonContainer, FabStyle, MajorityView, DoneText } from './styles';
 import data from '../../data/data.json'
-import Icon from 'react-native-paper/src/components/Icon'
-import { FAB, Portal, PaperProvider, DefaultTheme, IconButton } from 'react-native-paper';
+import {  PaperProvider,IconButton } from 'react-native-paper';
 import DiaryDate from './DiaryDate';
-import Swiper from 'react-native-swiper'
 import TagContainer from './Containers/TagContainer';
 import { CameraOptions, launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { PERMISSIONS, RESULTS, request } from 'react-native-permissions';
-import TextInputContainer from './Containers/TextInputContainer';
 import AttachContainer from './Containers/AttachContainer';
 import ModalContainer from './Containers/ModalContainer';
 import regulation from '../../data/regulation.json'
 const background = require('../../assets/DiaryEditPage/Background.png');
 function DiaryEdit(route: any): JSX.Element {
+    
+    let index: number;
+    let date;
+    console.log(route.route.params)
+    if (route.route.params.index === undefined || route.route.params.index === 12) {
+        index = 12
+        date = "2025-12-25"
+    } else {
+        index = parseInt(route.route.params.index)
+        date = data[index].date
+    }
+    
     const navigation = useNavigation();
-    let index: number = parseInt(route.route.params.index)
-    let date = data[index].date
+    let numberOfTags: number
+    if (index ===12) {
+        numberOfTags = 0
+    } else {
+        numberOfTags=data[index].tags.length > 7 ? 7 : data[index].tags.length
+    }
     //is the FAB open or not
     const [isOpen, setIsOpen] = useState<boolean>(false)
 
@@ -132,9 +144,7 @@ function DiaryEdit(route: any): JSX.Element {
         }
         return total
     }
-
     const [currentCapability, setCurrentCapability] = useState<number>(getCurrentCapability())
-
     //Used to open/close modal for adding tags
     const [isModalUp, setIsModalUp] = useState<boolean>(false)
 

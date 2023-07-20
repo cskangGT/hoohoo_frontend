@@ -129,8 +129,8 @@ const CalendarModal = (props: Props) => {
                 animationIn="fadeInUp" animationOut="fadeOutDown">
                 <ModalContainer>
                     <ModalHeader>
-                    <TouchableOpacity onPress={() => onSelectYear(-1)}>
-                        <Icon name="arrow-back-ios" color={'#fcf5f5'}/>
+                        <TouchableOpacity onPress={() => onSelectYear(-1)}>
+                            <Icon name="arrow-back-ios" color={'#fcf5f5'} />
                         </TouchableOpacity>
                         <YearInput
                             keyboardType="numeric"
@@ -147,7 +147,7 @@ const CalendarModal = (props: Props) => {
                             onChangeText={onChangeYear}
                         />
                         <TouchableOpacity onPress={() => onSelectYear(1)}>
-                        <Icon name="arrow-forward-ios" color={'#fcf5f5'}/>
+                            <Icon name="arrow-forward-ios" color={'#fcf5f5'} />
                         </TouchableOpacity>
                     </ModalHeader>
                     <Months>

@@ -1,426 +1,354 @@
 import React, { useEffect, useRef, useState } from 'react'
 
-import { View, Text, TouchableHighlight, TextInput, Keyboard, Animated, Dimensions, Image,ImageBackground } from "react-native";
-import styled from 'styled-components';
-import msg from '../../data/msg.json';
+import { Animated, Text, TouchableOpacity, KeyboardAvoidingView, ToastAndroid, View, Platform, Easing, } from "react-native";
 import WordContainer from './Containers/WordContainer';
 import UserTextInput from './Containers/UserTextInput';
 import RecordingButton from './RecordingButton';
-import CustomButton from '../../components/common/Button';
-import ImageButton from '../../components/common/ImageButton';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import {SafeAreaView} from 'react-native-safe-area-context';
-// import ImageBackground from '../../components/common/ImageBackground';
-const Xbutton = require('../../assets/remove.png');
+import {
+    ButtonContainer, Container,
+    MicContainer, MicContainerContainer, NavButton, OpacityView, RemoveButton,
+    RemoveTagImage, SafeArea, ScrollableView, TagComponent, TagContainers,
+    TagText, Transition, TransparentView, WordView, contentContainer, flexOne, whiteFont
+} from './styles';
+import FadeInFadeOutComponent from './Containers/FadeInFadeOutComponent';
+import data from '../../data/data.json'
+import regulation from '../../data/regulation.json'
+import Icon from 'react-native-paper/src/components/Icon';
+import { IconButton } from 'react-native-paper';
 const Background = require('../../assets/tagRecordingBg.png');
-const tb = require('../../assets/circleButton.png');
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
+const WaterSpread1 = require('../../assets/WaterSpread1.png')
+const WaterSpread2 = require('../../assets/WaterSpread2.png')
 
-const Container = styled(ImageBackground)`
-    width : 100% ;
-    height: 100% ;
+const FadeInOutText = (props: any) => {
+    const [fadeAnim] = useState(new Animated.Value(0));
+    let displayTime = 1500
+    useEffect(() => {
+        const fadeIn = Animated.timing(fadeAnim, {
+            toValue: 1,
+            duration: displayTime,
+            easing: Easing.linear,
+            useNativeDriver: true,
+        });
+        const fadeOut = Animated.timing(fadeAnim, {
+            toValue: 0,
+            duration: displayTime,
+            easing: Easing.linear,
+            useNativeDriver: true,
+        })
 
-`;
-const ButtonContainer = styled(View)`
-    top:2%;
-    /* position: absolute;
-    margin-left:70%;
-    margin-right:5%; */
-    align-items: flex-end;
-    
-    width:100%;
-    
-`;
-const TagContainers = styled(View)`
-    /* position: absolute;
-    top:18%; */
-    top:3%;
-    width: 100%;
-    /* border-width: 2px;
-    border-color: violet; */
-    height:37%;
-    
-`;
-const InputTextContainer = styled(View)`
-    /* margin-top: 90%; */
-    
-    /* position: absolute; */
-    width:100%;
-    
-    height:auto;
-    /* border-color: blue;
-    border-width: 2px; */
-`;
-const SwitchContainer = styled(View)`
-    /* top: 110%; */
-    top:20%;
-    margin-left: 5%;
-    /* position: absolute; */
-    /* border-width: 2px;
-    border-color: red; */
-`;
-const RecordingContainer = styled(View)`
-    /* border-width: 1px; */
-    width:100%;
-    top: ${windowHeight * 0.05}px;
-     /* border-width: 2px;
-    border-color: red; */
-    /* top: 1000%; */
-    /* top:2000%; */
-    /* position: absolute; */
-`;
-const MicContainer = styled(View)`
-  /* top: 70%; 
-  position: absolute; */
-  /* border-width: 2px;
-    border-color: green; */
-    top:10%;
-  width: 100%;
-`;
-const Transition = styled(ImageButton)`
-    
-`;
-// const StyledTagWord = styled(View)`
-//     border-width: 1px;
-//     border-color: gray;
-//     border-radius: 50px;
-//     padding: 5px;
-//     background-color: rgb(71, 71, 70);
-//     opacity:1;
-//     margin: 5px;
-// `;
-// const InsideTagView = styled(View)`r
-//     flex-direction: row;
-// `;
-// const RemoveTagImage = styled(Image)`
-//     width:15px;
-//     height:15px;
-//     padding-right: 5px;
-// `;
-const StyledTagWord = styled(View)`
-  border-width: 1px;
-  border-color: gray;
-  border-radius: 50px;
-  padding: 5px;
-  background-color: rgb(119, 119, 114);
-  opacity: 0.75;
-  margin: 5px;
-`;
-
-const InsideTagView = styled(View)`
-  flex-direction: row;
-  align-items: center;
-`;
-
-const RemoveTagImage = styled(Image)`
-  width: 15px;
-  height: 15px;
-  padding-right: 5px;
-`;
-
-const TagText = styled(Text)`
-    color: white;
-`;
-const RemoveButton = styled(TouchableHighlight)`
-    width: 15px;
-    height: 15px;
-    margin-right: 5px;
-`;
-const WordView = styled(View)`
-  width: 100%;
-  /* position: absolute; */
-    /* top: 43%; */
-    top:5%;
-`;
-
-const tags_group = ["Determine", "ItIsPossible", "HardTimes", "ListenToMyVoice", "NeverGiveUp"]
+        Animated.sequence([fadeIn, fadeOut]).start(() => {
+            props.setToastVisible(false)
+        })
+    }, [])
+    return (
+        <Animated.View
+            style={{
+                opacity: fadeAnim,
+                position: 'absolute',
+                justifyContent: 'center',
+                alignSelf: 'center',
+                bottom: '10%',
+                backgroundColor: 'gray',
+                borderRadius: 25,
+                padding: '5%',
+                width: '60%'
+            }}>
+            <Text
+                style={{
+                    color: 'white',
+                    fontSize: 15,
+                }}>
+                {props.text}
+            </Text>
+        </Animated.View>
+    );
+};
 
 function TagRecording({ navigation, route }: any): JSX.Element {
-    function ModeContentContainer(props: any): JSX.Element {
-        return (
-            <WordView >
-                {props.content}
-            </WordView>)
-    }
-    // tags
-    const [inputs, setInputs] = useState<string[]>([])
-    // 
-    const [InputContentHolder, setInputContentHolder] = useState<JSX.Element[]>()
-    const [recordedInputs, setRecordedInputs] = useState<string[]>(tags_group)
-    const [recordedContentHolder, setRecordedContentHolder] = useState<JSX.Element[]>()
-    const [size, setSize] = useState<number>(tags_group.length)
-    const [isEditable, setIsEditable] = useState<boolean>(false);
+    let index: number;
     
-    const [animation, setAnimation] = useState<boolean>(false);
-    const fadeAnim = useRef(new Animated.Value(0)).current;
+    if (route.params.index === undefined) {
+        index = 12
+    } else {
+        index = parseInt(route.params.index)
+    }
+    
+    const tags: string[] = index? data[index].tags : []
+    
+    // user typed input
+    const [inputs, setInputs] = useState<string[]>([])
+    const [recordedInputs, setRecordedInputs] = useState<string[]>(tags)
+    const [recordedContentHolder, setRecordedContentHolder] = useState<JSX.Element[]>()
+    const [isEditable, setIsEditable] = useState<boolean>(false);
 
+    //Instagram regulation
+    //capacity of total number of characters
+    const capacity = regulation.capacity
+    //max limit length per a tag.
+    const limit = regulation.limit
+
+    //decrease capability as many as letters of saved tags.
+    function getCurrentCapability() {
+        let total = capacity
+        for (let i = 0; i < tags.length; i++) {
+            if (tags[i]) {
+                total -= tags[i].length
+            }
+        }
+        return total
+    }
+    const [currentCapability, setCurrentCapability] = useState<number>(getCurrentCapability())
+
+    const [toastMsg, setToastMsg] = useState<string>("")
+    const [toastVisible, setToastVisible] = useState<boolean>(false)
+    const [toastMsgContent, setToastMsgContent] = useState<JSX.Element>(<FadeInOutText text="" setToastVisible={setToastVisible} />)
     useEffect(() => {
-        Animated.timing(fadeAnim, {
-        toValue: 1,
-        duration: 1000,
-        useNativeDriver: true,
-        }).start();
-    }, []);
-    const DeleteContent = (index: number, words: string[], setWords: React.Dispatch<React.SetStateAction<string[]>>, setWordContent: React.Dispatch<React.SetStateAction<JSX.Element[] | undefined>>, curr_size?: number) => {
-        delete words[index];
-        setWords(words);
-        if (curr_size) {
-            setSize(curr_size - 1)
-            if (words === recordedInputs) {
-                if (curr_size - 1 === 0) {
-                    setIsEditable(false);
+        setToastMsgContent(<FadeInOutText text={toastMsg}
+            setToastVisible={setToastVisible}
+        />)
+    }, [toastVisible])
+    function checkRegulation(result: string) {
+        if (result !== undefined && result.length < limit && currentCapability - result.length >= 0) {
+            result = result.charAt(0).toUpperCase().concat(result.substring(1, result.length))
+            for (let i = 0; i < result.length; i++) {
+                let curr = result.charAt(i)
+                if (curr == ' ') {
+                    let next = result.charAt(i + 1).toUpperCase()
+                    result = result.substring(0, i).concat(next + result.substring(i + 2, result.length))
+                    // console.log("next:", next, "result :", result)
                 }
             }
-            createContent(words, setWords, setWordContent, isEditable, curr_size - 1);
-        } else {
-            createContent(words, setWords, setWordContent, isEditable);
+            addInputs(result)
+            // setCurrentCapability(currentCapability - result.length)
+        } else if (result !== undefined && result.length >= limit) {
+            setToastMsg('Max capacity exceeded:\nYou have recorded more than ' + capacity + ' letters')
+            setToastVisible(true)
+            // Toast.show('Max limit exceeded:\nLength of a tag should be less than ' + limit, Toast.SHORT);
+        } else if (result !== undefined && currentCapability - result.length < 0) {
+            setToastVisible(true)
+            setToastMsg('Max capacity exceeded:\nYou have recorded more than ' + capacity + ' letters')
+            // Toast.show('Max capacity exceeded:\nYou have recorded more than ' + capacity + ' letters', Toast.SHORT);
         }
     }
-
-
-
-    //create tags on the modecontents?
-    const createContent = (words: string[], setWords: React.Dispatch<React.SetStateAction<string[]>>, setWordContent: React.Dispatch<React.SetStateAction<JSX.Element[] | undefined>>, editable?: boolean, curr_size?: number) => {
-        // const renderItem = ({ item, index }: any) => (
-        //     <StyledTagWord>
-        //         <InsideTagView>
-        //             <RemoveButton onPress={() => DeleteContent(index, words, setWords, setWordContent, curr_size)}
-        //                 activeOpacity={0.8}
-        //                 underlayColor='transparent'>
-        //                 <RemoveTagImage source={Xbutton} />
-        //             </RemoveButton>
-        //             <TagText>{item}</TagText>
-        //         </InsideTagView>
-        //     </StyledTagWord>
-        // );
-        let contentHolder = (
-
-            words.map((word: string, index: number) => (
-                <View key={"View" + index}>
-                    <StyledTagWord key={"View2" + index}>
-                        <InsideTagView key={"View3" + index}>
-                            <RemoveButton key={"button" + index}
-                                onPress={() => {
-                                    DeleteContent(index, words, setWords, setWordContent, curr_size)
-                                }}
-                                activeOpacity={0.8}
-                                underlayColor='transparent'>
-                                <RemoveTagImage key={"img" + index} source={Xbutton} />
-                            </RemoveButton>
-                            <TagText key={index + word}>
-                                {word}
-                            </TagText>
-                        </InsideTagView>
-
-                        {/* {(editable) && //add X button on the top right, when recording or edit button is pressed
-                        <TouchableOpacity
-                            key={index + "delete_bt"}
-                            style={{
-                                position: 'absolute',
-                                top: 0,
-                                right: 0,
-                                borderRadius: 25, // half of width and height
-                                backgroundColor: 'black',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                width: 25,
-                                height: 25,
-                            }}
-                            onPress={() => }
-                        >
-                            <Text key={index + "del_bt_x"}
-                                style={{
-                                    color: 'white',
-                                }}> X </Text>
-                        </TouchableOpacity>
-                    } */}
-                    </StyledTagWord>
-                </View>
-            )))
-
-
-
-        setWordContent(contentHolder)
+    const DeleteContent = (index: number, words: string[], setWords: React.Dispatch<React.SetStateAction<string[]>>, setWordContent: React.Dispatch<React.SetStateAction<JSX.Element[] | undefined>>) => {
+        let deleted = words[index]
+        delete words[index];
+        // let copy = [...words]
+        // copy.splice(index, 1)
+        setWords(words);
+        // setCurrentCapability(currentCapability + deleted.length)
+        createContent(words, setWords, setWordContent, isEditable);
+        // console.log("after deleted", currentCapability + deleted.length)
     }
-    const increaseSize = () => {
-        setSize(size + 1)
+    //create tags on the modecontents?
+    const createContent = (words: string[], setWords: React.Dispatch<React.SetStateAction<string[]>>, setWordContent: React.Dispatch<React.SetStateAction<JSX.Element[] | undefined>>, editable?: boolean) => {
+        let contentHolder = (
+            words.map((word: string, index: number) => (
+                <TagComponent key={"View1" + index}>
+                    <RemoveButton key={"button" + index}
+                        onPress={() => {
+                            DeleteContent(index, words, setWords, setWordContent)
+                        }}
+                        activeOpacity={0.8}
+                        underlayColor='transparent'>
+                        {/* <RemoveTagImage key={"img" + index} source={Xbutton} /> */}
+                        <Icon source="close-circle" size={20} color='white' />
+                    </RemoveButton>
+                    <TagText key={index + word}>
+                        {word}
+                    </TagText>
+                </TagComponent>
+            )))
+        setWordContent(contentHolder)
+        setCurrentCapability(getCurrentCapability())
     }
     const recordTags = (deleted: string) => {
         recordedInputs.push(deleted)
         setRecordedInputs(recordedInputs)
-        createContent(recordedInputs, setRecordedInputs, setRecordedContentHolder, isEditable, size + 1)
-        increaseSize()
-
-    }
-    const generateUserInputs = () => {
-        let message = msg.message
-        message.forEach((word: string, index: number) => {
-            addInputs(word)
-        })
+        createContent(recordedInputs, setRecordedInputs, setRecordedContentHolder, isEditable)
     }
     //User speech to text 
     const addInputs = (word: string) => {
+        if (word.length == 0) {
+            return;
+        }
         inputs.push(word)
-        setInputs(inputs)
-        createContent(inputs, setInputs, setInputContentHolder, true)
-
-        let time = 3000;
-        setTimeout(
-            () => {
-                while (inputs.length > 0) {
-                    let deleted = inputs.shift()
-                    if (deleted !== undefined) {
-                        recordTags(deleted)
-                    }
-                }
-                setInputs(inputs)
-                createContent(inputs, setInputs, setInputContentHolder)
+        while (inputs.length > 0) {
+            let deleted = inputs.shift()
+            if (deleted !== undefined) {
+                recordTags(deleted)
             }
-            , time)
+        }
+        setInputs(inputs)
     }
+    const fadeAnim = useRef(new Animated.Value(0)).current;
+    const fadeInAndOutAnim = useRef(new Animated.Value(0)).current;
+    const fadeInAndOutAnim2 = useRef(new Animated.Value(0)).current;
+    //initially enter to text mode.
+    const [isTextMode, setIsTextMode] = useState<boolean>(true)
+    const [isFirstVisit, setIsFirstVisit] = useState<boolean>(true)
 
-    //TextMode
-    const [textInput, setTextInput] = useState<string>()
-    const onChangeText = (text: string) => {
-        setTextInput(text)
-    }
+    //used to determine whether display the mode change button or not 
+    const [isTyping, setIsTyping] = useState<boolean>(false);
 
-    //switch mode state
-    const [currTypeButton, setCurrTypeButton] = useState<string>("Type Mode")
-    const focusOnInput = useRef<TextInput>(null)
-    const switchMode = () => {
-        if (currTypeButton === "Type Mode") {
-            focusOnInput.current?.focus(); //keyboard on
-            setCurrTypeButton("Speech Mode")
+    const [showButton, setShowButton] = useState<boolean>(isTextMode)
+    //fade in fade out the textinput and other buttons when mode changed
+    useEffect(() => {
+        setShowButton(false)
+
+        // ToastAndroid.show('Your Message', ToastAndroid.SHORT);
+        if (isFirstVisit) {
+            Animated.timing(fadeAnim, { //fade in 
+                toValue: 1,
+                duration: 500,
+                delay: 0,
+                useNativeDriver: true,
+            }).start(() => {
+                setIsFirstVisit(false)
+                setShowButton(true)
+                createContent(recordedInputs, setRecordedInputs, setRecordedContentHolder, isEditable)
+            })
         } else {
-            setCurrTypeButton("Type Mode") //keyboard off
-            Keyboard.dismiss()
+            Animated.timing(fadeAnim, { //fade out 
+                toValue: 0,
+                duration: 500,
+                delay: 0,
+                useNativeDriver: true,
+            }).start(() => {
+                setShowButton(true)
+                Animated.timing(fadeAnim, {//fade in
+                    toValue: 1,
+                    duration: 500,
+                    delay: 750,
+                    useNativeDriver: true,
+                }).start(() => {
+                    createContent(recordedInputs, setRecordedInputs, setRecordedContentHolder, isEditable)
+                })
+            });
+        }
+
+    }, [fadeAnim, isTextMode]);
+
+    //executed when the mode change button clicked
+    function fadeInFadeOut() {
+        fadeAnim.setValue(1);
+        if (!isTextMode) {
+            fadeInAndOutAnim.setValue(1);
+            fadeInAndOutAnim2.setValue(1);
+        } else {
+            fadeInAndOutAnim.setValue(0);
+            fadeInAndOutAnim2.setValue(0);
         }
     }
-    //when tags are added to the recored inputs area, re-create components with the updated size.
-    useEffect(() => {
-        updateModeCotent()
-        createContent(recordedInputs, setRecordedInputs, setRecordedContentHolder, isEditable, size)
-    }, [size])
-    //when type button is toggled, (actually for now on, it is 'switch', not a button)
-    //update the mode content appropriately either from speech to type or from type to speech.
-    useEffect(() => {
-        updateModeCotent()
 
-    }, [currTypeButton])
-    //when editable is changed, display/hide (x) button(s) on each tags
-    useEffect(() => {
-        createContent(recordedInputs, setRecordedInputs, setRecordedContentHolder, isEditable, size)
-        createContent(inputs, setInputs, setInputContentHolder)
-    }, [isEditable])
 
-    function ModeContentComponents(props: any): JSX.Element {
 
-        return (
-            <InputTextContainer>
-                <UserTextInput
-                    textInput={props.textInput} onChangeText={props.onChangeText} recordTags={props.recordTags}
-                    setTextInput={props.setTextInput} currTypeButton={props.currTypeButton} switchMode={props.switchMode}
-                    focusOnInput={props.focusOnInput}
-                    size={props.size}
-                ></UserTextInput>
-                {/* <SwitchContainer>
-                     <Text>
-                        Record mode
-                    </Text> 
-                    <Switch
-                        onValueChange={props.switchMode}
-                        value={props.currTypeButton === "Type Mode" ? true : false}
-                    />
-                </SwitchContainer> */}
-            </InputTextContainer>
-        )
-    }
-    //update textinput, switch mode, size of tags etc.
-    const [modeContent, setModeContent] = useState<JSX.Element>(
-        <ModeContentComponents
-            textInput={textInput}
-            onChangeText={onChangeText}
-            recordTags={recordTags}
-            setTextInput={setTextInput}
-            currTypeButton={currTypeButton}
-            switchMode={switchMode}
-            focusOnInput={focusOnInput}
-            size={size}
-        />
-    )
-    //update mode content with updated state values.
-    const updateModeCotent = () => {
-        let ModeContentHolder = (
-            <ModeContentComponents
-                textInput={textInput}
-                onChangeText={onChangeText}
-                recordTags={recordTags}
-                setTextInput={setTextInput}
-                currTypeButton={currTypeButton}
-                switchMode={switchMode}
-                focusOnInput={focusOnInput}
-                size={size}
-            />
-        );
-        setModeContent(ModeContentHolder)
-    }
-    let index = 0 //currently 0 to work with the first data in the json file
     return (
-        
         <Container source={Background}>
-            <SafeAreaView style={{flex: 1}}>
-            <Animated.View style={{opacity: fadeAnim}}>
-            <ButtonContainer>
-                <CustomButton title="Save" onPress={() => {
-                   navigation.navigate("Diary", { index: index })
-                }} style={{ padding: 10 }} textStyle={{ color: 'white', fontSize: 17 }} />
-                {/* 
-                <CustomButton title={isEditable ? "Cancel" : "Edit"} onPress={() => {
-                    setIsEditable(!isEditable)
-                }} textStyle={{ color: 'white' }} /> */}
+            <View style={flexOne}>
+                <SafeArea>
+                    <TransparentView>
+                        <OpacityView>
+                            <FadeInFadeOutComponent
+                                source={WaterSpread1}
+                                fadeInAndOutAnim={fadeInAndOutAnim}
+                                duration={500}
+                                delay={(isTextMode) ? 1000 : 0}
+                                isTextMode={isTextMode}
+                                height='80%'
+                                top='20%'
+                                left='-20%'
+                            />
+                        </OpacityView >
+                        <OpacityView>
+                            <FadeInFadeOutComponent
+                                source={WaterSpread2}
+                                fadeInAndOutAnim={fadeInAndOutAnim2}
+                                duration={1000}
+                                delay={(isTextMode) ? 500 : 1500}
+                                isTextMode={isTextMode}
+                                height='80%'
+                                top='10%'
+                                left='40%'
+                            />
+                        </OpacityView>
+                    </TransparentView>
+                    <Animated.View
+                        style={{
+                            opacity: fadeAnim,
+                            flex: 1,
+                        }}>
+                        <ScrollableView 
+                        keyboardShouldPersistTaps="handled"
+                        contentContainerStyle={contentContainer}>
+                            <KeyboardAvoidingView style={flexOne}>
+                                <ButtonContainer>
+                                    <NavButton
+                                        title="List"
+                                         onPress={() => {
+                                         navigation.navigate('ListView')
+                                        }}
+                                        textStyle={whiteFont} 
+                                        
+                                        />
+                                    {/* <TouchableOpacity>
+                                        <IconButton
+                                            icon={'format-list-bulleted'}
+                                            iconColor='white'
+                                            size={30}
+                                        />
+                                    </TouchableOpacity> */}
+                                    {/* <NavButton title="Save" onPress={() => {
+                                        navigation.navigate('Diary', { index: index })
+                                    }}
+                                        textStyle={whiteFont} /> */}
+                                    <TouchableOpacity onPress={() => {
+                                        navigation.navigate('Diary', { index: index })
+                                    }}>
+                                        <IconButton
+                                            icon={'movie-open-play'}
+                                            iconColor='white'
+                                            size={25}
+                                        />
+                                    </TouchableOpacity>
+                                </ButtonContainer>
+                                <WordContainer content={recordedContentHolder as JSX.Element[]}></WordContainer>
+                                <UserTextInput
+                                    setIsTyping={setIsTyping}
+                                    checkRegulation={checkRegulation}
+                                    currentCapability={currentCapability}
+                                    limit={limit}
+                                />
+                            </KeyboardAvoidingView>
 
-            </ButtonContainer>
-            <TagContainers>
-                <WordContainer content={recordedContentHolder as JSX.Element[]}></WordContainer>
-            </TagContainers>
-            <ModeContentContainer content={modeContent as JSX.Element} />
+                            {!isTyping &&
+                                <MicContainerContainer>
+                                    {
+                                        (showButton) &&
 
-            {/* The speech mode has Type mode button, text input for cursor blinking only, and record button at the bottom. */}
+                                        <RecordingButton
+                                            fadeInFadeOut={fadeInFadeOut}
+                                            isTextMode={isTextMode}
+                                            setIsTextMode={setIsTextMode}
+                                            checkRegulation={checkRegulation}
+                                        />
 
-            {currTypeButton === "Type Mode" && (
-                
-                <MicContainer>
-                    {/* <View style={{}}>
-                        <WordContainer content={InputContentHolder as JSX.Element[]} ></WordContainer>
-                    </View> */}
-                    <RecordingContainer>
-                        <RecordingButton addInputs={addInputs}></RecordingButton>
-                    </RecordingContainer>
-                    <Transition src={tb} onPress={()=>{}} 
-                    imageStyle={{marginTop: windowHeight * 0.15,
-                    alignSelf: 'center'}}/>
-                </MicContainer>
+                                    }
+                                </MicContainerContainer>
+                            }
 
-            )
+                            {
+                                toastVisible &&
+                                toastMsgContent
+                            }
 
-            
-            }
+                        </ScrollableView>
+                    </Animated.View>
 
-            {/* {
-                currTypeButton === "Speech Mode" &&
-                <View style={{ width: '100%', top: '15%', position: 'absolute' }}>
-                    <WordContainer content={InputContentHolder as JSX.Element[]}></WordContainer>
-                </View>
-            } */}
-    </Animated.View>
-    </SafeAreaView>
-        </Container >
-        
+                </SafeArea>
+            </View>
+        </Container>
     )
-    
+
 }
-
 export default TagRecording
-

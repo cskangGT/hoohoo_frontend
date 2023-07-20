@@ -1,49 +1,94 @@
-import React, { useState } from 'react'
-import {TextInput} from "react-native";
+import React, { useRef, useState } from 'react'
+import { NativeSyntheticEvent, TextInput, TextInputSubmitEditingEventData, TouchableWithoutFeedback, View } from "react-native";
 import styled from 'styled-components';
-
+import { InputText, InputTextContainer } from '../styles';
+import { HelperText} from 'react-native-paper';
 //this component could be reusable if further modified. ex) modify fontSize, autoFocus etc..
 //could be usuable in search bar, quote typing, etc..
-const InputText = styled(TextInput)`
-  align-self: center;
-  /* justify-content: center; */
-  font-size: 60px;
-  padding: 5px;
-  border-bottom-color: white;
-  border-bottom-width: 2px;
-  width: 80%;
-  color: white;
-`;
+
 //contains user type input. 
+//props contains..
+//checkRegulation: if pass regulation, add current text to recorded tags.
+//
 function UserTextInput(props: any): JSX.Element {
-    const [typeText, setTypeText] = useState<string>()
+    const [text, setText] = useState<string>("")
+
     //focus if current mode is type mode which contains Speech Mode button
-    let focus = (props.currTypeButton === "Speech Mode")
+    // let focus = (props.currTypeButton === "Speech Mode")
+    const textInputRef = useRef<TextInput>(null);
+    const handleOutsideTouch = () => {
+        if (textInputRef.current) {
+            textInputRef.current.blur();
+        }
+    };
+
+    const hasLengthError = () => {
+        return ((text !== undefined && text.length >= props.limit))
+    };
+    const hasCapacityError = () => {
+        return (text !== undefined && props.currentCapability - text.length < 0)
+    }
     return (
-        <InputText
-            //when the textinput is touched, automatically switch to Type mode!
-            onFocus={() => {
-                if (props.currTypeButton === "Type Mode") {
-                    props.switchMode()
+        <TouchableWithoutFeedback onPress={handleOutsideTouch}>
+            <InputTextContainer>
+                <InputText
+                    ref={textInputRef}
+                    value={text}
+                    onChangeText={(t: string) => {
+                        setText(t);
+                    }}
+                    blurOnSubmit={false}
+                    onSubmitEditing={(event: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => {
+                        props.checkRegulation(event.nativeEvent.text)
+                        setText("");
+                    }}
+                    autoCapitalize='sentences'
+                    autoCorrect={false}
+                    placeholder='Hello'
+                    placeholderTextColor="#CCCCCC"
+                    onFocus={() => {
+                        props.setIsTyping(true);
+                    }}
+                    onBlur={() => {
+                        props.setIsTyping(false);
+                    }}
+                />
+                {
+                    hasLengthError() &&
+                    <HelperText
+                        style={{
+                            color: 'white',
+                            opacity:0.6,
+                            paddingLeft:'10%',
+                            width:'100%',
+                            alignSelf:'center'
+                        }}
+                        type="error"
+                        visible={hasLengthError()}
+                    >
+                        {'Max limit exceeded:\nLength of a tag should be less than ' + props.limit}
+                    </HelperText>
                 }
-            }}
-            autoCapitalize='sentences'
-            autoCorrect={false}
-            pointerEvents="none"
-            ref={props.focusOnInput}
-            onChangeText={(text: string) => {
-                // props.onChangeText(text)
-                setTypeText(text)
-            }
-            }
-            value={typeText}
-            autoFocus={focus}
-            blurOnSubmit={false} //disable dismissing keyboard panel automatically!
-            onSubmitEditing={() => {
-                props.recordTags(typeText, props.size); //reuse previosuly made function for STT input!
-                setTypeText("")
-                props.setTextInput("");
-            }} />
+                {
+                    (hasCapacityError()) &&
+                    <HelperText
+                        style={{
+                            color: 'white',
+                            opacity:0.6,
+                            paddingLeft:'10%',
+                            width:'100%',
+                            alignSelf:'center'
+                        }}
+                        type="error"
+                        visible={hasCapacityError()}
+                    >
+                        {'Max capacity exceeded:\nYou have recorded more than ' + props.capacity + ' letters'}
+                    </HelperText>
+                }
+
+
+            </InputTextContainer>
+        </TouchableWithoutFeedback>
     );
 }
 export default UserTextInput

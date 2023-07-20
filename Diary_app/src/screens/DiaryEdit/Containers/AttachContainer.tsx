@@ -114,7 +114,7 @@ function AttachContainer(props: any): JSX.Element {
                 key={images.length} //most important thing to update swiper!
                 loop={false}
                 showsPagination={true}
-                index={images.length-1}
+                index={images.length - 1}
             >
                 {images}
 
@@ -257,6 +257,7 @@ function AttachContainer(props: any): JSX.Element {
 
     return (
         <ScrollView
+            keyboardShouldPersistTaps="handled"
             ref={props.scrollViewRef}
             alwaysBounceHorizontal={false}
             alwaysBounceVertical={false}

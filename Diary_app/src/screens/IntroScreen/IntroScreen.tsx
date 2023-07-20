@@ -112,7 +112,7 @@ const IntroScreen = ({ navigation, route }: any) => {
         // clearTimeout(timeout1);
     }, [text]);
 
-
+    const index:number = 0
     return (
         <ImageBackground>
             <IntroImage>
@@ -124,8 +124,10 @@ const IntroScreen = ({ navigation, route }: any) => {
             </IntroImage>
             <CustomButton
                 style={{ position: 'absolute', bottom: '10 %', justifySelf: 'center', alignSelf: 'center' }}
-                title="Tap  to Continue"
-                onPress={() => navigation.navigate('TagRecording')}
+                title="START"
+                onPress={() => {
+                    navigation.navigate('TagRecording' , {index:index})
+                }}
                 backgroundColor="transparent"
                 textStyle={{ fontSize: 35, color: 'white', fontFamily: 'Zumattan' }} />
 

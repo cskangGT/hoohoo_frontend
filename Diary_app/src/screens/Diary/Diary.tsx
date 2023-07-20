@@ -81,9 +81,18 @@ function generateRandomOrders(numberOfTags: number) {
     return copyOrder
 }
 function Diary(props: any): JSX.Element {
-    let index: number = parseInt(props.route.params.index)
+    let index: number;
+    let numberOfTags: number;
+    if (props.route.params.index === undefined) {
+        index = 12
+        numberOfTags = 0
+    } else {
+        index = parseInt(props.route.params.index)
+        numberOfTags=data[index].tags.length > 7 ? 7 : data[index].tags.length
+    }
     const navigation = useNavigation();
-    let numberOfTags: number = data[index].tags.length > 7 ? 7 : data[index].tags.length
+    
+    
     let allTags = data[index].tags.slice(0, numberOfTags)
     const [tags, setTags] = useState<string[]>([])
     const [count, setCount] = useState<number>(0)
@@ -93,7 +102,6 @@ function Diary(props: any): JSX.Element {
     const [isPaused, setIsPaused] = useState<boolean>(false)
     const [orders, setOrders] = useState<number[]>(generateRandomOrders(numberOfTags))
     const [locations, setLocations] = useState<number[]>(generateRandomLocations(numberOfTags))
-
 
 
     //the flow is this useEffect (update tags & count to trigger 2nd useEffect)

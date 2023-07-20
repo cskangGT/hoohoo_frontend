@@ -149,19 +149,7 @@ const DATA: ItemData[] = [
         isPhoto: false, isQuote: true, isDiary: true
     }
 ];
-
-// const getBase64Image = async (imagePath: string): any => {
-//     try {
-//       const base64Image = await RNFS.readFile(imagePath, 'base64');
-//       DATA[photo]
-      
-//       return base64Image;
-//     } catch (error) {
-//       console.error(error);
-//       throw new Error('Could not read image file');
-//     }
-//   }
-// const texts = ["Determine", "ItIsPossible", "HardTimes", "NeverGiveUp", "ListenToMyVoice"];
+const texts = ["Determine", "ItIsPossible", "HardTimes", "NeverGiveUp", "ListenToMyVoice"];
 const months: string[] = ["January", "Febrary", "March", "April", "May",
     "June", "July", "August", "September", "October", "November", "December"];
 const ListView = ({ navigation, route }: any) => {
@@ -317,6 +305,7 @@ const ListView = ({ navigation, route }: any) => {
         setList(<FlatList data={filtered} renderItem={renderItem}
             keyExtractor={(item) => item.id} />);
     };
+
     const generateCheckBox = (bool : boolean) => {
         setIsSelectable(bool);
         
@@ -324,10 +313,8 @@ const ListView = ({ navigation, route }: any) => {
     const done = ()=> {
       generateCheckBox(false); 
       setExportData([]);
-
     }
     return (
-        
         <BgContainer source={bg} resizeMode='cover' style={{flex:1}} blurRadius={5}>
             <Shape source={shape} resizeMode='cover' style={{flex: 1}}><SafeAreaView style={{flex: 1}}>
             
@@ -366,7 +353,6 @@ const ListView = ({ navigation, route }: any) => {
                     placeholder="Search by tags"
                 />
             </SearchArea>
-
             <Container>
                 {list}
             </Container>
