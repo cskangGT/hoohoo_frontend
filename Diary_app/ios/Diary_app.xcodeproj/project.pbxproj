@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* Diary_appTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* Diary_appTests.m */; };
 		08E90E3EC8C1476AB11B58A5 /* Poppins-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 030337380454414AA9C20188 /* Poppins-Black.ttf */; };
+		0C0FABA22A1C3F3D00013627 /* build in Resources */ = {isa = PBXBuildFile; fileRef = 0C0FABA12A1C3F3D00013627 /* build */; };
 		0C2E15F029F0248E007E8CE5 /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = 0C2E15EF29F0248D007E8CE5 /* fonts */; };
 		0C80B921A6F3F58F76C31292 /* libPods-Diary_app.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-Diary_app.a */; };
 		0CD7D0736D0F4F19AD3E55E9 /* Poppins-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F2A049FD14D841E0A381FDF1 /* Poppins-Bold.ttf */; };
@@ -61,6 +62,8 @@
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* Diary_appTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Diary_appTests.m; sourceTree = "<group>"; };
 		030337380454414AA9C20188 /* Poppins-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Black.ttf"; path = "../src/assets/fonts/Poppins/Poppins-Black.ttf"; sourceTree = "<group>"; };
+		0C0FABA12A1C3F3D00013627 /* build */ = {isa = PBXFileReference; lastKnownFileType = folder; path = build; sourceTree = "<group>"; };
+		0C18CDAA2A24029800550C17 /* Diary_app.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Diary_app.entitlements; path = Diary_app/Diary_app.entitlements; sourceTree = "<group>"; };
 		0C2E15EF29F0248D007E8CE5 /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = fonts; path = ../src/assets/fonts; sourceTree = "<group>"; };
 		0D4A12D5EF0C49AAB9C30825 /* Poppins-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Medium.ttf"; path = "../src/assets/fonts/Poppins/Poppins-Medium.ttf"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* Diary_app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Diary_app.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -179,6 +182,7 @@
 		13B07FAE1A68108700A75B9A /* Diary_app */ = {
 			isa = PBXGroup;
 			children = (
+				0C18CDAA2A24029800550C17 /* Diary_app.entitlements */,
 				0C2E15EF29F0248D007E8CE5 /* fonts */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
@@ -203,6 +207,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				0C0FABA12A1C3F3D00013627 /* build */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -359,6 +364,7 @@
 				EBED7BC055BE467A823B9538 /* Poppins-Light.ttf in Resources */,
 				886C1A3F2E074B468C4EEEF3 /* Poppins-LightItalic.ttf in Resources */,
 				3E9AE73E8B2346D3BDE6591F /* Poppins-Medium.ttf in Resources */,
+				0C0FABA22A1C3F3D00013627 /* build in Resources */,
 				3FEAAF0B0C9F4F948B99C3E3 /* Poppins-MediumItalic.ttf in Resources */,
 				A125DD77464F4A958BBC1352 /* Poppins-SemiBold.ttf in Resources */,
 				3149A7679F2C4312B13B9D12 /* Poppins-SemiBoldItalic.ttf in Resources */,
@@ -612,6 +618,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Diary_app/Diary_app.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Diary_app/Info.plist;
@@ -640,6 +647,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Diary_app/Diary_app.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_FILE = Diary_app/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
