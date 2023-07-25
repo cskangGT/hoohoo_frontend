@@ -5,47 +5,16 @@ import CustomButton from '../../components/common/Button';
 import TextAnimation from '../../components/common/TextAnimation';
 import ImageBackground from '../../components/common/ImageBackground';
 
-const background = require('../../assets/Intro_background.png');
 const font = require('../../assets/IntroFont.png');
-const droplet = require('../../assets/try4.jpg');
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-// const StyledText = styled(Text)`
-//     margin-top: 200px;
-//     padding: 30px;
-//     /* background-color: ; */
-//     text-align: center;
-//     font-style: italic;
-//     font-weight: bold;
-//     font-size: 50px;
-//     color: white;
-// `;
-
-const Background = styled(View)`
-    flex: 1;
-    /* margin-top: 100px; // 헤더로부터 100px아래부터 백그라운드 시작 */
-    width: 100%;
-    height:100%;
-`;
-
 const IntroImage = styled(View)`
-/* font-family: Arial, Helvetica, sans-serif; */
+
   width: ${windowWidth - 20}px;
   position: absolute;
   margin-left: 10px;
   height: ${windowHeight - 200}px; // 200은 시작버튼을 위해서 남겨준다.
-`;
-const ImageBG = styled(Image)`
-    flex: 1;
-`;
-const Drop = styled(Image)`
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    opacity: 0.60;
 `;
 const AniView = styled(Animated.View)`
     width:100%;
@@ -90,7 +59,7 @@ const IntroScreen = ({ navigation, route }: any) => {
             setText(texts[1].text);
             // console.log("first setText --", text);
 
-        }, 6000); // 6초 뒤에 second animation start
+        }, 3000); // 6초 뒤에 second animation start
         if (text === texts[1].text) clearTimeout(timeout1);
     }
 
@@ -106,7 +75,7 @@ const IntroScreen = ({ navigation, route }: any) => {
 
             setTextContents(<TextAnimation text={text} ></TextAnimation>);
             // console.log(showAni);
-            setTimeout(() => { setShowAni(0) }, 4000);
+            setTimeout(() => { setShowAni(0) }, 3000);
 
         }
         // clearTimeout(timeout1);
@@ -119,8 +88,6 @@ const IntroScreen = ({ navigation, route }: any) => {
 
                 {showAni === 1 ? <Anime textAnime={textContents as JSX.Element}>
                 </Anime> : <FadeImage></FadeImage>}
-
-
             </IntroImage>
             <CustomButton
                 style={{ position: 'absolute', bottom: '10 %', justifySelf: 'center', alignSelf: 'center' }}
