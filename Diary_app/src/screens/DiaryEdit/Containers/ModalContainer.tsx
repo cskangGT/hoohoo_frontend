@@ -133,6 +133,7 @@ function ModalContainer(props: any): JSX.Element {
                     </View>
                     <TouchableOpacity
                         onPress={() => {
+                            props.setIsModalUp(false)
                             navigation.navigate('TagRecording', { index: { index } });
                         }}
                         style={{

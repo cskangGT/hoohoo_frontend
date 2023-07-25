@@ -5,7 +5,7 @@ import PhotoUpload from './FunctionComponents/PhotoUpload';
 import styled from 'styled-components';
 import FunctionButton from './FunctionComponents/FunctionButton';
 import { RouteProp } from '@react-navigation/native';
-import {data} from '../../data/diaryData.json'
+import { data } from '../../data/diaryData.json'
 //lighter gray
 const StyledTagWord = styled(TouchableOpacity)`
     border-width: 1px;
@@ -16,8 +16,8 @@ const StyledTagWord = styled(TouchableOpacity)`
     margin: 5px;
 `;
 const StyledHorizontallyAlignedItems = styled(View)`
-flex-direction: row;
- justify-content: center
+    flex-direction: row;
+    justify-content: center
 `
 //gray
 const StyledBackgroundView = styled(SafeAreaView)`
@@ -45,7 +45,7 @@ const Item = ({ title, index }: ItemProps & { index: number }) => {
 
         <StyledTagWord >
             <Text style={{
-                color:'white'
+                color: 'white'
             }} key={index + title}>{title}</Text>
         </StyledTagWord>
     );
@@ -54,7 +54,7 @@ const renderItem = ({ item, index }: { item: string, index: number }) => {
     return <Item key={index} title={item} index={index} />;
 };
 
-function DiaryEdit(route:any): JSX.Element {
+function DiaryEdit(route: any): JSX.Element {
     const jsonId = route.route.params.id
     const jsonContent = route.route.params.contents
     //turn on the textinput
@@ -74,7 +74,7 @@ function DiaryEdit(route:any): JSX.Element {
                         margin: 15,
                         fontSize: 30,
                         fontWeight: 'bold',
-                        color:'white'
+                        color: 'white'
                     }}>
                     Mar 25 2023
                 </Text>
@@ -93,8 +93,8 @@ function DiaryEdit(route:any): JSX.Element {
                     fontSize: 25,
                     borderBottomWidth: 2,
                     borderStyle: 'dotted',
-                    borderColor:'white',
-                    color:'white'
+                    borderColor: 'white',
+                    color: 'white'
 
                 }}>
                     {savedText}
@@ -113,7 +113,7 @@ function DiaryEdit(route:any): JSX.Element {
                 // right: 10, // Position the component 10 units from the right
             }}>
                 {/* <FunctionComponents /> */}
-                {FunctionButtonComponent }
+                {FunctionButtonComponent}
             </View>
         </StyledBackgroundView>
 

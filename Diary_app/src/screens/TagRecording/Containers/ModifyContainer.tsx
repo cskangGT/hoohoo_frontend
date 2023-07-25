@@ -1,8 +1,7 @@
 import React from 'react'
-import { View, Text, TouchableOpacity} from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import styled from 'styled-components';
 // this component could be reusable for any case that text in a box `has onPress event.
-
 // The below three components are for Save and Edit buttons.
 // This button styles can be used in any other purposes.
 const StyledModifyContainer = styled(View)`
@@ -21,7 +20,6 @@ const StyledModifyButton = styled(TouchableOpacity)`
 const StyledModifyText = styled(Text)`
     color: white;
     `;
-
 function ModifyContainer(props: any): JSX.Element {
     return (
         <StyledModifyContainer >
