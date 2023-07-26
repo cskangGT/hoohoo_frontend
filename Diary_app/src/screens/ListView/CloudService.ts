@@ -2,7 +2,6 @@
 import axios, { AxiosError } from 'axios'; import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 import { appleAuth } from '@invertase/react-native-apple-authentication';
 
-
 GoogleSignin.configure({
   iosClientId: '969791243790-jio2m5ca9m2rcn3n7kco5ti8dbp14n4u.apps.googleusercontent.com',
   scopes: ['https://www.googleapis.com/auth/drive.file'],
@@ -69,9 +68,6 @@ export const handleGoogleSignIn = async (exportData: any) => {
     }
   }
 };
-
-
-
 export async function onAppleLogin() {
   // performs login request
   const appleAuthRequestResponse = await appleAuth.performRequest({

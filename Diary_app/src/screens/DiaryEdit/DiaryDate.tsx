@@ -14,13 +14,10 @@ function DiaryDate(props: any): JSX.Element {
         return utcDate.toLocaleDateString('en-GB', options);
     }
     let output = formatDate(props.date);
-    
     return (
         <TextDateContainer>
             <TextDate>{output}</TextDate>
         </TextDateContainer>
     )
-
 }
-
 export default DiaryDate

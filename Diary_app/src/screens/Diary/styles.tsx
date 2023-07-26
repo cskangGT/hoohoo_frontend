@@ -1,4 +1,4 @@
-import { Animated, SafeAreaView, View } from "react-native";
+import { SafeAreaView, View } from "react-native";
 import { IconButton } from "react-native-paper";
 import styled from "styled-components";
 

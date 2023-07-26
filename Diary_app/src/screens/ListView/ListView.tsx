@@ -104,25 +104,24 @@ type ItemData = {
   isQuote: boolean;
   isDiary: boolean;
 };
-
 const DATA: ItemData[] = [
   {
-    id: "0", date: "4/21/2023", tags: ["Determine", "ItIsPossible", "HardTimes", "NeverGiveUp", "ListenToMyVoice"],
+    id: "0", date: "2023-4-21", tags: ["Determine", "ItIsPossible", "HardTimes", "NeverGiveUp", "ListenToMyVoice"],
     diary: ["Jisan Park is Genius. Moungsung is so smart. but Sung is good."], photo: ['file:///Users/jisanpark/Hoohoo/hoohoo_frontend/Diary_app/src/assets/tagRecordingBg.png'],
     isPhoto: false, isQuote: false, isDiary: false
   },
   {
-    id: "1", date: "4/15/2023", tags: ["Homework", "TryHard", "ILoveThis", "Longterm"],
+    id: "1", date: "2023-4-15", tags: ["Homework", "TryHard", "ILoveThis", "Longterm"],
     diary: ["Jisan Park is Genius. Moungsung is so smart. but Sung is good."], photo: ['file:///Users/jisanpark/Hoohoo/hoohoo_frontend/Diary_app/src/assets/Background.png', 'file:///Users/jisanpark/Hoohoo/hoohoo_frontend/Diary_app/src/assets/remove.png'],
     isPhoto: true, isQuote: true, isDiary: false
   },
   {
-    id: "2", date: "4/11/2023", tags: ["Pizza", "Lunch", "GirlFriend", "Expo"],
+    id: "2", date: "2023-4-11", tags: ["Pizza", "Lunch", "GirlFriend", "Expo"],
     diary: ["Jisan Park is Genius. Moungsung is so smart. but Sung is good."], photo: ['file:///Users/jisanpark/Hoohoo/hoohoo_frontend/Diary_app/src/assets/tagRecordingBg.png'],
     isPhoto: true, isQuote: true, isDiary: true
   },
   {
-    id: "3", date: "4/10/2023", tags: ["NeverGiveUp", "Dinner", "BeBrave", "Samsung"],
+    id: "3", date: "2023-4-10", tags: ["NeverGiveUp", "Dinner", "BeBrave", "Samsung"],
     diary: ["Jisan Park is Genius. Moungsung is so smart. but Sung is good."], photo: ['file:///Users/jisanpark/Hoohoo/hoohoo_frontend/Diary_app/src/assets/ListView_bg.png'],
     isPhoto: false, isQuote: true, isDiary: true
   }
@@ -138,7 +137,8 @@ const ListView = ({ navigation, route }: any) => {
   const [deleteData, setDeleteData] = useState<boolean>(false);
   const [addData, setAddData] = useState<boolean>(true);
   const dateStringFormat = (dateStr: string): string => {
-    const [month, day, year] = dateStr.split("/");
+    const [year, month, day] = dateStr.split("-");
+    console.log('first', `${months[parseInt(month) - 1]} ${day} ${year}`)
     return `${months[parseInt(month) - 1]} ${day} ${year}`;
   }
   const generateHTML = async (exportData: ItemData[]) => {
@@ -250,7 +250,7 @@ const ListView = ({ navigation, route }: any) => {
   const renderItem = ({ item, index }: { item: ItemData, index: number }) => {
 
     return (<ViewItem item={item} key={index} isSelectable={isSelectable}
-      prevData={prevData} setPrevData={setPrevData} deleteData={deleteData}
+      setPrevData={setPrevData} deleteData={deleteData}
       setDeleteData={setDeleteData} addData={addData}
       setAddData={setAddData}
     />);
@@ -277,61 +277,59 @@ const ListView = ({ navigation, route }: any) => {
   }
   return (
     <BgContainer source={bg} resizeMode='cover' style={{ flex: 1 }} blurRadius={5}>
-      <Shape source={shape} resizeMode='cover' style={{ flex: 1 }}><SafeAreaView style={{ flex: 1 }}>
-
-
-        <HeaderBar>
-          {isSelectable && <TopContainer>
-            <ShareButton onPress={() => generateHTML(exportData)}>
-              <Icon name='ios-share' color={exportData.length !== 0 ? 'white' : 'black'} size={23} />
-            </ShareButton>
-            {
-              Platform.OS === 'ios' && <ShareButton onPress={() => {
-                // iCloud
-                onAppleLogin();
-              }}>
-                <CheckIcon name='cloud-upload-outline' color={exportData.length !== 0 ? 'white' : 'black'} size={23} />
+      <Shape source={shape} resizeMode='cover' style={{ flex: 1 }}>
+        <SafeAreaView style={{ flex: 1 }}>
+          <HeaderBar>
+            {isSelectable && <TopContainer>
+              <ShareButton onPress={() => generateHTML(exportData)}>
+                <Icon name='ios-share' color={exportData.length !== 0 ? 'white' : 'black'} size={23} />
               </ShareButton>
-            }
+              {
+                Platform.OS === 'ios' && <ShareButton onPress={() => {
+                  // iCloud
+                  onAppleLogin();
+                }}>
+                  <CheckIcon name='cloud-upload-outline' color={exportData.length !== 0 ? 'white' : 'black'} size={23} />
+                </ShareButton>
+              }
 
-            <ShareButton onPress={() => {
-              const account = handleGoogleSignIn(exportData);
-              // google Cloud
-            }}>
-              <Icon2 name='google-drive' color={exportData.length !== 0 ? 'white' : 'black'} size={21} />
-            </ShareButton>
-          </TopContainer>
+              <ShareButton onPress={() => {
+                const account = handleGoogleSignIn(exportData);
+                // google Cloud
+              }}>
+                <Icon2 name='google-drive' color={exportData.length !== 0 ? 'white' : 'black'} size={21} />
+              </ShareButton>
+            </TopContainer>
+            }
+          </HeaderBar>
+          <SearchArea>
+            <SearchBar
+              onChangeText={handleSearch}
+              placeholderTextColor="#dfdfdf"
+              style={{ color: 'white', fontSize: 14 }}
+              value={searchQuery}
+              placeholder="Search by tags"
+            />
+          </SearchArea>
+          <Container>
+            {list}
+          </Container>
+          <ButtontoMonth onPress={() => {
+            navigation.navigate('MonthlyView');
+          }}>
+            <ButtonText>Calendar </ButtonText>
+            <Icon name="arrow-forward-ios" color={'#fcf5f5'} />
+          </ButtontoMonth>
+          {
+            isSelectable ? <CheckButton isSelectable={isSelectable} onPress={done} activeOpacity={0.8}>
+              <Done>Done</Done>
+            </CheckButton> : <CheckButton isSelectable={isSelectable} onPress={() => {
+              toggleSelection()
+            }} activeOpacity={0.8}>
+              <CheckIcon name='progress-check' color={'white'} size={25} />
+            </CheckButton>
           }
-        </HeaderBar>
-        <SearchArea>
-          <SearchBar
-            onChangeText={handleSearch}
-            placeholderTextColor="#dfdfdf"
-            style={{ color: 'white', fontSize: 14 }}
-            value={searchQuery}
-            placeholder="Search by tags"
-          />
-        </SearchArea>
-        <Container>
-          {list}
-        </Container>
-        <ButtontoMonth onPress={() => {
-          console.log("pressed");
-          navigation.navigate('MonthlyView');
-        }}>
-          <ButtonText>Calendar </ButtonText>
-          <Icon name="arrow-forward-ios" color={'#fcf5f5'} />
-        </ButtontoMonth>
-        {
-          isSelectable ? <CheckButton isSelectable={isSelectable} onPress={done} activeOpacity={0.8}>
-            <Done>Done</Done>
-          </CheckButton> : <CheckButton isSelectable={isSelectable} onPress={() => {
-            toggleSelection()
-          }} activeOpacity={0.8}>
-            <CheckIcon name='progress-check' color={'white'} size={25} />
-          </CheckButton>
-        }
-      </SafeAreaView>
+        </SafeAreaView>
       </Shape>
     </BgContainer>
 

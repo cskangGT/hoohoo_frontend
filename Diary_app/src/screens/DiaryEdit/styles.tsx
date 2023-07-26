@@ -1,8 +1,8 @@
-import { Image, Text, ImageBackground, TouchableOpacity, View, ScrollView } from 'react-native'
+import { Image, Text, ImageBackground, TouchableOpacity, View, ScrollView, Dimensions } from 'react-native'
 import styled from 'styled-components'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FAB, IconButton } from 'react-native-paper';
-
+const screenHeight = Dimensions.get('window').height;
 //fill the screen with the background image.
 export const StyledBackgroundView = styled(ImageBackground)`
     flex:1;
@@ -13,17 +13,20 @@ export const TagZoneContainer = styled(View)`
     background-color:'rgba(71, 71, 70, 0.5)';
     border-radius:15px;
     padding:2%;
-
 `
-// border-color:red;
-// border-width:2px;
-
+export const EmptyTags = styled(Text)`
+    font-family: 'Poppins-Regular';
+    font-size: 15px;
+    margin-top:10%;
+    width: 100%;
+    text-align: center;
+    color: #a1a1a1;
+`
 //contains two icons : eye , mic
 export const TagZoneFirstRow = styled(View)`
     flex-direction:row;
     align-self:flex-end;
 `
-
 //for Iphone
 export const SafeArea = styled(SafeAreaView)`
     flex:1;
@@ -31,6 +34,11 @@ export const SafeArea = styled(SafeAreaView)`
 
 //mic & view icon
 export const SmallIconContainer = styled(TouchableOpacity)`
+    padding:2%;
+    align-items:center;
+    justify-content: center;
+`
+export const UnactiveIconContainer = styled(View)`
     padding:2%;
     align-items:center;
     justify-content: center;
@@ -52,7 +60,7 @@ export const IndividualTagContainer = styled(View)`
 export const TagText = styled(Text)`
     color: white;
     font-family: 'Poppins-Regular';
-    align-content:center;
+    text-align: center;
     margin-left:6%;
 `
 // border-color:red;
@@ -84,13 +92,13 @@ export const MajorityView = styled(View)`
 //contains components at the bottom
 export const FooterContainer = styled(View)`
     flex-direction:row;
-    // flex:0.1;
 `
 export const FabContainer = styled(View)`
     flex:1;
 `
 export const FabStyle = styled(FAB.Group)`
     align-items: flex-start;
+    bottom: ${screenHeight > 700 ? '-40px' : '0'};
     justify-content: flex-end;
 `
 export const DateContainer = styled(View)`
@@ -104,15 +112,10 @@ export const NextButtonContainer = styled(View)`
     justify-content: flex-start;
     padding:2%;
 `
-// justify-content: flex-start;
-// justify-content: center;
-// border-color:red;
-// border-width:2px;
-// justify-content: center;
 
 //date text container
 export const TextDateContainer = styled(View)`
-    padding:2%;
+    padding:4%;
     background-color: #3a3535;
     opacity: 0.4;
     border-radius: 10px;
@@ -120,7 +123,7 @@ export const TextDateContainer = styled(View)`
 `;
 //date text format
 export const TextDate = styled(Text)`
-    color: white;
+    color: #f1f1f1;
     font-family: 'Comfortaa-Regular';
 `;
 

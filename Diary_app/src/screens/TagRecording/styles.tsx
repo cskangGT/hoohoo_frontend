@@ -100,7 +100,6 @@ export const TagComponent = styled(View)`
     padding-bottom: 1%;
     padding-left: 1%;
     padding-right: 2%;
-
     background-color: #808080;
     opacity: 0.75;
     margin: 5px;
@@ -140,7 +139,6 @@ export const TransparentView = styled(View)`
     background-color: transparent;
     position: absolute;
 `
-
 //opacity 0.3
 export const OpacityView = styled(View)`
     width: 100%;

@@ -1,7 +1,7 @@
 import { ScrollView, TouchableOpacity, Platform, PermissionsAndroid, Modal } from 'react-native';
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { SafeArea, SmallIconContainer, StyledBackgroundView, FooterContainer, FABTheme, FabContainer, DateContainer, NextButtonContainer, FabStyle, MajorityView, DoneText } from './styles';
+import { SafeArea, StyledBackgroundView, FooterContainer, FABTheme, FabContainer, DateContainer, NextButtonContainer, FabStyle, MajorityView, DoneText } from './styles';
 import data from '../../data/data.json'
 import { PaperProvider, IconButton } from 'react-native-paper';
 import DiaryDate from './DiaryDate';
@@ -13,23 +13,14 @@ import ModalContainer from './Containers/ModalContainer';
 import regulation from '../../data/regulation.json'
 const background = require('../../assets/DiaryEditPage/Background.png');
 function DiaryEdit(route: any): JSX.Element {
-    let data_inverse = {
-        "16": "0", "17": "1", "18": "2",
-        "1": "3", "2": "4", "3": "5", "6": "6", "7": "7",
-        "8": "8", "9": "9", "11": "10", "25": "11"
-    }
     let index: number;
-    let date: string = route.route.params.date;
-    console.log(route.route.params)
+    let date: string = "";
     const navigation = useNavigation();
-    let numberOfTags: number
-
     if (route.route.params.index === undefined) {
-        numberOfTags = 0
         index = 12 // not in database
     } else {
         index = parseInt(route.route.params.index)
-        numberOfTags = data[index].tags.length > 7 ? 7 : data[index].tags.length
+        date = route.route.params.date ? route.route.params.date : data[index].date
     }
     //is the FAB open or not
     const [isOpen, setIsOpen] = useState<boolean>(false)
@@ -38,7 +29,6 @@ function DiaryEdit(route: any): JSX.Element {
     let attachment: NotesOrImgAddressArray = data[index].attach
     //state that have data at the json file
     const [attach, setAttach] = useState<NotesOrImgAddressArray>(attachment);//add img address[].
-    // const [deletable, setDeletable] = useState<boolean>(true)//temporarily true...
     const [deletable, setDeletable] = useState<boolean>(false)//temporarily true...
     function addNote() {
         let copy = [...attach]
@@ -62,7 +52,6 @@ function DiaryEdit(route: any): JSX.Element {
                 }
             }
         } else if (Platform.OS === 'ios') {
-
             const granted = await request(PERMISSIONS.IOS.CAMERA)
             if (granted === RESULTS.GRANTED) {
                 const result = await launchCamera(options)
@@ -81,7 +70,6 @@ function DiaryEdit(route: any): JSX.Element {
         }
     }
     function addPhoto(newImage: string) {
-        // data[index].note.push([newImage])
         let copy = [...attach]
         //need to save current image address in our server. 
         copy.push(
@@ -92,8 +80,6 @@ function DiaryEdit(route: any): JSX.Element {
         )
         setAttach(copy)
         scrollToBottom()
-
-        // SaveJson(index, copy)
     }
     //when typing, remove the bottom buttons
     const [isTyping, setIsTyping] = useState<boolean>(false)
@@ -146,7 +132,6 @@ function DiaryEdit(route: any): JSX.Element {
     const [currentCapability, setCurrentCapability] = useState<number>(getCurrentCapability())
     //Used to open/close modal for adding tags
     const [isModalUp, setIsModalUp] = useState<boolean>(false)
-
     const [tagContainer, setTagContainer] = useState<JSX.Element>(
         <TagContainer
             tags={tags}
@@ -163,12 +148,10 @@ function DiaryEdit(route: any): JSX.Element {
                 index={index}
                 setIsModalUp={setIsModalUp}
                 currentCapability={currentCapability}
-
             />
         )
         //update current capcity. 
     }, [tags])
-
     return (
         <StyledBackgroundView source={background}>
             <SafeArea>
@@ -255,7 +238,6 @@ function DiaryEdit(route: any): JSX.Element {
                         capacity={capacity}
                     />
                 }
-
             </SafeArea >
         </StyledBackgroundView >
 

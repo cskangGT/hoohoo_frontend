@@ -185,6 +185,7 @@ function TagRecording({ navigation, route }: any): JSX.Element {
     useEffect(() => {
         setShowButton(false)
         if (isFirstVisit) {
+            setPlaceholder("Hello")
             Animated.timing(fadeAnim, { //fade in 
                 toValue: 1,
                 duration: 500,
@@ -195,6 +196,7 @@ function TagRecording({ navigation, route }: any): JSX.Element {
                 setShowButton(true)
                 createContent(recordedInputs, setRecordedInputs, setRecordedContentHolder, isEditable)
             })
+
         } else {
             Animated.timing(fadeAnim, { //fade out 
                 toValue: 0,
@@ -273,7 +275,7 @@ function TagRecording({ navigation, route }: any): JSX.Element {
                                         textStyle={whiteFont}
                                     />
                                     {
-                                        recordedInputs.length === 0 ?
+                                        tags.length === 0 ?
                                             <View>
                                                 <IconButton
                                                     style={{ opacity: 0.3 }}
@@ -304,7 +306,6 @@ function TagRecording({ navigation, route }: any): JSX.Element {
                                     checkRegulation={checkRegulation}
                                     currentCapability={currentCapability}
                                     limit={limit}
-                                    inputs={inputs}
                                     placeholder={placeholder}
                                     setPlaceholder={setPlaceholder}
                                 />

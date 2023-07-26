@@ -1,12 +1,10 @@
-import React, { cloneElement, useEffect, useRef, useState } from 'react';
-import { View, Text, TouchableOpacity, Image, Animated, TextInput, Modal } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, TouchableOpacity, Image, Animated } from 'react-native';
 import styled from 'styled-components';
 import { PanGestureHandler, State } from 'react-native-gesture-handler';
 import CalendarModal from './CalendarModal';
-import CustomButton from '../../components/common/Button';
 import { useNavigation } from '@react-navigation/native';
 import data from '../../data/data.json'
-// import Button from './../../components/common/Button';
 const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const weekDays = ["Su", "M", "T", "W", "Th", "F", "Sa"];
 const nDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
@@ -14,10 +12,7 @@ const gemImages = [require('../../assets/droplet_gem1.png'), require('../../asse
 require('../../assets/droplet_gem4.png'), require('../../assets/droplet_gem5.png'), require('../../assets/droplet_gem6.png'),
 require('../../assets/droplet_gem7.png'), require('../../assets/droplet_gem8.png'), require('../../assets/droplet_gem9.png'),
 require('../../assets/droplet_gem10.png'), require('../../assets/droplet_gem11.png'), require('../../assets/droplet_gem12.png')];
-
-const moment = require('moment');
 const SearchContainer = styled(View)`
-    /* justify-content: center; */
     background-color: transparent;
     width : 100%;
     display: flex;
@@ -38,7 +33,6 @@ const Blank = styled(View)`
     width: 14.4%;
     height: 50px;
     background-color: transparent;
-    
 `;
 const OtherElement = styled(View)`
     flex:1;
@@ -47,15 +41,10 @@ const OtherElement = styled(View)`
 `;
 const Element = styled(TouchableOpacity)`
     flex:1;
-    
     height: 50px;
     font-weight: bold;
     background-color: transparent;
     color : white;
-    /* padding-top: 10px; */
-    
-    /* border-color : #ebd987; */
-    /* align-items: center; */
 `;
 const Day = styled(Text)`
 /* border-width: 1px;
@@ -86,11 +75,7 @@ const DateText = styled(Text)`
     margin-bottom: 5%;
     font-size: 20px;
     text-align: center;
-
 `;
-const DATA: any = data;
-// global state management required.
-
 const FadeStar = ({ gemImage, frequency }: { gemImage: any, frequency: number }) => {
     const [opacity] = useState(new Animated.Value(0));
     useEffect(() => {
@@ -114,7 +99,7 @@ const Calendar = () => {
     const [isTransitioning, setIsTransitioning] = useState(false);
     const [month_text, setMonth_text] = useState<string>(months[date.getMonth()]);
     const [year_text, setYear_text] = useState<string>(String(date.getFullYear()));
-    const changeDate = (direction:number) => {
+    const changeDate = (direction: number) => {
         setIsTransitioning(true);
         setDate(prevDate => {
             const newDate = new Date(prevDate);
@@ -126,7 +111,7 @@ const Calendar = () => {
     };
 
     // Handle swipe gestures
-    const onGestureEvent = (event :any) => {
+    const onGestureEvent = (event: any) => {
         const { translationX } = event.nativeEvent;
         const monthOffset = Math.round(translationX / -320);
         if (!isTransitioning && monthOffset !== 0) {
@@ -134,44 +119,12 @@ const Calendar = () => {
         }
     };
 
-    const onHandlerStateChange = (event:any) => {
+    const onHandlerStateChange = (event: any) => {
         const { state } = event.nativeEvent;
         if (state === State.END) {
             setIsTransitioning(false);
         }
     };
-    // const changeMonth = (n: any) => {
-    //     setDate(prevDate => {
-    //         const newDate = new Date(prevDate);
-    //         newDate.setMonth(newDate.getMonth() + n);
-    //         setMonth_text(months[newDate.getMonth()]);
-    //         setYear_text(String(newDate.getFullYear()));
-    //         return newDate;
-    //     });
-    //     console.log("changed month", date);
-        
-    // }
-
-    // const onGestureEvent = (event: any) => {
-    //     const { translationX, velocityX } = event.nativeEvent;
-    //     const monthOffset = Math.round(translationX / -320);
-    //     if (!isTransitioning && monthOffset !== 0) {
-    //         setIsTransitioning(true);
-    //         if (monthOffset < 0) {
-    //             changeMonth(-1);
-    //         } else if (monthOffset > 0) {
-    //             changeMonth(+1);
-    //         }
-    //     }
-    // };
-
-    // const onHandlerStateChange = (event: any) => {
-    //     const { state } = event.nativeEvent;
-    //     if (state === State.END) {
-    //         setIsTransitioning(false);
-    //     }
-    // };
-    let rows = [];
     function generateMatrix() {
         const matrix: any[] = [];
         // The following code creates the header 
@@ -206,8 +159,8 @@ const Calendar = () => {
     }
     const data_date = data.map(item => parseInt(item.date.split('-')[2]));
     const matrix = generateMatrix();
-    rows = matrix.map((row, rowIndex) => {
-        const rowItems = row.map((item, colIndex) => {
+    const rows = matrix.map((row, rowIndex) => {
+        const rowItems = row.map((item: any, colIndex: number) => {
             const key = `cell_${rowIndex}_${colIndex}`;
             const isHeader = rowIndex === 0;
             const isBlank = item === '';
@@ -217,15 +170,16 @@ const Calendar = () => {
             const onPress = () => {
                 if (!isBlank && !isHeader) {
                     if (item != -1) {
-                        
-                        let data_inverse : any = { "16": "0", "17": "1", "18": "2",
-                         "1": "3","2": "4", "3": "5", "6": "6", "7": "7",
-                         "8": "8", "9": "9", "11": "10", "25": "11" }
+
+                        let data_inverse: any = {
+                            "16": "0", "17": "1", "18": "2",
+                            "1": "3", "2": "4", "3": "5", "6": "6", "7": "7",
+                            "8": "8", "9": "9", "11": "10", "25": "11"
+                        }
                         navigation.navigate('DiaryDetail', { index: data_inverse[item], date: `${date.getFullYear()}-${date.getMonth() + 1}-${item}` })
                     }
                 }
             };
-
             const gemImageIndex = Math.floor(Math.random() * gemImages.length);
             const content = isDataDate ? (
                 <>
