@@ -44,7 +44,7 @@ function TagContainer(props: any): JSX.Element {
 
                 {
                     props.tags.length !== 0 ? tagList :
-                        <EmptyTags>Looks Like There are No Tags</EmptyTags>
+                        <EmptyTags>No Tags</EmptyTags>
                 }
             </VerticalList>
         )

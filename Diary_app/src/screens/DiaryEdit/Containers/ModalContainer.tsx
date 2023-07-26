@@ -131,22 +131,7 @@ function ModalContainer(props: any): JSX.Element {
                         </TagText>
                     </View>
 
-                    <IconButton
-                        icon={"microphone"}
-                        size={20}
-                        iconColor='#f1f1f1'
-                        onPress={() => {
-                            props.setIsModalUp(false)
-                            navigation.navigate('TagRecording'), { index: { index } }
-                        }}
-                        style={{
-                            alignItems: 'center',
-                            position: 'absolute',
-                            right: 0,
-                            justifyContent: 'flex-start',
-                            backgroundColor: '#3e3e3e',
-                        }}
-                    />
+
                 </View>
                 <TagZoneSecondRow
                     keyboardShouldPersistTaps="handled"
@@ -165,30 +150,47 @@ function ModalContainer(props: any): JSX.Element {
                     <View style={{
                         margin: '3%'
                     }}>
-                        <TextInput
-                            ref={textInputRef}
-                            style={{
-                                borderColor: 'white',
-                                borderWidth: 1,
-                                color: 'white',
-                                borderRadius: 10,
-                                padding: '3%'
-                            }}
-                            placeholder="Put your tags"
-                            placeholderTextColor={"gray"}
-                            value={text}
-                            onChangeText={(txt: string) => {
-                                setText(txt)
-                            }}
-                            onSubmitEditing={() => {
-                                if (text.length !== 0) {
-                                    checkRegulation(text);
-                                }
-                            }}
-                            blurOnSubmit={false}
-                            onFocus={() => { setIsTyping(true) }}
-                            onBlur={() => { setIsTyping(false) }}
-                        />
+                        <View style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between'
+                        }}>
+                            <TextInput
+                                ref={textInputRef}
+                                style={{
+                                    borderColor: 'white',
+                                    borderWidth: 1,
+                                    borderRadius: 10,
+                                    flex: 1,
+                                    color: '#f1f1f1',
+                                    padding: '3%',
+                                }}
+                                placeholder="Put your tags"
+                                placeholderTextColor={"gray"}
+                                value={text}
+                                onChangeText={(txt: string) => {
+                                    setText(txt)
+                                }}
+                                onSubmitEditing={() => {
+                                    if (text.length !== 0) {
+                                        checkRegulation(text);
+                                    }
+                                }}
+                                blurOnSubmit={false}
+                                onFocus={() => { setIsTyping(true) }}
+                                onBlur={() => { setIsTyping(false) }}
+                            />
+                            <IconButton
+                                icon={"microphone"}
+                                size={17}
+                                iconColor='#f1f1f1'
+                                onPress={() => {
+                                    props.setIsModalUp(false)
+                                    navigation.navigate('TagRecording'), { index: { index } }
+                                }}
+                                style={{
+                                    backgroundColor: '#3e3e3e',
+                                }} />
+                        </View>
                         {
                             hasLengthError() &&
                             <HelperText
@@ -250,7 +252,7 @@ function ModalContainer(props: any): JSX.Element {
                             props.setIsModalUp(false)
                         }}>
                             <TagText >
-                                Cancel
+                                Close
                             </TagText>
                         </TouchableOpacity>
                             <TouchableOpacity onPress={() => {
