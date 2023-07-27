@@ -54,7 +54,7 @@ const MonthItem = styled(CustomButton)`
     align-items: center;
 `;
 
-const CalendarModal = ({ date, onMonthYearChange } : any) => {
+const CalendarModal = ({ date, onMonthYearChange }: any) => {
     const [isModalVisible, setModalVisible] = useState(false);
     const [selectedMonth, setSelectedMonth] = useState(date.getMonth());
     const [selectedYear, setSelectedYear] = useState(String(date.getFullYear()));
@@ -68,7 +68,7 @@ const CalendarModal = ({ date, onMonthYearChange } : any) => {
         setModalVisible(!isModalVisible);
     };
 
-    const onSelectYear = (val : number) => {
+    const onSelectYear = (val: number) => {
         let selectorStartingYear = 1900;
         let selectorEndingYear = 2100;
         let y = parseInt(selectedYear) + val;
@@ -80,7 +80,7 @@ const CalendarModal = ({ date, onMonthYearChange } : any) => {
         setSelectedYear(String(y));
     };
 
-    const onChangeYear = (text : string) => {
+    const onChangeYear = (text: string) => {
         if (Number(parseInt(text))) {
             setSelectedYear(text);
         }
@@ -103,7 +103,7 @@ const CalendarModal = ({ date, onMonthYearChange } : any) => {
 
     let buttonTitle = months[date.getMonth()].label + ' ' + date.getFullYear();
 
-    const onSelectMonth = (month : number | null) => {
+    const onSelectMonth = (month: number | null) => {
         if (month !== null) {
             setSelectedMonth(month);
             onMonthYearChange(month, selectedYear);
@@ -114,8 +114,9 @@ const CalendarModal = ({ date, onMonthYearChange } : any) => {
     return (
         <View style={{ width: '100 %' }}>
             <ButtonModal
+                style={{ backgroundColor: '#1a1a1a', borderRadius: 10 }}
                 title={buttonTitle}
-                textStyle={{ color: "white", fontSize: 30, fontWeight: 600, alignSelf: 'center' }}
+                textStyle={{ color: "#f1f1f1", fontSize: 30, fontWeight: 600, alignSelf: 'center' }}
                 onPress={toggleModal}
             />
             <Modal isVisible={isModalVisible} onBackdropPress={toggleModal}
