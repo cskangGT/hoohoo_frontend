@@ -181,6 +181,7 @@ function ModalContainer(props: any): JSX.Element {
                                         checkRegulation(text);
                                     }
                                 }}
+                                autoCorrect={false}
                                 blurOnSubmit={false}
                                 onFocus={() => { setIsTyping(true) }}
                                 onBlur={() => { setIsTyping(false) }}
