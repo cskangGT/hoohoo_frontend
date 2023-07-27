@@ -10,15 +10,16 @@ interface Props {
     src: {};
     onPress: () => void;
     imageStyle?: {};
+    resize?: string;
 }
 const ImageButton = (props: Props) => {
-    const { style, src, onPress, imageStyle } = props;
+    const { style, src, onPress, imageStyle, resize } = props;
     return (
         <Container
             activeOpacity={0.8}
             style={style}
             onPress={onPress}>
-            <Imagebutton source={src} style={imageStyle} />
+            <Imagebutton source={src} style={imageStyle} resizeMode={resize !== undefined ? 'contain' : resize} />
 
         </Container>
     )

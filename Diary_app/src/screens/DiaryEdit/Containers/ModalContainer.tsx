@@ -4,7 +4,8 @@ import { EmptyTags, IndividualTagContainer, RemoveIconContainer, TagText, TagZon
 import { useNavigation } from "@react-navigation/native";
 import Icon from 'react-native-paper/src/components/Icon'
 import { HelperText, IconButton } from "react-native-paper";
-
+import ImageButton from "../../../components/common/ImageButton";
+const micro_transition = require('../../../assets/mic_transition2.png')
 /**
  * 
  * @param props contains..
@@ -129,8 +130,13 @@ function ModalContainer(props: any): JSX.Element {
                         }}>
                             Add New Tag
                         </TagText>
-                    </View>
 
+                    </View>
+                    <ImageButton resize='cover' style={{ justifyContent: 'flex-end' }} src={micro_transition} imageStyle={{ width: 25, height: 25 }}
+                        onPress={() => {
+                            props.setIsModalUp(false)
+                            navigation.navigate('TagRecording'), { index: { index } }
+                        }} />
 
                 </View>
                 <TagZoneSecondRow
@@ -138,7 +144,7 @@ function ModalContainer(props: any): JSX.Element {
                     ref={scrollViewRef}
                 >
                     {addedTags.length === 0 ?
-                        <View style={{ height: '500%', justifyContent: 'center' }}>
+                        <View style={{ height: isTyping ? '300%' : '450%', justifyContent: 'center' }}>
                             <EmptyTags>Awaiting Tags</EmptyTags>
                         </View>
                         : addedTagsContent}
@@ -179,17 +185,7 @@ function ModalContainer(props: any): JSX.Element {
                                 onFocus={() => { setIsTyping(true) }}
                                 onBlur={() => { setIsTyping(false) }}
                             />
-                            <IconButton
-                                icon={"microphone"}
-                                size={17}
-                                iconColor='#f1f1f1'
-                                onPress={() => {
-                                    props.setIsModalUp(false)
-                                    navigation.navigate('TagRecording'), { index: { index } }
-                                }}
-                                style={{
-                                    backgroundColor: '#3e3e3e',
-                                }} />
+
                         </View>
                         {
                             hasLengthError() &&
