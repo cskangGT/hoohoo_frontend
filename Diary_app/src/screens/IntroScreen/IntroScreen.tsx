@@ -1,4 +1,4 @@
-import { View, Text, Dimensions, Image, Animated, SafeAreaView } from 'react-native';
+import { View, Dimensions, Image, Animated } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import CustomButton from '../../components/common/Button';
@@ -9,7 +9,7 @@ const font = require('../../assets/IntroFont.png');
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 const IntroImage = styled(View)`
-/* font-family: Arial, Helvetica, sans-serif; */
+
   width: ${windowWidth - 20}px;
   position: absolute;
   margin-left: 10px;
@@ -50,11 +50,8 @@ const IntroScreen = ({ navigation, route }: any) => {
     const [showAni, setShowAni] = useState<number>(1);
     if (showAni === 1) { // only show animation case, this is because keep counting time when re-rendering.
         const timeout1 = setTimeout(() => {
-            // console.log("first setText --11", text);
             setText(texts[1].text);
-            // console.log("first setText --", text);
-
-        }, 6000); // 6초 뒤에 second animation start
+        }, 3000); // 6초 뒤에 second animation start
         if (text === texts[1].text) clearTimeout(timeout1);
     }
 
@@ -63,17 +60,14 @@ const IntroScreen = ({ navigation, route }: any) => {
         if (text === texts[1].text) {
             setTextContents(<TextAnimation text={text} ></TextAnimation>);
             setTimeout(() => {
-                // console.log("settimeout for second text");
                 setText(texts[2].text); // 3초 뒤에 third animation start, 
             }, 3000);
         } else if (text === texts[2].text) {
 
             setTextContents(<TextAnimation text={text} ></TextAnimation>);
-            // console.log(showAni);
-            setTimeout(() => { setShowAni(0) }, 4000);
+            setTimeout(() => { setShowAni(0) }, 3000);
 
         }
-        // clearTimeout(timeout1);
     }, [text]);
 
     const index: number = 0
@@ -82,8 +76,6 @@ const IntroScreen = ({ navigation, route }: any) => {
             <IntroImage>
                 {showAni === 1 ? <Anime textAnime={textContents as JSX.Element}>
                 </Anime> : <FadeImage></FadeImage>}
-
-
             </IntroImage>
             <CustomButton
                 style={{ position: 'absolute', bottom: '10 %', justifySelf: 'center', alignSelf: 'center' }}

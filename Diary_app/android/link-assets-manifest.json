@@ -2,6 +2,14 @@
   "migIndex": 1,
   "data": [
     {
+      "path": "src/assets/fonts/AntDesign.ttf",
+      "sha1": "4e77868439280fb434d4697c7b911271406c81f3"
+    },
+    {
+      "path": "src/assets/fonts/BlendaScript.otf",
+      "sha1": "b1aa49ab22bfcdae605e90b08f35e5a73a711be4"
+    },
+    {
       "path": "src/assets/fonts/Comfortaa-Bold.ttf",
       "sha1": "030d538c445730fb1ec262b0e2bd748cdfceb272"
     },
@@ -26,8 +34,48 @@
       "sha1": "1d1a61201baea75eb0aebdf75cef600c09cbb1da"
     },
     {
+      "path": "src/assets/fonts/Entypo.ttf",
+      "sha1": "12b5670eb178138f77285d5f2c246d3cc5fa67d6"
+    },
+    {
+      "path": "src/assets/fonts/EvilIcons.ttf",
+      "sha1": "91d377ea3cf47490b256c2ed081704a7dabdae0c"
+    },
+    {
+      "path": "src/assets/fonts/Feather.ttf",
+      "sha1": "e6604258b1ced5efd51360875d782fca65381d47"
+    },
+    {
+      "path": "src/assets/fonts/FontAwesome.ttf",
+      "sha1": "13b1eab65a983c7a73bc7997c479d66943f7c6cb"
+    },
+    {
+      "path": "src/assets/fonts/Foundation.ttf",
+      "sha1": "4b2bce6c792493a4a5716b6fec2dbefe89492c3f"
+    },
+    {
+      "path": "src/assets/fonts/Ionicons.ttf",
+      "sha1": "b5281fbfa43129abc3e412dd938cfcf0b77de999"
+    },
+    {
+      "path": "src/assets/fonts/MaterialCommunityIcons.ttf",
+      "sha1": "4c2a838b00dbb5e8bb1b368fce0de534e8eb241c"
+    },
+    {
+      "path": "src/assets/fonts/MaterialIcons.ttf",
+      "sha1": "1943803d652750c8ec60415f1e57401c70e72d25"
+    },
+    {
       "path": "src/assets/fonts/OFL.txt",
       "sha1": "728bc6b353a1bb4be6b357e7236dbd759358bc71"
+    },
+    {
+      "path": "src/assets/fonts/Octicons.ttf",
+      "sha1": "56acefc0731f35ee23b195b1c8cb5fa94a0db97b"
+    },
+    {
+      "path": "src/assets/fonts/Playball-Regular.ttf",
+      "sha1": "fe194c4f312068b879ca94399bdd8fe05622aeb2"
     },
     {
       "path": "src/assets/fonts/Poppins/Poppins-Black.ttf",
@@ -112,6 +160,22 @@
     {
       "path": "src/assets/fonts/info.txt",
       "sha1": "3aa0f503ba22318f8f9221e843158c67f7e6bc64"
+    },
+    {
+      "path": "src/assets/fonts/static/Caveat-Bold.ttf",
+      "sha1": "b8cf7188694f0ad229fec80e8074b1df6305cdfa"
+    },
+    {
+      "path": "src/assets/fonts/static/Caveat-Medium.ttf",
+      "sha1": "0cd0d0e17561fad5254d00dfc406e0662495de09"
+    },
+    {
+      "path": "src/assets/fonts/static/Caveat-Regular.ttf",
+      "sha1": "6c6e0943c8a1af2aa1fe7d751c62e84e18cc4c72"
+    },
+    {
+      "path": "src/assets/fonts/static/Caveat-SemiBold.ttf",
+      "sha1": "f91cf4115830f412e3e58aa87d3dca337b996453"
     }
   ]
 }
