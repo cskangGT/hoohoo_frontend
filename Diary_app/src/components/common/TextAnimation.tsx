@@ -38,9 +38,6 @@ const TextAnimation = (props: Props) => {
                 });
             });
             Animated.stagger(100, animations).start(() => {
-                // if (count === 3) {
-                //     clearInterval(timer);
-                // }
                 setTimeout(() => {
                     const animations2 = ref_arr.map((item, index) => {
                         return Animated.timing(item, {
