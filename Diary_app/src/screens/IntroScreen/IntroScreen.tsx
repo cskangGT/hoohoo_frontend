@@ -5,47 +5,15 @@ import CustomButton from '../../components/common/Button';
 import TextAnimation from '../../components/common/TextAnimation';
 import ImageBackground from '../../components/common/ImageBackground';
 
-const background = require('../../assets/Intro_background.png');
 const font = require('../../assets/IntroFont.png');
-const droplet = require('../../assets/try4.jpg');
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
-
-// const StyledText = styled(Text)`
-//     margin-top: 200px;
-//     padding: 30px;
-//     /* background-color: ; */
-//     text-align: center;
-//     font-style: italic;
-//     font-weight: bold;
-//     font-size: 50px;
-//     color: white;
-// `;
-
-const Background = styled(View)`
-    flex: 1;
-    /* margin-top: 100px; // 헤더로부터 100px아래부터 백그라운드 시작 */
-    width: 100%;
-    height:100%;
-`;
-
 const IntroImage = styled(View)`
 /* font-family: Arial, Helvetica, sans-serif; */
   width: ${windowWidth - 20}px;
   position: absolute;
   margin-left: 10px;
   height: ${windowHeight - 200}px; // 200은 시작버튼을 위해서 남겨준다.
-`;
-const ImageBG = styled(Image)`
-    flex: 1;
-`;
-const Drop = styled(Image)`
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    opacity: 0.60;
 `;
 const AniView = styled(Animated.View)`
     width:100%;
@@ -54,10 +22,6 @@ const AniView = styled(Animated.View)`
     align-items: center;
     justify-content: center;
 `;
-// const GoToTagRecording = (nav: any) => {
-
-
-// };
 function FadeImage(props: any): JSX.Element {
     const [opacity, setOpacity] = useState(new Animated.Value(0));
     useEffect(() => {
@@ -112,11 +76,10 @@ const IntroScreen = ({ navigation, route }: any) => {
         // clearTimeout(timeout1);
     }, [text]);
 
-    const index:number = 0
+    const index: number = 0
     return (
         <ImageBackground>
             <IntroImage>
-
                 {showAni === 1 ? <Anime textAnime={textContents as JSX.Element}>
                 </Anime> : <FadeImage></FadeImage>}
 
@@ -126,7 +89,7 @@ const IntroScreen = ({ navigation, route }: any) => {
                 style={{ position: 'absolute', bottom: '10 %', justifySelf: 'center', alignSelf: 'center' }}
                 title="START"
                 onPress={() => {
-                    navigation.navigate('TagRecording' , {index:index})
+                    navigation.navigate('TagRecording', { index: index })
                 }}
                 backgroundColor="transparent"
                 textStyle={{ fontSize: 35, color: 'white', fontFamily: 'Zumattan' }} />

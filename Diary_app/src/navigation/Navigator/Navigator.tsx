@@ -20,7 +20,7 @@ const Navigator = () => {
         <NavigationContainer>
             <StatusBar barStyle="dark-content" />
             {/* 네비게이션 기본 스택 생성 */}
-            <RootStack.Navigator initialRouteName="IntroScreen">
+            <RootStack.Navigator initialRouteName="ListView">
                 {/* 스택에 들어갈 화면 컴포넌트들  */}
                 <RootStack.Screen
                     name="IntroScreen"
@@ -52,23 +52,7 @@ const Navigator = () => {
                     component={MonthlyView}
                     options={{ headerShown: false }}
                 />
-                {/* <RootStack.Screen
-                    name="Login"
-                    component={Login}
 
-                
-                />
-                {/* <RootStack.Screen
-                    name="Main"
-                    component={Main}
-                    options={{ headerShown: false }}
-                />
-                {/*
-                <RootStack.Screen
-                    name="Signup"
-                    component={Signup}
-                    options={{ title: '회원가입', headerTitleAlign: 'center' }}
-                />*/}
             </RootStack.Navigator>
         </NavigationContainer>
     );

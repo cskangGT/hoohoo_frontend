@@ -1,8 +1,7 @@
-import { ImageBackground, Image, TouchableHighlight, View, Text, ScrollView, TextInput, SafeAreaView, Animated } from "react-native";
+import { ImageBackground, Image, TouchableHighlight, View, Text, ScrollView, TextInput, SafeAreaView } from "react-native";
 import styled from "styled-components";
 import ImageButton from "../../components/common/ImageButton";
 import CustomButton from "../../components/common/Button";
-import { useState } from "react";
 
 //grand parent view for tag recording page
 export const Container = styled(ImageBackground)`
@@ -10,18 +9,18 @@ export const Container = styled(ImageBackground)`
 `;
 
 export const SafeArea = styled(SafeAreaView)`
-    flex: 1 
-`
+    flex: 1;
+`;
 
 //set the tag pag scrollable so that user can scroll while keyboard is openned
 export const ScrollableView = styled(ScrollView)`
     flex:1;
-`
+`;
 export const contentContainer = {
     flexGrow: 1
 }
 export const flexOne = { flex: 1 }
-export const whiteFont = { color: 'white', fontSize: 21 }
+export const whiteFont = { color: '#f1f1f1', fontSize: 19 }
 //contains List and Save buttons 
 export const NavButton = styled(CustomButton)`
     padding: 2%;
@@ -31,7 +30,7 @@ export const NavButton = styled(CustomButton)`
 //set Save and List buttons at the right of the screen.
 export const ButtonContainer = styled(View)`
     flex-direction:row;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-content:center;
     `;
 //contains tag horizontally.
@@ -46,8 +45,6 @@ export const TagContainers = styled(View)`
 //contians text input
 export const InputTextContainer = styled(View)`
     flex:0.4;
-    
-   
 `
 // align-items:center;
 //user input
@@ -65,19 +62,12 @@ export const InputText = styled(TextInput)`
 //contains input tags on recorded & STT area
 export const StyledButtonContainer = styled(View)`
 `
-// //tags are scrollable
-// export const TagScrollView = styled(ScrollView)`
-//     flex: 0.2;
-//     margin-left: 3%;
-//     margin-right: 3%;
-// `
 
 //contains mic container
 export const MicContainerContainer = styled(View)`
     justify-content: center;
     height:30%;
-`
-// flex:0.2;
+`;
 
 //contians either text mode or speech mode elements
 export const MicContainer = styled(View)`
@@ -110,7 +100,6 @@ export const TagComponent = styled(View)`
     padding-bottom: 1%;
     padding-left: 1%;
     padding-right: 2%;
-
     background-color: #808080;
     opacity: 0.75;
     margin: 5px;
@@ -150,7 +139,6 @@ export const TransparentView = styled(View)`
     background-color: transparent;
     position: absolute;
 `
-
 //opacity 0.3
 export const OpacityView = styled(View)`
     width: 100%;

@@ -1,14 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react'
 
-import { Animated, Text, TouchableOpacity, KeyboardAvoidingView, ToastAndroid, View, Platform, Easing, } from "react-native";
+import { Animated, Text, TouchableOpacity, KeyboardAvoidingView, View, Easing, } from "react-native";
 import WordContainer from './Containers/WordContainer';
 import UserTextInput from './Containers/UserTextInput';
 import RecordingButton from './RecordingButton';
 import {
     ButtonContainer, Container,
-    MicContainer, MicContainerContainer, NavButton, OpacityView, RemoveButton,
-    RemoveTagImage, SafeArea, ScrollableView, TagComponent, TagContainers,
-    TagText, Transition, TransparentView, WordView, contentContainer, flexOne, whiteFont
+    MicContainerContainer, NavButton, OpacityView, RemoveButton,
+    SafeArea, ScrollableView, TagComponent,
+    TagText, TransparentView, contentContainer, flexOne, whiteFont
 } from './styles';
 import FadeInFadeOutComponent from './Containers/FadeInFadeOutComponent';
 import data from '../../data/data.json'
@@ -31,7 +31,7 @@ const FadeInOutText = (props: any) => {
         });
         const fadeOut = Animated.timing(fadeAnim, {
             toValue: 0,
-            duration: displayTime,
+            duration: displayTime - 500,
             easing: Easing.linear,
             useNativeDriver: true,
         })
@@ -57,6 +57,7 @@ const FadeInOutText = (props: any) => {
                 style={{
                     color: 'white',
                     fontSize: 15,
+                    textAlign: 'center',
                 }}>
                 {props.text}
             </Text>
@@ -66,22 +67,21 @@ const FadeInOutText = (props: any) => {
 
 function TagRecording({ navigation, route }: any): JSX.Element {
     let index: number;
-    
-    if (route.params.index === undefined) {
-        index = 12
+
+    if (route.params === undefined || route.params.index === undefined) {
+        index = 12 // Empty Tag
     } else {
-        index = parseInt(route.params.index)
+        index = parseInt(route.params.index) // has some tags
     }
-    
-    const tags: string[] = index? data[index].tags : []
-    
+    const tags: string[] = index ? data[index].tags : []
+
     // user typed input
     const [inputs, setInputs] = useState<string[]>([])
     const [recordedInputs, setRecordedInputs] = useState<string[]>(tags)
     const [recordedContentHolder, setRecordedContentHolder] = useState<JSX.Element[]>()
     const [isEditable, setIsEditable] = useState<boolean>(false);
-
-    //Instagram regulation
+    const [placeholder, setPlaceholder] = useState<string>("Hello");
+    // Instagram regulation
     //capacity of total number of characters
     const capacity = regulation.capacity
     //max limit length per a tag.
@@ -115,30 +115,21 @@ function TagRecording({ navigation, route }: any): JSX.Element {
                 if (curr == ' ') {
                     let next = result.charAt(i + 1).toUpperCase()
                     result = result.substring(0, i).concat(next + result.substring(i + 2, result.length))
-                    // console.log("next:", next, "result :", result)
                 }
             }
             addInputs(result)
-            // setCurrentCapability(currentCapability - result.length)
         } else if (result !== undefined && result.length >= limit) {
             setToastMsg('Max capacity exceeded:\nYou have recorded more than ' + capacity + ' letters')
             setToastVisible(true)
-            // Toast.show('Max limit exceeded:\nLength of a tag should be less than ' + limit, Toast.SHORT);
         } else if (result !== undefined && currentCapability - result.length < 0) {
             setToastVisible(true)
             setToastMsg('Max capacity exceeded:\nYou have recorded more than ' + capacity + ' letters')
-            // Toast.show('Max capacity exceeded:\nYou have recorded more than ' + capacity + ' letters', Toast.SHORT);
         }
     }
     const DeleteContent = (index: number, words: string[], setWords: React.Dispatch<React.SetStateAction<string[]>>, setWordContent: React.Dispatch<React.SetStateAction<JSX.Element[] | undefined>>) => {
-        let deleted = words[index]
         delete words[index];
-        // let copy = [...words]
-        // copy.splice(index, 1)
         setWords(words);
-        // setCurrentCapability(currentCapability + deleted.length)
         createContent(words, setWords, setWordContent, isEditable);
-        // console.log("after deleted", currentCapability + deleted.length)
     }
     //create tags on the modecontents?
     const createContent = (words: string[], setWords: React.Dispatch<React.SetStateAction<string[]>>, setWordContent: React.Dispatch<React.SetStateAction<JSX.Element[] | undefined>>, editable?: boolean) => {
@@ -151,7 +142,6 @@ function TagRecording({ navigation, route }: any): JSX.Element {
                         }}
                         activeOpacity={0.8}
                         underlayColor='transparent'>
-                        {/* <RemoveTagImage key={"img" + index} source={Xbutton} /> */}
                         <Icon source="close-circle" size={20} color='white' />
                     </RemoveButton>
                     <TagText key={index + word}>
@@ -179,6 +169,7 @@ function TagRecording({ navigation, route }: any): JSX.Element {
                 recordTags(deleted)
             }
         }
+        setPlaceholder(word)
         setInputs(inputs)
     }
     const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -187,17 +178,14 @@ function TagRecording({ navigation, route }: any): JSX.Element {
     //initially enter to text mode.
     const [isTextMode, setIsTextMode] = useState<boolean>(true)
     const [isFirstVisit, setIsFirstVisit] = useState<boolean>(true)
-
     //used to determine whether display the mode change button or not 
     const [isTyping, setIsTyping] = useState<boolean>(false);
-
     const [showButton, setShowButton] = useState<boolean>(isTextMode)
     //fade in fade out the textinput and other buttons when mode changed
     useEffect(() => {
         setShowButton(false)
-
-        // ToastAndroid.show('Your Message', ToastAndroid.SHORT);
         if (isFirstVisit) {
+            setPlaceholder("Hello")
             Animated.timing(fadeAnim, { //fade in 
                 toValue: 1,
                 duration: 500,
@@ -208,6 +196,7 @@ function TagRecording({ navigation, route }: any): JSX.Element {
                 setShowButton(true)
                 createContent(recordedInputs, setRecordedInputs, setRecordedContentHolder, isEditable)
             })
+
         } else {
             Animated.timing(fadeAnim, { //fade out 
                 toValue: 0,
@@ -226,9 +215,7 @@ function TagRecording({ navigation, route }: any): JSX.Element {
                 })
             });
         }
-
     }, [fadeAnim, isTextMode]);
-
     //executed when the mode change button clicked
     function fadeInFadeOut() {
         fadeAnim.setValue(1);
@@ -240,9 +227,6 @@ function TagRecording({ navigation, route }: any): JSX.Element {
             fadeInAndOutAnim2.setValue(0);
         }
     }
-
-
-
     return (
         <Container source={Background}>
             <View style={flexOne}>
@@ -278,39 +262,43 @@ function TagRecording({ navigation, route }: any): JSX.Element {
                             opacity: fadeAnim,
                             flex: 1,
                         }}>
-                        <ScrollableView 
-                        keyboardShouldPersistTaps="handled"
-                        contentContainerStyle={contentContainer}>
+                        <ScrollableView
+                            keyboardShouldPersistTaps="handled"
+                            contentContainerStyle={contentContainer}>
                             <KeyboardAvoidingView style={flexOne}>
                                 <ButtonContainer>
                                     <NavButton
-                                        title="List"
-                                         onPress={() => {
-                                         navigation.navigate('ListView')
+                                        title="  List  "
+                                        onPress={() => {
+                                            navigation.navigate('ListView')
                                         }}
-                                        textStyle={whiteFont} 
-                                        
-                                        />
-                                    {/* <TouchableOpacity>
-                                        <IconButton
-                                            icon={'format-list-bulleted'}
-                                            iconColor='white'
-                                            size={30}
-                                        />
-                                    </TouchableOpacity> */}
-                                    {/* <NavButton title="Save" onPress={() => {
-                                        navigation.navigate('Diary', { index: index })
-                                    }}
-                                        textStyle={whiteFont} /> */}
-                                    <TouchableOpacity onPress={() => {
-                                        navigation.navigate('Diary', { index: index })
-                                    }}>
-                                        <IconButton
-                                            icon={'movie-open-play'}
-                                            iconColor='white'
-                                            size={25}
-                                        />
-                                    </TouchableOpacity>
+                                        textStyle={whiteFont}
+                                    />
+                                    {
+                                        tags.length === 0 ?
+                                            <View>
+                                                <IconButton
+                                                    style={{ opacity: 0.3 }}
+                                                    icon={'movie-open-play'}
+                                                    iconColor='#f1f1f1'
+                                                    size={25}
+                                                />
+                                            </View> :
+                                            <TouchableOpacity onPress={() => {
+                                                if (recordedInputs.length === 0) {
+                                                    setToastMsg('No Tags to show in Diary.')
+                                                    setToastVisible(true)
+                                                } else {
+                                                    navigation.navigate('Diary', { index: index })
+                                                }
+                                            }}>
+                                                <IconButton
+                                                    icon={'movie-open-play'}
+                                                    iconColor='#f1f1f1'
+                                                    size={25}
+                                                />
+                                            </TouchableOpacity>
+                                    }
                                 </ButtonContainer>
                                 <WordContainer content={recordedContentHolder as JSX.Element[]}></WordContainer>
                                 <UserTextInput
@@ -318,37 +306,32 @@ function TagRecording({ navigation, route }: any): JSX.Element {
                                     checkRegulation={checkRegulation}
                                     currentCapability={currentCapability}
                                     limit={limit}
+                                    placeholder={placeholder}
+                                    setPlaceholder={setPlaceholder}
                                 />
                             </KeyboardAvoidingView>
-
                             {!isTyping &&
                                 <MicContainerContainer>
                                     {
                                         (showButton) &&
-
                                         <RecordingButton
                                             fadeInFadeOut={fadeInFadeOut}
                                             isTextMode={isTextMode}
                                             setIsTextMode={setIsTextMode}
                                             checkRegulation={checkRegulation}
                                         />
-
                                     }
                                 </MicContainerContainer>
                             }
-
                             {
                                 toastVisible &&
                                 toastMsgContent
                             }
-
                         </ScrollableView>
                     </Animated.View>
-
                 </SafeArea>
             </View>
         </Container>
     )
-
 }
 export default TagRecording

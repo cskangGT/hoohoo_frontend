@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, Image, View } from 'react-native';
+import { TouchableOpacity, Image } from 'react-native';
 
 
 interface Props {
@@ -8,7 +8,6 @@ interface Props {
     style?: {};
     imageStyle?: {};
 }
-
 const MyIcon = (props: Props) => {
     const { onPress, source, style, imageStyle } = props;
     return (
@@ -17,5 +16,4 @@ const MyIcon = (props: Props) => {
         </TouchableOpacity>
     )
 };
-
 export default MyIcon;

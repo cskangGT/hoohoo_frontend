@@ -4,14 +4,10 @@ import styled from 'styled-components';
 
 
 const Container = styled(TouchableOpacity)`
-   
-    /* box-sizing: content-box; */
 `;
 
 const ButtonText = styled(Text)`
-  /* align-items: center; */
 `;
-
 interface Props {
     title: string;
     style?: {};
@@ -22,10 +18,7 @@ interface Props {
     margin?: any;
     textStyle?: any;
 }
-
-
 const CustomButton = (props: Props) => {
-
     const { title, style, onPress, backgroundColor, width, height, textStyle } = props;
     return (
         <Container
@@ -34,8 +27,6 @@ const CustomButton = (props: Props) => {
             onPress={onPress}>
             <ButtonText style={textStyle} >{title}</ButtonText>
         </Container>
-
     )
 }
-
 export default CustomButton;

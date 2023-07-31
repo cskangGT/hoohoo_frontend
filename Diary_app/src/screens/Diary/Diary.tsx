@@ -5,10 +5,8 @@ import data from '../../data/data.json'
 import { useNavigation } from '@react-navigation/native';
 import GIF from 'react-native-gif';
 import { BackgroundView, FlexOneView, MajorityView, GIFandTextContainer, NextButtonContainer, ReplayPause, MinorityView, IconContainer, SafeArea } from './styles';
-import { IconButton } from 'react-native-paper';
 
 const gif = require('./droplet.gif')
-
 const numberOfLocations = 3
 const systemDelay = 4000
 const FadeInOutText = (props: any) => {
@@ -42,9 +40,7 @@ const FadeInOutText = (props: any) => {
                 opacity: fadeAnim,
                 position: 'absolute',
                 justifyContent: 'center',
-                alignSelf: 'center',
-                // borderColor: 'blue',
-                // borderWidth: 1
+                alignSelf: 'center'
             }}>
             <Text
                 numberOfLines={1}
@@ -53,9 +49,7 @@ const FadeInOutText = (props: any) => {
                 style={{
                     color: (props.display) ? 'white' : 'black',
                     fontSize: 25,
-                    fontFamily: 'Comfortaa-Regular',
-                    // borderColor: 'red',
-                    // borderWidth: 1
+                    fontFamily: 'Comfortaa-Regular'
                 }}>
                 {props.text}
             </Text>
@@ -88,11 +82,9 @@ function Diary(props: any): JSX.Element {
         numberOfTags = 0
     } else {
         index = parseInt(props.route.params.index)
-        numberOfTags=data[index].tags.length > 7 ? 7 : data[index].tags.length
+        numberOfTags = data[index].tags.length > 7 ? 7 : data[index].tags.length
     }
     const navigation = useNavigation();
-    
-    
     let allTags = data[index].tags.slice(0, numberOfTags)
     const [tags, setTags] = useState<string[]>([])
     const [count, setCount] = useState<number>(0)
@@ -102,8 +94,6 @@ function Diary(props: any): JSX.Element {
     const [isPaused, setIsPaused] = useState<boolean>(false)
     const [orders, setOrders] = useState<number[]>(generateRandomOrders(numberOfTags))
     const [locations, setLocations] = useState<number[]>(generateRandomLocations(numberOfTags))
-
-
     //the flow is this useEffect (update tags & count to trigger 2nd useEffect)
     //-> below useEffect (update tagContent to render)
     useEffect(() => {
@@ -167,7 +157,6 @@ function Diary(props: any): JSX.Element {
     function renderTags(target: number) {
         let upToSevenTags = allTags.map((txt, index) => {
             let display = (index === target) || (target === numberOfTags)
-            // const count = 5;
             const views = [];
             for (let i = 0; i < numberOfLocations; i++) {
                 if (i != locations[index]) {
@@ -226,14 +215,12 @@ function Diary(props: any): JSX.Element {
                 </View>
             )
         })
-
         return (
             <FlexOneView >
                 {upToSevenTags}
             </FlexOneView>
         )
     }
-
     return (
         <BackgroundView >
             <SafeArea>
@@ -259,7 +246,6 @@ function Diary(props: any): JSX.Element {
                                         setCount(0)
                                         setOrders(generateRandomOrders(numberOfTags))
                                         setLocations(generateRandomLocations(numberOfTags))
-                                        // setIsPaused(false)
                                     }
                                 }}
                             />

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
-import { ScrollView, View } from "react-native";
-import { StyledButtonContainer, TagContainers } from '../styles';
+import { ScrollView } from "react-native";
+import { TagContainers } from '../styles';
 //tag for user input or recorded ones
 function WordContainer(content: any & JSX.Element): JSX.Element {
     const scrollViewRef = useRef<ScrollView>(null);
@@ -16,11 +16,10 @@ function WordContainer(content: any & JSX.Element): JSX.Element {
     return (
         // <StyledButtonContainer>
         <TagContainers>
-                {
-                    content.content
-                }
+            {
+                content.content
+            }
         </TagContainers>
     )
 }
 export default WordContainer;
-{/* </TagScrollView> */ }
