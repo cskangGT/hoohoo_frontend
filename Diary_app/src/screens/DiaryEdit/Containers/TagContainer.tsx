@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import data from '../../../data/data.json'
 import Icon from 'react-native-paper/src/components/Icon'
-import { IndividualTagContainer, RemoveIconContainer, SmallIconContainer, TagText, TagZoneContainer, TagZoneFirstRow, TagZoneSecondRow, VerticalList } from "../styles";
+import { EmptyTags, IndividualTagContainer, RemoveIconContainer, UnactiveIconContainer, SmallIconContainer, TagText, TagZoneContainer, TagZoneFirstRow, TagZoneSecondRow, VerticalList } from "../styles";
 import React from "react";
-import { ScrollView, Text } from "react-native"
+import { ScrollView, View } from "react-native"
 import { useNavigation } from "@react-navigation/native";
 
 //props contains..
@@ -18,9 +17,7 @@ function TagContainer(props: any): JSX.Element {
             scrollViewRef.current.scrollToEnd({ animated: true });
         }
     };
-    // let index = props.index;
     //state that have data at the json file
-    // const [tags, setTags] = useState<string[]>(data[index].tags);
     //remove targeted data from the data and update the result
     function removeTag(target: number) {
         let copy = [...props.tags]
@@ -44,23 +41,29 @@ function TagContainer(props: any): JSX.Element {
         ))
         return (
             <VerticalList>
-                {tagList}
+
+                {
+                    props.tags.length !== 0 ? tagList :
+                        <EmptyTags>No Tags</EmptyTags>
+                }
             </VerticalList>
         )
     }
-    let index:number = props.index
-    console.log("index", index)
+    let index: number = props.index
     //state variable that contains Components 
     const [tagContent, setTagContent] = useState<JSX.Element>(renderTags);
     return (
         <TagZoneContainer>
             <TagZoneFirstRow>
-                <SmallIconContainer onPress={() => {
-                    navigation.navigate("Diary", { index:  index  })
-                }}>
-                    <Icon source="eye" size={25} color='gray' />
-                </SmallIconContainer>
-
+                {
+                    props.tags.length !== 0 ? <SmallIconContainer onPress={() => {
+                        navigation.navigate("Diary", { index: index })
+                    }}>
+                        <Icon source="eye" size={25} color='gray' />
+                    </SmallIconContainer> : <UnactiveIconContainer>
+                        <Icon source="eye-off" size={25} color='gray' />
+                    </UnactiveIconContainer>
+                }
                 <SmallIconContainer onPress={() => {
                     props.setIsModalUp(true)
                 }}>

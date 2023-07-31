@@ -1,12 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View, Modal, ScrollView } from "react-native";
-// import { Modal } from "react-native-paper";
-import { IndividualTagContainer, RemoveIconContainer, TagText, TagZoneSecondRow, VerticalList } from "../styles";
+import { TextInput, TouchableOpacity, TouchableWithoutFeedback, View, Modal, ScrollView } from "react-native";
+import { EmptyTags, IndividualTagContainer, RemoveIconContainer, TagText, TagZoneSecondRow, VerticalList } from "../styles";
 import { useNavigation } from "@react-navigation/native";
 import Icon from 'react-native-paper/src/components/Icon'
-import { HelperText } from "react-native-paper";
-// import Toast from 'react-native-simple-toast';
-
+import { HelperText, IconButton } from "react-native-paper";
+import ImageButton from "../../../components/common/ImageButton";
+const micro_transition = require('../../../assets/mic_transition2.png')
 /**
  * 
  * @param props contains..
@@ -62,12 +61,11 @@ function ModalContainer(props: any): JSX.Element {
     }
 
     const [currCapacity, setCurrCapacity] = useState<number>(props.currentCapability);
-    // useEffect(()=>{
-    //     setCurrCapacity(props.currentCapability)
-    // }, props.currentCapability)
+
     function checkRegulation(result: string) {
         let limit = props.limit
         let capacity = currCapacity
+
         if (result !== undefined && result.length < limit && capacity - result.length >= 0) {
             result = result.charAt(0).toUpperCase().concat(result.substring(1, result.length))
             for (let i = 0; i < result.length; i++) {
@@ -100,18 +98,20 @@ function ModalContainer(props: any): JSX.Element {
         setAddedTagsContent(renderTags);
         scrollToBottom()
     }, [addedTags])
-
-    const [isTyping, setIsTyping] = useState<boolean>(false)
-
-
+    const [isTyping, setIsTyping] = useState<boolean>(false);
+    const [isDone, setIsDone] = useState<boolean>(false);
     return (
         <Modal
             visible={true}
             transparent={true}
+            animationType="slide"
+            onRequestClose={() => {
+                props.setIsModalUp(false)
+            }}
         >
             <View style={{
                 width: '100%',
-                height: isTyping ? '80%' : '60%',
+                height: isTyping ? '43%' : '55%',
                 backgroundColor: '#222222',
                 top: '20%',
                 borderRadius: 25,
@@ -130,27 +130,24 @@ function ModalContainer(props: any): JSX.Element {
                         }}>
                             Add New Tag
                         </TagText>
+
                     </View>
-                    <TouchableOpacity
+                    <ImageButton resize='cover' style={{ justifyContent: 'flex-end' }} src={micro_transition} imageStyle={{ width: 25, height: 25 }}
                         onPress={() => {
-                            navigation.navigate('TagRecording', { index: { index } });
-                        }}
-                        style={{
-                            alignItems: 'center',
-                            position: 'absolute',
-                            right: 0,
-                            width: '20%',
-                        }}>
-                        <TagText>
-                            Record
-                        </TagText>
-                    </TouchableOpacity>
+                            props.setIsModalUp(false)
+                            navigation.navigate('TagRecording'), { index: { index } }
+                        }} />
+
                 </View>
                 <TagZoneSecondRow
                     keyboardShouldPersistTaps="handled"
                     ref={scrollViewRef}
                 >
-                    {addedTagsContent}
+                    {addedTags.length === 0 ?
+                        <View style={{ height: isTyping ? '300%' : '450%', justifyContent: 'center' }}>
+                            <EmptyTags>Awaiting Tags</EmptyTags>
+                        </View>
+                        : addedTagsContent}
                 </TagZoneSecondRow>
                 <TouchableWithoutFeedback
                     onPress={() => {
@@ -158,34 +155,39 @@ function ModalContainer(props: any): JSX.Element {
                     }}>
                     <View style={{
                         margin: '3%'
-
                     }}>
-                        <TextInput
-                            ref={textInputRef}
-                            style={{
-                                borderColor: 'white',
-                                borderWidth: 1,
-                                color: 'white',
-                                borderRadius: 10,
-                                padding: '3%'
-                            }}
-                            placeholder="Put your tags"
-                            placeholderTextColor={"gray"}
-                            value={text}
-                            onChangeText={(txt: string) => {
-                                setText(txt)
-                            }}
-                            onSubmitEditing={() => {
-                                if (text.length !== 0) {
-                                    checkRegulation(text);
-                                    // addNewTags(text);
-                                    // setText("")
-                                }
-                            }}
-                            blurOnSubmit={false}
-                            onFocus={() => { setIsTyping(true) }}
-                            onBlur={() => { setIsTyping(false) }}
-                        />
+                        <View style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between'
+                        }}>
+                            <TextInput
+                                ref={textInputRef}
+                                style={{
+                                    borderColor: 'white',
+                                    borderWidth: 1,
+                                    borderRadius: 10,
+                                    flex: 1,
+                                    color: '#f1f1f1',
+                                    padding: '3%',
+                                }}
+                                placeholder="Put your tags"
+                                placeholderTextColor={"gray"}
+                                value={text}
+                                onChangeText={(txt: string) => {
+                                    setText(txt)
+                                }}
+                                onSubmitEditing={() => {
+                                    if (text.length !== 0) {
+                                        checkRegulation(text);
+                                    }
+                                }}
+                                autoCorrect={false}
+                                blurOnSubmit={false}
+                                onFocus={() => { setIsTyping(true) }}
+                                onBlur={() => { setIsTyping(false) }}
+                            />
+
+                        </View>
                         {
                             hasLengthError() &&
                             <HelperText
@@ -212,7 +214,6 @@ function ModalContainer(props: any): JSX.Element {
                                 {'Max capacity exceeded:\nYou have recorded more than ' + props.capacity + ' letters'}
                             </HelperText>
                         }
-
                     </View>
                 </TouchableWithoutFeedback>
                 {isTyping &&
@@ -231,8 +232,6 @@ function ModalContainer(props: any): JSX.Element {
                         <TouchableOpacity onPress={() => {
                             if (text.length !== 0) {
                                 checkRegulation(text);
-                                // addNewTags(text);
-                                // setText("")
                             }
                         }}>
                             <TagText>
@@ -246,26 +245,32 @@ function ModalContainer(props: any): JSX.Element {
                         flexDirection: 'row',
                         alignSelf: 'flex-end'
                     }}>
-
-                        <TouchableOpacity onPress={() => {
+                        {isDone ? <><TouchableOpacity onPress={() => {
                             props.setIsModalUp(false)
                         }}>
                             <TagText >
-                                Cancel
+                                Close
                             </TagText>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => {
-                            let copy = [...props.tags]
-                            for (let i = 0; i < addedTags.length; i++) {
-                                copy.push(addedTags[i])
-                            }
-                            props.setTags(copy)
-                            props.setIsModalUp(false)
-                        }}>
-                            <TagText>
-                                Apply
-                            </TagText>
-                        </TouchableOpacity>
+                            <TouchableOpacity onPress={() => {
+                                let copy = [...props.tags]
+                                for (let i = 0; i < addedTags.length; i++) {
+                                    copy.push(addedTags[i])
+                                }
+                                props.setTags(copy)
+                                props.setIsModalUp(false)
+                            }}>
+                                <TagText>
+                                    Apply
+                                </TagText>
+                            </TouchableOpacity></>
+                            : <TouchableOpacity onPress={() => {
+                                setIsDone(!isDone)
+                            }}>
+                                <TagText >
+                                    Done
+                                </TagText>
+                            </TouchableOpacity>}
                     </View>
                 }
             </View>

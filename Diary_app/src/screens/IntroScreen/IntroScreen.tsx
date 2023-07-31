@@ -1,4 +1,4 @@
-import { View, Text, Dimensions, Image, Animated, SafeAreaView } from 'react-native';
+import { View, Dimensions, Image, Animated } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import CustomButton from '../../components/common/Button';
@@ -8,7 +8,6 @@ import ImageBackground from '../../components/common/ImageBackground';
 const font = require('../../assets/IntroFont.png');
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
-
 const IntroImage = styled(View)`
 
   width: ${windowWidth - 20}px;
@@ -23,10 +22,6 @@ const AniView = styled(Animated.View)`
     align-items: center;
     justify-content: center;
 `;
-// const GoToTagRecording = (nav: any) => {
-
-
-// };
 function FadeImage(props: any): JSX.Element {
     const [opacity, setOpacity] = useState(new Animated.Value(0));
     useEffect(() => {
@@ -55,10 +50,7 @@ const IntroScreen = ({ navigation, route }: any) => {
     const [showAni, setShowAni] = useState<number>(1);
     if (showAni === 1) { // only show animation case, this is because keep counting time when re-rendering.
         const timeout1 = setTimeout(() => {
-            // console.log("first setText --11", text);
             setText(texts[1].text);
-            // console.log("first setText --", text);
-
         }, 3000); // 6초 뒤에 second animation start
         if (text === texts[1].text) clearTimeout(timeout1);
     }
@@ -68,24 +60,20 @@ const IntroScreen = ({ navigation, route }: any) => {
         if (text === texts[1].text) {
             setTextContents(<TextAnimation text={text} ></TextAnimation>);
             setTimeout(() => {
-                // console.log("settimeout for second text");
                 setText(texts[2].text); // 3초 뒤에 third animation start, 
             }, 3000);
         } else if (text === texts[2].text) {
 
             setTextContents(<TextAnimation text={text} ></TextAnimation>);
-            // console.log(showAni);
             setTimeout(() => { setShowAni(0) }, 3000);
 
         }
-        // clearTimeout(timeout1);
     }, [text]);
 
-    const index:number = 0
+    const index: number = 0
     return (
         <ImageBackground>
             <IntroImage>
-
                 {showAni === 1 ? <Anime textAnime={textContents as JSX.Element}>
                 </Anime> : <FadeImage></FadeImage>}
             </IntroImage>
@@ -93,7 +81,7 @@ const IntroScreen = ({ navigation, route }: any) => {
                 style={{ position: 'absolute', bottom: '10 %', justifySelf: 'center', alignSelf: 'center' }}
                 title="START"
                 onPress={() => {
-                    navigation.navigate('TagRecording' , {index:index})
+                    navigation.navigate('TagRecording', { index: index })
                 }}
                 backgroundColor="transparent"
                 textStyle={{ fontSize: 35, color: 'white', fontFamily: 'Zumattan' }} />

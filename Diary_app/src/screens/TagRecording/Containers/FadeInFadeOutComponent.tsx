@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { Animated, Image, Easing, } from "react-native";
+import React from 'react'
+import { Animated, Image } from "react-native";
 function FadeInFadeOutComponent(props: any): JSX.Element {
     if (!props.isTextMode) {
         Animated.timing(props.fadeInAndOutAnim, { //fade in
@@ -26,7 +26,6 @@ function FadeInFadeOutComponent(props: any): JSX.Element {
             <Image
                 style={{
                     height: props.height,
-
                     top: props.top,
                     left: props.left,
                 }}

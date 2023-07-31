@@ -1,27 +1,25 @@
 import React, { useRef, useState } from 'react'
-import { NativeSyntheticEvent, TextInput, TextInputSubmitEditingEventData, TouchableWithoutFeedback, View } from "react-native";
-import styled from 'styled-components';
+import { NativeSyntheticEvent, TextInput, TextInputSubmitEditingEventData, TouchableWithoutFeedback } from "react-native";
 import { InputText, InputTextContainer } from '../styles';
-import { HelperText} from 'react-native-paper';
+import { HelperText } from 'react-native-paper';
 //this component could be reusable if further modified. ex) modify fontSize, autoFocus etc..
 //could be usuable in search bar, quote typing, etc..
 
 //contains user type input. 
 //props contains..
 //checkRegulation: if pass regulation, add current text to recorded tags.
-//
+
 function UserTextInput(props: any): JSX.Element {
     const [text, setText] = useState<string>("")
 
     //focus if current mode is type mode which contains Speech Mode button
-    // let focus = (props.currTypeButton === "Speech Mode")
+
     const textInputRef = useRef<TextInput>(null);
     const handleOutsideTouch = () => {
         if (textInputRef.current) {
             textInputRef.current.blur();
         }
     };
-
     const hasLengthError = () => {
         return ((text !== undefined && text.length >= props.limit))
     };
@@ -40,11 +38,12 @@ function UserTextInput(props: any): JSX.Element {
                     blurOnSubmit={false}
                     onSubmitEditing={(event: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => {
                         props.checkRegulation(event.nativeEvent.text)
+                        props.setPlaceholder(event.nativeEvent.text);
                         setText("");
                     }}
                     autoCapitalize='sentences'
                     autoCorrect={false}
-                    placeholder='Hello'
+                    placeholder={props.placeholder}
                     placeholderTextColor="#CCCCCC"
                     onFocus={() => {
                         props.setIsTyping(true);
@@ -58,10 +57,10 @@ function UserTextInput(props: any): JSX.Element {
                     <HelperText
                         style={{
                             color: 'white',
-                            opacity:0.6,
-                            paddingLeft:'10%',
-                            width:'100%',
-                            alignSelf:'center'
+                            opacity: 0.6,
+                            paddingLeft: '10%',
+                            width: '100%',
+                            alignSelf: 'center'
                         }}
                         type="error"
                         visible={hasLengthError()}
@@ -74,10 +73,10 @@ function UserTextInput(props: any): JSX.Element {
                     <HelperText
                         style={{
                             color: 'white',
-                            opacity:0.6,
-                            paddingLeft:'10%',
-                            width:'100%',
-                            alignSelf:'center'
+                            opacity: 0.6,
+                            paddingLeft: '10%',
+                            width: '100%',
+                            alignSelf: 'center'
                         }}
                         type="error"
                         visible={hasCapacityError()}
@@ -85,8 +84,6 @@ function UserTextInput(props: any): JSX.Element {
                         {'Max capacity exceeded:\nYou have recorded more than ' + props.capacity + ' letters'}
                     </HelperText>
                 }
-
-
             </InputTextContainer>
         </TouchableWithoutFeedback>
     );
