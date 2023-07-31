@@ -15,14 +15,15 @@
 		0C2F7C1B2A6DD2CF001570F8 /* Playball-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0C2F7C182A6DD2CF001570F8 /* Playball-Regular.ttf */; };
 		0C2F7C1C2A6DD2CF001570F8 /* BlendaScript.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0C2F7C192A6DD2CF001570F8 /* BlendaScript.otf */; };
 		0C2F7C1D2A6DD2CF001570F8 /* static in Resources */ = {isa = PBXBuildFile; fileRef = 0C2F7C1A2A6DD2CF001570F8 /* static */; };
-		0C80B921A6F3F58F76C31292 /* libPods-Diary_app.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-Diary_app.a */; };
 		0CD7D0736D0F4F19AD3E55E9 /* Poppins-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F2A049FD14D841E0A381FDF1 /* Poppins-Bold.ttf */; };
 		0D098987889648AFBBEAF060 /* Comfortaa-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E802F59D69AF4289892F6235 /* Comfortaa-Bold.ttf */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		17DE1AE0601F4CF595545362 /* Poppins-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 75BA8FBFD8FE4A5C86B7611F /* Poppins-Thin.ttf */; };
+		268B94DFE751B6B500D14AC8 /* libPods-Diary_app.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4766A3D3A0A45D8E4B262D2C /* libPods-Diary_app.a */; };
 		2DCBE8B227B148BBB997C1E9 /* Poppins-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7EBE8FE97F1C4133A90F6825 /* Poppins-Italic.ttf */; };
+		2E4407F1DCCACA15EBDE5503 /* libPods-Diary_app-Diary_appTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03596D0600D164B6E67121FF /* libPods-Diary_app-Diary_appTests.a */; };
 		2FF52CAFC0DE46B6A5CCC856 /* Zumattan.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4E31409E0A69472DAF8A3264 /* Zumattan.ttf */; };
 		3149A7679F2C4312B13B9D12 /* Poppins-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C70B74A57E7F4D80930A09CD /* Poppins-SemiBoldItalic.ttf */; };
 		32AF7D8B874347A58C1FE7EA /* Comfortaa-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9233630BC44746E4B292AB00 /* Comfortaa-Light.ttf */; };
@@ -39,7 +40,6 @@
 		6190B2DD1A9643A8BD4828A9 /* info.txt in Resources */ = {isa = PBXBuildFile; fileRef = B07008A807C5463F839860BF /* info.txt */; };
 		65A409E6B0E947F39E180404 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4734EF44CC5C4245B6BE9FB3 /* MaterialIcons.ttf */; };
 		73C81049408C410BBB74160A /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C90BD41783C74C8C890A0EF0 /* Octicons.ttf */; };
-		7699B88040F8A987B510C191 /* libPods-Diary_app-Diary_appTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-Diary_app-Diary_appTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		866B22D42A974CBD9561F4FC /* Poppins-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9B4035980D714256B6ACAFE5 /* Poppins-ExtraLight.ttf */; };
 		886C1A3F2E074B468C4EEEF3 /* Poppins-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4E6C528D671E44DB90DD6863 /* Poppins-LightItalic.ttf */; };
@@ -79,6 +79,7 @@
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* Diary_appTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Diary_appTests.m; sourceTree = "<group>"; };
 		030337380454414AA9C20188 /* Poppins-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Black.ttf"; path = "../src/assets/fonts/Poppins/Poppins-Black.ttf"; sourceTree = "<group>"; };
+		03596D0600D164B6E67121FF /* libPods-Diary_app-Diary_appTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Diary_app-Diary_appTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A32AC34CC704D9E98009241 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = ../src/assets/fonts/FontAwesome.ttf; sourceTree = "<group>"; };
 		0C0FABA12A1C3F3D00013627 /* build */ = {isa = PBXFileReference; lastKnownFileType = folder; path = build; sourceTree = "<group>"; };
 		0C18CDAA2A24029800550C17 /* Diary_app.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Diary_app.entitlements; path = Diary_app/Diary_app.entitlements; sourceTree = "<group>"; };
@@ -93,19 +94,18 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Diary_app/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Diary_app/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Diary_app/main.m; sourceTree = "<group>"; };
-		19F6CBCC0A4E27FBF8BF4A61 /* libPods-Diary_app-Diary_appTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Diary_app-Diary_appTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		14B4057E1F64834794C705D5 /* Pods-Diary_app.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Diary_app.debug.xcconfig"; path = "Target Support Files/Pods-Diary_app/Pods-Diary_app.debug.xcconfig"; sourceTree = "<group>"; };
+		192AC46E94DFC8665153B11A /* Pods-Diary_app-Diary_appTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Diary_app-Diary_appTests.debug.xcconfig"; path = "Target Support Files/Pods-Diary_app-Diary_appTests/Pods-Diary_app-Diary_appTests.debug.xcconfig"; sourceTree = "<group>"; };
 		2197F44129704F3D9E52F78D /* Poppins-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Regular.ttf"; path = "../src/assets/fonts/Poppins-Regular.ttf"; sourceTree = "<group>"; };
 		2C618FD19DFE4D1EBC92AEE1 /* OFL.txt */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = OFL.txt; path = ../src/assets/fonts/OFL.txt; sourceTree = "<group>"; };
 		2DAE80CB2FAF4D51B0CEDCEE /* README.txt */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = README.txt; path = ../src/assets/fonts/README.txt; sourceTree = "<group>"; };
 		31FA7D6A9AD24A5C954B90D1 /* Poppins-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Light.ttf"; path = "../src/assets/fonts/Poppins/Poppins-Light.ttf"; sourceTree = "<group>"; };
-		3B4392A12AC88292D35C810B /* Pods-Diary_app.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Diary_app.debug.xcconfig"; path = "Target Support Files/Pods-Diary_app/Pods-Diary_app.debug.xcconfig"; sourceTree = "<group>"; };
 		4734EF44CC5C4245B6BE9FB3 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = ../src/assets/fonts/MaterialIcons.ttf; sourceTree = "<group>"; };
+		4766A3D3A0A45D8E4B262D2C /* libPods-Diary_app.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Diary_app.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E31409E0A69472DAF8A3264 /* Zumattan.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zumattan.ttf; path = ../src/assets/fonts/Zumattan.ttf; sourceTree = "<group>"; };
 		4E6C528D671E44DB90DD6863 /* Poppins-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-LightItalic.ttf"; path = "../src/assets/fonts/Poppins/Poppins-LightItalic.ttf"; sourceTree = "<group>"; };
-		5709B34CF0A7D63546082F79 /* Pods-Diary_app.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Diary_app.release.xcconfig"; path = "Target Support Files/Pods-Diary_app/Pods-Diary_app.release.xcconfig"; sourceTree = "<group>"; };
-		5B7EB9410499542E8C5724F5 /* Pods-Diary_app-Diary_appTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Diary_app-Diary_appTests.debug.xcconfig"; path = "Target Support Files/Pods-Diary_app-Diary_appTests/Pods-Diary_app-Diary_appTests.debug.xcconfig"; sourceTree = "<group>"; };
+		56667542753A74699A87F982 /* Pods-Diary_app-Diary_appTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Diary_app-Diary_appTests.release.xcconfig"; path = "Target Support Files/Pods-Diary_app-Diary_appTests/Pods-Diary_app-Diary_appTests.release.xcconfig"; sourceTree = "<group>"; };
 		5B8F8FDE3B6C41F8B22D2210 /* Caveat-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Caveat-Regular.ttf"; path = "../src/assets/fonts/static/Caveat-Regular.ttf"; sourceTree = "<group>"; };
-		5DCACB8F33CDC322A6C60F78 /* libPods-Diary_app.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Diary_app.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E8D8F92B91140AA8BAB9E56 /* Comfortaa-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Comfortaa-SemiBold.ttf"; path = "../src/assets/fonts/Comfortaa-SemiBold.ttf"; sourceTree = "<group>"; };
 		643CFEEEBE004FC1AA88942C /* Poppins-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraBoldItalic.ttf"; path = "../src/assets/fonts/Poppins/Poppins-ExtraBoldItalic.ttf"; sourceTree = "<group>"; };
 		677B31E13C91488F903ED67B /* Comfortaa-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Comfortaa-Regular.ttf"; path = "../src/assets/fonts/Comfortaa-Regular.ttf"; sourceTree = "<group>"; };
@@ -113,7 +113,7 @@
 		7EBE8FE97F1C4133A90F6825 /* Poppins-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Italic.ttf"; path = "../src/assets/fonts/Poppins/Poppins-Italic.ttf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Diary_app/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		896B45B39EF1445C9D017E93 /* Comfortaa-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Comfortaa-Medium.ttf"; path = "../src/assets/fonts/Comfortaa-Medium.ttf"; sourceTree = "<group>"; };
-		89C6BE57DB24E9ADA2F236DE /* Pods-Diary_app-Diary_appTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Diary_app-Diary_appTests.release.xcconfig"; path = "Target Support Files/Pods-Diary_app-Diary_appTests/Pods-Diary_app-Diary_appTests.release.xcconfig"; sourceTree = "<group>"; };
+		8F44F6890C28DC50CE05BB33 /* Pods-Diary_app.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Diary_app.release.xcconfig"; path = "Target Support Files/Pods-Diary_app/Pods-Diary_app.release.xcconfig"; sourceTree = "<group>"; };
 		9233630BC44746E4B292AB00 /* Comfortaa-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Comfortaa-Light.ttf"; path = "../src/assets/fonts/Comfortaa-Light.ttf"; sourceTree = "<group>"; };
 		9B4035980D714256B6ACAFE5 /* Poppins-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraLight.ttf"; path = "../src/assets/fonts/Poppins/Poppins-ExtraLight.ttf"; sourceTree = "<group>"; };
 		A576831F6BD44907A4771F4B /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = ../src/assets/fonts/Feather.ttf; sourceTree = "<group>"; };
@@ -146,7 +146,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7699B88040F8A987B510C191 /* libPods-Diary_app-Diary_appTests.a in Frameworks */,
+				2E4407F1DCCACA15EBDE5503 /* libPods-Diary_app-Diary_appTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -154,7 +154,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0C80B921A6F3F58F76C31292 /* libPods-Diary_app.a in Frameworks */,
+				268B94DFE751B6B500D14AC8 /* libPods-Diary_app.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -249,8 +249,8 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				5DCACB8F33CDC322A6C60F78 /* libPods-Diary_app.a */,
-				19F6CBCC0A4E27FBF8BF4A61 /* libPods-Diary_app-Diary_appTests.a */,
+				4766A3D3A0A45D8E4B262D2C /* libPods-Diary_app.a */,
+				03596D0600D164B6E67121FF /* libPods-Diary_app-Diary_appTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -291,10 +291,10 @@
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				3B4392A12AC88292D35C810B /* Pods-Diary_app.debug.xcconfig */,
-				5709B34CF0A7D63546082F79 /* Pods-Diary_app.release.xcconfig */,
-				5B7EB9410499542E8C5724F5 /* Pods-Diary_app-Diary_appTests.debug.xcconfig */,
-				89C6BE57DB24E9ADA2F236DE /* Pods-Diary_app-Diary_appTests.release.xcconfig */,
+				14B4057E1F64834794C705D5 /* Pods-Diary_app.debug.xcconfig */,
+				8F44F6890C28DC50CE05BB33 /* Pods-Diary_app.release.xcconfig */,
+				192AC46E94DFC8665153B11A /* Pods-Diary_app-Diary_appTests.debug.xcconfig */,
+				56667542753A74699A87F982 /* Pods-Diary_app-Diary_appTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -306,12 +306,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "Diary_appTests" */;
 			buildPhases = (
-				A55EABD7B0C7F3A422A6CC61 /* [CP] Check Pods Manifest.lock */,
+				6960D8069FFBD2D92AC54722 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				C59DA0FBD6956966B86A3779 /* [CP] Embed Pods Frameworks */,
-				F6A41C54EA430FDDC6A6ED99 /* [CP] Copy Pods Resources */,
+				8F6FDDD5CB09EF82327ED88A /* [CP] Embed Pods Frameworks */,
+				5C7A4B79E56010554B89C0DA /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -327,14 +327,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Diary_app" */;
 			buildPhases = (
-				C38B50BA6285516D6DCD4F65 /* [CP] Check Pods Manifest.lock */,
+				227B0BB382F5252119E2A012 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */,
-				E235C05ADACE081382539298 /* [CP] Copy Pods Resources */,
+				566AAEC5E353D16A945B6B6E /* [CP] Embed Pods Frameworks */,
+				CB8105E7761849989ADAD28C /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -465,46 +465,7 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"../node_modules/react-native/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"../node_modules/react-native/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
 		};
-		00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Diary_app/Pods-Diary_app-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Diary_app/Pods-Diary_app-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Diary_app/Pods-Diary_app-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A55EABD7B0C7F3A422A6CC61 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Diary_app-Diary_appTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C38B50BA6285516D6DCD4F65 /* [CP] Check Pods Manifest.lock */ = {
+		227B0BB382F5252119E2A012 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -526,7 +487,63 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C59DA0FBD6956966B86A3779 /* [CP] Embed Pods Frameworks */ = {
+		566AAEC5E353D16A945B6B6E /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Diary_app/Pods-Diary_app-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Diary_app/Pods-Diary_app-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Diary_app/Pods-Diary_app-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5C7A4B79E56010554B89C0DA /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Diary_app-Diary_appTests/Pods-Diary_app-Diary_appTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Diary_app-Diary_appTests/Pods-Diary_app-Diary_appTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Diary_app-Diary_appTests/Pods-Diary_app-Diary_appTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6960D8069FFBD2D92AC54722 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Diary_app-Diary_appTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8F6FDDD5CB09EF82327ED88A /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -543,7 +560,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Diary_app-Diary_appTests/Pods-Diary_app-Diary_appTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E235C05ADACE081382539298 /* [CP] Copy Pods Resources */ = {
+		CB8105E7761849989ADAD28C /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -558,23 +575,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Diary_app/Pods-Diary_app-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F6A41C54EA430FDDC6A6ED99 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Diary_app-Diary_appTests/Pods-Diary_app-Diary_appTests-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Diary_app-Diary_appTests/Pods-Diary_app-Diary_appTests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Diary_app-Diary_appTests/Pods-Diary_app-Diary_appTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -629,7 +629,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5B7EB9410499542E8C5724F5 /* Pods-Diary_app-Diary_appTests.debug.xcconfig */;
+			baseConfigurationReference = 192AC46E94DFC8665153B11A /* Pods-Diary_app-Diary_appTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -657,7 +657,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 89C6BE57DB24E9ADA2F236DE /* Pods-Diary_app-Diary_appTests.release.xcconfig */;
+			baseConfigurationReference = 56667542753A74699A87F982 /* Pods-Diary_app-Diary_appTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -682,7 +682,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3B4392A12AC88292D35C810B /* Pods-Diary_app.debug.xcconfig */;
+			baseConfigurationReference = 14B4057E1F64834794C705D5 /* Pods-Diary_app.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -711,7 +711,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5709B34CF0A7D63546082F79 /* Pods-Diary_app.release.xcconfig */;
+			baseConfigurationReference = 8F44F6890C28DC50CE05BB33 /* Pods-Diary_app.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
